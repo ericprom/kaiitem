@@ -1,0 +1,8 @@
+.auth-clients {
+    margin: 0.5em 1em 0.5em;
+    list-style: none;
+    overflow: auto;
+}
+.text-color{
+	color: #ffffff;
+}

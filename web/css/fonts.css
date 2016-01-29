@@ -1,0 +1,22 @@
+@font-face{
+	font-family:'ChunkFiveRegular';
+	src:url('../fonts/Chunkfive/Chunkfive-webfont.eot');
+	src:url('../fonts/Chunkfive/Chunkfive-webfont.eot?#iefix') format('embedded-opentype'),
+	url('../fonts/Chunkfive/Chunkfive-webfont.woff') format('woff'),
+	url('../fonts/Chunkfive/Chunkfive-webfont.ttf') format('truetype'),
+	url('../fonts/Chunkfive/Chunkfive-webfont.svg#ChunkFiveRegular') format('svg');
+	font-weight:normal;
+	font-style:normal
+}
+.ChunkFive {
+    font-family: "ChunkFiveRegular" !important;
+    font-size: 26px;
+    color: #fff;
+}
+.navbar-brand {
+    float: left;
+    height: 50px;
+    padding: 18px 15px  !important;
+    font-size: 18px;
+    line-height: 20px;
+}

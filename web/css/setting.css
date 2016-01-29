@@ -1,0 +1,39 @@
+.panel-default > .panel-heading {
+    color: #333;
+    background: none !important;
+    border-color: #ddd;
+}
+.setting-header {
+    font-size: 36px;
+    /*font-weight: 700;*/
+    color: #0e0e0f;
+    text-align: left;
+}
+.setting-bar{
+	margin-bottom: 10px;
+}
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+    color: #fff;
+    background-color: #66B84D !important;
+}
+.setting-input{
+    color: #666;
+    margin-top: 10px;
+}
+.bank-list{
+    padding:20px 20px 20px 0px;
+}
+.add-new-bank{
+    color: #ccc;
+}
+.setting-bank-icon img{
+    margin-top: 3px;
+    height:59px;
+}
+.fa-toggle-on{
+  color: #35BD00 !important;
+  font-size: 20px;
+}
+.fa-toggle-off{
+  font-size: 20px;
+}

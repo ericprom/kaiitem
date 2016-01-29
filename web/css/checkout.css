@@ -1,0 +1,44 @@
+.panel-default > .panel-heading {
+    color: #333;
+    background: none !important;
+    border-color: #ddd;
+}
+.checkout-header {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0e0e0f;
+    text-align: left;
+}
+.checkout-item-thumb {
+	width: 100px;
+	background: #fff;
+}
+.checkout-item-title {
+	font-weight: bold;
+}
+.checkout-total{
+    font-size: 18px;
+	font-weight: bold;
+	padding-bottom: 5px;
+}
+.checkout-form-input{
+	margin-top: 10px;
+}
+.check-box-color{
+	color: #35BD00;
+}
+.payment-list{
+	margin-top: 20px;
+}
+.payment-check-box{
+	font-size: 24px;
+	margin:10px;
+	position: relative; 
+}
+.payment-method{
+	cursor: pointer;
+}
+.payment-bank-icon img{
+	margin-top: 3px;
+	height:59px;
+}

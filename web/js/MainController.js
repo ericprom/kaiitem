@@ -9,7 +9,7 @@ controllers.factory('API', function($window,$q,$timeout,$http,$rootScope){
         });
         return deferred.promise;
     }
-    
+
     return {
         Update:Update
     };
@@ -258,31 +258,5 @@ controllers.controller('SettingController', ['API','$scope', '$http', '$window',
                 console.log(result);
             });
         }
-    }
-]);
-controllers.controller('getController', ['$scope', '$http',
-    function ($scope, $http) {
-        $http.get('api/dashboard').success(function (data) {
-           $scope.dashboard = data;
-        })
-    }
-]);
-controllers.controller('postController', ['$scope', '$http', '$window', '$location',
-    function($scope, $http, $window, $location) {
-        $scope.login = function () {
-            $scope.submitted = true;
-            $scope.error = {};
-            $http.post('api/login', $scope.userModel).success(
-                function (data) {
-                    $window.sessionStorage.access_token = data.access_token;
-                    $location.path('/dashboard').replace();
-            }).error(
-                function (data) {
-                    angular.forEach(data, function (error) {
-                        $scope.error[error.field] = error.message;
-                    });
-                }
-            );
-        };
     }
 ]);

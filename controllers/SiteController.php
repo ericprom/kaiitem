@@ -51,17 +51,39 @@ class SiteController extends Controller
     {
         return $this->render('index');
     }
-    public function actionLogout()
+    public function actionUpdate()
     {
-        Yii::$app->user->logout();
+        $param = array("filter"=>FALSE);
+        foreach ($param as $key => $val) {
+            if (isset($_REQUEST[$key])) {
+                $param[$key] = $_REQUEST[$key];
+            }
+        }
+        $result = array("status" => FALSE, "data" => "");
+        try {
+            $options = array();
+            if (is_array($param["filter"]) ) {
+                $options = $param["filter"];
+                if (gettype($options["data"]) == "string") {
+                    $data = json_decode($options["data"], TRUE);
 
-        return $this->goHome();
+                } else {
+                    $data = json_encode($options["data"]);
+                    $data = json_decode($data, TRUE);
+                }
+                $result["data"] = $data;
+                $result["status"] = TRUE;
+            }
+        } catch(Exceptions $ex) {
+            $result["status"] = FALSE;
+            $result["error"] = $ex;
+            $result["message"] =  "เกิดข้อผิดพลาด ไม่สามารถบันทึกข้อมูลได้";
+        }
+        echo json_encode($result);
     }
 
     public function actionStore()
-    {
-        $request = Yii::$app->request;
-        $item = $request->post('item');  
+    { 
         return $this->render('store');
     }
     public function actionCheckout(){
@@ -115,5 +137,11 @@ class SiteController extends Controller
         }
         $user->save();
         $model->login();
+    }
+    public function actionLogout()
+    {
+        Yii::$app->user->logout();
+
+        return $this->goHome();
     }
 }

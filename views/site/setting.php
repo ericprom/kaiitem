@@ -5,7 +5,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\icons\Icon;
-Icon::map($this);  
+Icon::map($this);
 
 // $this->title = 'Setting';
 // $this->params['breadcrumbs'][] = $this->title;
@@ -37,7 +37,7 @@ Icon::map($this);
                                     <label>ชื่อ Steam</label>
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input type="text" name="steam" class="form-control input" >
+                                        <input type="text" name="steam" class="form-control input" ng-model="Profile.username">
                                 </div>
                             </div>
                             <div class="row setting-input">
@@ -45,7 +45,10 @@ Icon::map($this);
                                     <label>อีเมล์</label>
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input type="text" name="email" class="form-control input" >
+                                    <div  ng-class="(Profile.verified_email==1)?'input-group':'';">
+                                        <span ng-class="(Profile.verified_email==1)?'input-group-addon':'';"><i class="fa" ng-class="(Profile.verified_email==1)?'fa-check user-verified':'fa-times';" ng-show="Profile.verified_email==1"></i></span>
+                                        <input type="text" name="email" class="form-control input" ng-model="Profile.email" ng-disabled="Profile.verified_email==1">
+                                    </div ng-show="Profile.verified_email==1">
                                 </div>
                             </div>
                             <div class="row setting-input">
@@ -53,7 +56,10 @@ Icon::map($this);
                                     <label>เบอร์ติดต่อ</label>
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input type="text" name="phone-number" class="form-control input" >
+                                    <div ng-class="(Profile.verified_phone==1)?'input-group':'';">
+                                        <span ng-class="(Profile.verified_phone==1)?'input-group-addon':'';"><i class="fa" ng-class="(Profile.verified_phone==1)?'fa-check user-verified':'fa-times';" ng-show="Profile.verified_phone==1"></i></span>
+                                        <input type="text" name="phone-number" class="form-control input" ng-model="Profile.phone" ng-disabled="Profile.verified_phone==1">
+                                    </div>
                                 </div>
                             </div>
                             <div class="row setting-input">
@@ -61,7 +67,7 @@ Icon::map($this);
                                     <label>จังหวัดที่อยู่อาศัย</label>
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input type="text" name="location" class="form-control input" >
+                                        <input type="text" name="location" class="form-control input" ng-model="Profile.location">
                                 </div>
                             </div>
                             <div class="strike" style="margin: 20px 0;">
@@ -72,7 +78,7 @@ Icon::map($this);
                                     <label>ข้อมูลส่วนตัว</label>
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <textarea class="form-control"  name="bio" rows="5"></textarea>
+                                    <textarea class="form-control"  name="bio" rows="5" ng-model="Profile.bio"></textarea>
                                 </div>
                             </div>
                             <div class="strike" style="margin: 20px 0">
@@ -80,13 +86,15 @@ Icon::map($this);
                             </div>
                             <div class="row setting-input" style="margin-bottom:20px;">
                                 <div class="col-md-12 col-sm-12 col-xs-12">
-                                    <button class="btn btn-success pull-right" ng-click="updateProfile()">
-                                        บันทึกการแก้ไข
+                                    <button class="btn btn-success pull-right"
+                                        ng-click="updateProfile()"
+                                        ng-disable="processing">
+                                        <i class="fa" ng-class="(processing)?'fa-spinner fa-spin':' fa-save';"></i> บันทึกการแก้ไข
                                     </button>
                                 </div>
-                            </div> 
+                            </div>
                         </div>
-                    </div> 
+                    </div>
                 </div>
                 <div id="payment" class="tab-pane">
                     <div class="panel panel-default">
@@ -172,7 +180,7 @@ Icon::map($this);
                                             <td class="add-new-bank">
                                                 <div class="row setting-input" ng-show="isAccount">
                                                     <div class="col-md-3 col-sm-3 col-xs-12">
-                                                        ธนาคาร: 
+                                                        ธนาคาร:
                                                         <select id="bank_list" class="form-control"
                                                             ng-model="Bank.account"
                                                             ng-options="item as item.name for item in Banks"></select>
@@ -186,7 +194,7 @@ Icon::map($this);
                                                     <div class="col-md-3 col-sm-3 col-xs-12">
                                                         &nbsp;
                                                         <button class="btn btn-success btn-block" ng-click="saveNewAccount()">
-                                                            <i class="fa fa-save"></i> บันทึก
+                                                            <i class="fa" ng-class="(processing)?'fa-spinner fa-spin':' fa-save';"></i> บันทึก
                                                         </button>
                                                     </div>
                                                 </div>
@@ -196,7 +204,7 @@ Icon::map($this);
                                 </div>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                 </div>
                 <div id="account" class="tab-pane">
                     <div class="panel panel-default">
@@ -217,7 +225,7 @@ Icon::map($this);
                                 Deactivate Account
                             </span>
                         </div>
-                    </div> 
+                    </div>
                 </div>
             </div>
         </div>

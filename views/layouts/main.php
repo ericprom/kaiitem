@@ -9,7 +9,7 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use kartik\icons\Icon;
-Icon::map($this);  
+Icon::map($this);
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
@@ -43,12 +43,13 @@ AppAsset::register($this);
     }
     else{
         echo '<ul class="nav navbar-nav navbar-right">
-        <li>'.Html::a(Icon::show('user').' '.Yii::$app->user->identity->name, ['site/profile'],['data' => ['method' => 'post']]).'</li>
+        <li>'.Html::a(' '.Yii::$app->user->identity->name, ['site/profile'],['data' => ['method' => 'post']]).'</li>
         <li class="dropdown">
             <a href="#" class="dropdown-toggle hidden-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.Icon::show('cog').'</a>
             <a href="#" class="dropdown-toggle visible-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.Icon::show('cog').' ตั้งค่า</a>
             <ul class="dropdown-menu">
-                <li>'.Html::a(Icon::show('shopping-basket').' ตั้งค่าร้านค้า', ['site/setting'],['data' => ['method' => 'post']]).'</li>
+                <li>'.Html::a(Icon::show('user').' ตั้งค่าบัญชีผู้ใช้', ['site/setting'],['data' => ['method' => 'post']]).'</li>
+                <li>'.Html::a(Icon::show('shopping-basket').' จัดการคลังสินค้า', ['site/armory'],['data' => ['method' => 'post']]).'</li>
                 <li role="separator" class="divider"></li>
                 <li>'.Html::a(Icon::show('sign-out').' ออกจากระบบ', ['site/logout'],['data' => ['method' => 'post']]).'</li>
             </ul>

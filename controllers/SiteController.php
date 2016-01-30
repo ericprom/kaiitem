@@ -51,39 +51,85 @@ class SiteController extends Controller
     {
         return $this->render('index');
     }
+    public function actionUser()
+    {
+        $request = Yii::$app->request;
+        if ($request->isPost) {
+            $param = array("filter"=>FALSE);
+            foreach ($param as $key => $val) {
+                if (isset($_REQUEST[$key])) {
+                    $param[$key] = $_REQUEST[$key];
+                }
+            }
+            $result = array("status" => FALSE, "data" => "");
+            try {
+                $options = array();
+                if (is_array($param["filter"]) ) {
+                    $options = $param["filter"];
+                    if (gettype($options["data"]) == "string") {
+                        $data = json_decode($options["data"], TRUE);
+
+                    } else {
+                        $data = json_encode($options["data"]);
+                        $data = json_decode($data, TRUE);
+                    }
+                    $fbid = Yii::$app->user->identity->fbid;
+                    $user = UserMaster::findOne(['fbid'=>$fbid,'status' => 1]);
+                    $result["data"] = $user->attributes;
+                    $result["status"] = TRUE;
+                }
+            } catch(Exceptions $ex) {
+                $result["status"] = FALSE;
+                $result["error"] = $ex;
+                $result["message"] =  "เกิดข้อผิดพลาด ไม่สามารถบันทึกข้อมูลได้";
+            }
+            echo json_encode($result);
+        }
+    }
     public function actionUpdate()
     {
-        $param = array("filter"=>FALSE);
-        foreach ($param as $key => $val) {
-            if (isset($_REQUEST[$key])) {
-                $param[$key] = $_REQUEST[$key];
-            }
-        }
-        $result = array("status" => FALSE, "data" => "");
-        try {
-            $options = array();
-            if (is_array($param["filter"]) ) {
-                $options = $param["filter"];
-                if (gettype($options["data"]) == "string") {
-                    $data = json_decode($options["data"], TRUE);
-
-                } else {
-                    $data = json_encode($options["data"]);
-                    $data = json_decode($data, TRUE);
+        $request = Yii::$app->request;
+        if ($request->isPost) {
+            $param = array("filter"=>FALSE);
+            foreach ($param as $key => $val) {
+                if (isset($_REQUEST[$key])) {
+                    $param[$key] = $_REQUEST[$key];
                 }
-                $result["data"] = $data;
-                $result["status"] = TRUE;
             }
-        } catch(Exceptions $ex) {
-            $result["status"] = FALSE;
-            $result["error"] = $ex;
-            $result["message"] =  "เกิดข้อผิดพลาด ไม่สามารถบันทึกข้อมูลได้";
+            $result = array("status" => FALSE, "data" => "");
+            try {
+                $options = array();
+                if (is_array($param["filter"]) ) {
+                    $options = $param["filter"];
+                    if (gettype($options["data"]) == "string") {
+                        $data = json_decode($options["data"], TRUE);
+
+                    } else {
+                        $data = json_encode($options["data"]);
+                        $data = json_decode($data, TRUE);
+                    }
+                    $fbid = Yii::$app->user->identity->fbid;
+                    $user = UserMaster::findOne(['fbid'=>$fbid,'status' => 1]);
+                    (isset($data["username"]))?$user->username = $data["username"]:$user->username = '';
+                    (isset($data["email"]))?$user->email = $data["email"]:$user->email = '';
+                    (isset($data["phone"]))?$user->phone = $data["phone"]:$user->phone = '';
+                    (isset($data["location"]))?$user->location = $data["location"]:$user->location = '';
+                    (isset($data["bio"]))?$user->bio = $data["bio"]:$user->bio = '';
+                    $user->update();
+                    $result["data"] = $user->attributes;
+                    $result["status"] = TRUE;
+                }
+            } catch(Exceptions $ex) {
+                $result["status"] = FALSE;
+                $result["error"] = $ex;
+                $result["message"] =  "เกิดข้อผิดพลาด ไม่สามารถบันทึกข้อมูลได้";
+            }
+            echo json_encode($result);
         }
-        echo json_encode($result);
     }
 
     public function actionStore()
-    { 
+    {
         return $this->render('store');
     }
     public function actionCheckout(){
@@ -109,7 +155,7 @@ class SiteController extends Controller
         //}
         return $this->render('setting');
     }
-    
+
     public function onAuthSuccess($client)
     {
         $userAttributes = $client->getUserAttributes();

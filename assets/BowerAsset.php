@@ -14,8 +14,6 @@ class BowerAsset extends AssetBundle
     public $sourcePath = '@bower/bower-asset';
     public $js = [
         'angular/angular.min.js',
-        // 'angular-route/angular-route.js',
-        // 'angular-strap/dist/angular-strap.js',
     ];
     public $jsOptions = [
         'position' => View::POS_HEAD,

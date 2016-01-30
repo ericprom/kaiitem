@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'adminEmail' => 'admin@itemgu.com',
+    'adminEmail' => 'admin@KaiiteM.com',
     'icon-framework' => 'fa',
 ];

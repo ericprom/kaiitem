@@ -11,7 +11,7 @@ use yii\web\View;
 
 class BowerAsset extends AssetBundle
 {
-    public $sourcePath = '@bower/bower-asset';
+    public $sourcePath = '@bower';
     public $css = [
         'toaster/toaster.css',
     ];

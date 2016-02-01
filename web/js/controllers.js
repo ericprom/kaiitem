@@ -9,6 +9,24 @@ controllers.factory('API', function($window,$q,$timeout,$http,$rootScope,toaster
         });
         return deferred.promise;
     }
+    var TMTopup = function(param) {
+        $rootScope.processing = true;
+        var deferred = $q.defer();
+        $http.post("../web/topup", param).success(function(results) {
+            deferred.resolve(results);
+            $rootScope.processing = false;
+        });
+        return deferred.promise;
+    }
+    var Insert = function(param) {
+        $rootScope.processing = true;
+        var deferred = $q.defer();
+        $http.post("../web/insert", param).success(function(results) {
+            deferred.resolve(results);
+            $rootScope.processing = false;
+        });
+        return deferred.promise;
+    }
     var Update = function(param) {
         $rootScope.processing = true;
         var deferred = $q.defer();
@@ -28,6 +46,8 @@ controllers.factory('API', function($window,$q,$timeout,$http,$rootScope,toaster
     }
     return {
         Profile:Profile,
+        TMTopup:TMTopup,
+        Insert:Insert,
         Update:Update,
         Toaster:Toaster
     };
@@ -203,25 +223,24 @@ controllers.controller('SettingController', ['API','$scope', '$http', '$window',
     function (API,$scope, $http, $window, $location) {
         $scope.Accounts =  [];
         $scope.Profile = {};
+        $scope.TMTopup = {};
+        $scope.setupTMTopup = false;
         $scope.initializingData = function(){
-            var criteria = {filter: {section:"request", "data":"profile" }};
-            API.Profile(criteria).then(function (result) {
+            API.Profile({filter: {section:"request", "data":"profile" }}).then(function (result) {
                 if(result.status){
                     $scope.Profile = result.data;
                 }
-                else{
-
+            });
+            API.TMTopup({filter: {section:"request", "data":"topup" }}).then(function (result) {
+                if(result.status){
+                    $scope.TMTopup = result.data;
+                    if(result.data == null){
+                        $scope.setupTMTopup = true;
+                    }
                 }
             });
         }
         $scope.initializingData();
-        $scope.TMTopup = {
-            uid: '177427',
-            ref_1: '',
-            ref_2: '',
-            ref_3: '',
-            passkey: ''
-        }
         $scope.Banks =  [{
             code:'bay',
             name: 'ธนาคารกรุงศรีอยุธยา'
@@ -280,14 +299,57 @@ controllers.controller('SettingController', ['API','$scope', '$http', '$window',
             }
         }
         $scope.updateProfile = function(){
-            var criteria = {filter: {section:"update", "data":$scope.Profile }};
+            var criteria = {filter: {section:"profile", "data":$scope.Profile }};
             API.Update(criteria).then(function (result) {
-                console.log(result);
                 if(result.status){
-                    $scope.Profile = result.data;
+                    if(result.data != null){
+                        $scope.Profile = result.data;
+                    }
+                    else{
+                        $scope.Profile = { };
+                    }
                 }
                 API.Toaster(result.toast,'KaiiteM',result.message);
             });
+        }
+        $scope.updateTmtopup = function(){
+            var criteria = {filter: {section:"tmtopup", "data": $scope.TMTopup }};
+            if($scope.setupTMTopup == true){
+                if($scope.TMTopup !== null && $scope.TMTopup.uid != '' && $scope.TMTopup.passkey !== ''){
+                    API.Insert(criteria).then(function (result) {
+                        if(result.status){
+                            if(result.data != null){
+                                $scope.TMTopup = result.data;
+                            }
+                            else{
+                                $scope.TMTopup = { };
+                            }
+                        }
+                        API.Toaster(result.toast,'KaiiteM',result.message);
+                    });
+                }
+                else{
+                    API.Toaster('warning','KaiiteM','กรุณากรอก UID และ Passkey');
+                }
+            }
+            else{
+                if($scope.TMTopup !== null && $scope.TMTopup.uid != '' && $scope.TMTopup.passkey !== ''){
+                    API.Update(criteria).then(function (result) {
+                        if(result.status){
+                            if(result.data != null){
+                                $scope.TMTopup = result.data;
+                            }
+                            else{
+                                $scope.TMTopup = { };
+                            }
+                        }
+                        API.Toaster(result.toast,'KaiiteM',result.message);
+                    });
+                }
+                else{
+                    API.Toaster('warning','KaiiteM','กรุณากรอก UID และ Passkey');
+                }
+            }
         }
     }
 ]);

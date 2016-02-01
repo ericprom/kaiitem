@@ -8,6 +8,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\UserMaster;
+use app\models\Tmtopup;
 
 class SiteController extends Controller
 {
@@ -75,11 +76,99 @@ class SiteController extends Controller
                     }
                     $fbid = Yii::$app->user->identity->fbid;
                     $user = UserMaster::findOne(['fbid'=>$fbid,'status' => 1]);
-                    $result["data"] = $user->attributes;
+                    $result["data"] = ($user)?$user->attributes:null;
                     $result["status"] = TRUE;
                 }
             } catch(Exceptions $ex) {
                 $result["status"] = FALSE;
+                $result["error"] = $ex;
+                $result["message"] =  "เกิดข้อผิดพลาด ไม่สามารถบันทึกข้อมูลได้";
+            }
+            echo json_encode($result);
+        }
+    }
+    public function actionTopup()
+    {
+        $request = Yii::$app->request;
+        if ($request->isPost) {
+            $param = array("filter"=>FALSE);
+            foreach ($param as $key => $val) {
+                if (isset($_REQUEST[$key])) {
+                    $param[$key] = $_REQUEST[$key];
+                }
+            }
+            $result = array("status" => FALSE, "data" => "");
+            try {
+                $options = array();
+                if (is_array($param["filter"]) ) {
+                    $options = $param["filter"];
+                    if (gettype($options["data"]) == "string") {
+                        $data = json_decode($options["data"], TRUE);
+
+                    } else {
+                        $data = json_encode($options["data"]);
+                        $data = json_decode($data, TRUE);
+                    }
+                    $fbid = Yii::$app->user->identity->fbid;
+                    $topup = Tmtopup::findOne(['fbid'=>$fbid]);
+                    $result["data"] = ($topup)?$topup->attributes:null;
+                    $result["status"] = TRUE;
+                }
+            } catch(Exceptions $ex) {
+                $result["status"] = FALSE;
+                $result["error"] = $ex;
+                $result["message"] =  "เกิดข้อผิดพลาด ไม่สามารถบันทึกข้อมูลได้";
+            }
+            echo json_encode($result);
+        }
+    }
+    public function actionInsert()
+    {
+        $request = Yii::$app->request;
+        if ($request->isPost) {
+            $param = array("filter"=>FALSE);
+            foreach ($param as $key => $val) {
+                if (isset($_REQUEST[$key])) {
+                    $param[$key] = $_REQUEST[$key];
+                }
+            }
+            $result = array("status" => FALSE, "data" => "");
+            try {
+                $options = array();
+                if (is_array($param["filter"]) ) {
+                    $options = $param["filter"];
+                    if (gettype($options["data"]) == "string") {
+                        $data = json_decode($options["data"], TRUE);
+
+                    } else {
+                        $data = json_encode($options["data"]);
+                        $data = json_decode($data, TRUE);
+                    }
+                    $fbid = Yii::$app->user->identity->fbid;
+                    switch($options["section"]){
+                        case "tmtopup":
+                            $topup = new Tmtopup();
+                            $topup->fbid = $fbid;
+                            (isset($data["uid"]))?$topup->uid = $data["uid"]:$topup->uid = '';
+                            (isset($data["ref_1"]))?$topup->ref_1 = $data["ref_1"]:$topup->ref_1 = '';
+                            (isset($data["ref_2"]))?$topup->ref_2 = $data["ref_2"]:$topup->ref_2 = '';
+                            (isset($data["ref_3"]))?$topup->ref_3 = $data["ref_3"]:$topup->ref_3 = '';
+                            (isset($data["passkey"]))?$topup->passkey = $data["passkey"]:$topup->passkey = '';
+                            $topup->created_on = time();
+                            $topup->save();
+                            $result["data"] = $topup->attributes;
+                            break;
+
+                        case "profile":
+                            break;
+                    }
+                    $result["toast"] = 'success';
+                    $result["status"] = TRUE;
+                    $result["message"] =  "บันทึกข้อมูลเรียบร้อย";
+                }
+            } catch(Exceptions $ex) {
+                $result["status"] = FALSE;
+                $result["toast"] = 'warning';
                 $result["error"] = $ex;
                 $result["message"] =  "เกิดข้อผิดพลาด ไม่สามารถบันทึกข้อมูลได้";
             }
@@ -109,14 +198,31 @@ class SiteController extends Controller
                         $data = json_decode($data, TRUE);
                     }
                     $fbid = Yii::$app->user->identity->fbid;
-                    $user = UserMaster::findOne(['fbid'=>$fbid,'status' => 1]);
-                    (isset($data["username"]))?$user->username = $data["username"]:$user->username = '';
-                    (isset($data["email"]))?$user->email = $data["email"]:$user->email = '';
-                    (isset($data["phone"]))?$user->phone = $data["phone"]:$user->phone = '';
-                    (isset($data["location"]))?$user->location = $data["location"]:$user->location = '';
-                    (isset($data["bio"]))?$user->bio = $data["bio"]:$user->bio = '';
-                    $user->update();
-                    $result["data"] = $user->attributes;
+                    switch($options["section"]){
+                        case "tmtopup":
+                            $topup = Tmtopup::findOne(['fbid'=>$fbid]);
+                            (isset($data["uid"]))?$topup->uid = $data["uid"]:$topup->uid = '';
+                            (isset($data["ref_1"]))?$topup->ref_1 = $data["ref_1"]:$topup->ref_1 = '';
+                            (isset($data["ref_2"]))?$topup->ref_2 = $data["ref_2"]:$topup->ref_2 = '';
+                            (isset($data["ref_3"]))?$topup->ref_3 = $data["ref_3"]:$topup->ref_3 = '';
+                            (isset($data["passkey"]))?$topup->passkey = $data["passkey"]:$topup->passkey = '';
+                            $topup->updated_on = time();
+                            $topup->update();
+                            $result["data"] = $topup->attributes;
+                            break;
+
+                        case "profile":
+                            $user = UserMaster::findOne(['fbid'=>$fbid,'status' => 1]);
+                            (isset($data["username"]))?$user->username = $data["username"]:$user->username = '';
+                            (isset($data["email"]))?$user->email = $data["email"]:$user->email = '';
+                            (isset($data["phone"]))?$user->phone = $data["phone"]:$user->phone = '';
+                            (isset($data["location"]))?$user->location = $data["location"]:$user->location = '';
+                            (isset($data["bio"]))?$user->bio = $data["bio"]:$user->bio = '';
+                            $user->updated_on = time();
+                            $user->update();
+                            $result["data"] = $user->attributes;
+                            break;
+                    }
                     $result["toast"] = 'success';
                     $result["status"] = TRUE;
                     $result["message"] =  "บันทึกข้อมูลเรียบร้อย";

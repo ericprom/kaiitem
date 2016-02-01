@@ -44,6 +44,16 @@ class UserMaster extends \yii\db\ActiveRecord implements \yii\web\IdentityInterf
             [['auth_key'], 'string', 'max' => 32]
         ];
     }
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
+        );
+    }
 
     /**
      * @inheritdoc
@@ -68,27 +78,27 @@ class UserMaster extends \yii\db\ActiveRecord implements \yii\web\IdentityInterf
     {
         return static::findOne(['user_id' => $id ]);
     }
- 
+
     public static function findIdentityByAccessToken($token, $type = null)
     {
         throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
     }
- 
+
     public function getId()
     {
         return $this->getPrimaryKey();
     }
- 
+
     public function getAuthKey()
     {
         return $this->auth_key;
     }
- 
+
     public function validateAuthKey($authKey)
     {
         return $this->getAuthKey() === $authKey;
     }
- 
+
     public function generateAuthKey()
     {
         $this->auth_key = Yii::$app->security->generateRandomString();

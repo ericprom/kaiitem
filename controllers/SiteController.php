@@ -3,12 +3,15 @@
 namespace app\controllers;
 
 use Yii;
+use app\commands\JSONUtil;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\UserMaster;
 use app\models\Tmtopup;
+use app\models\Banks;
+use app\models\Accounts;
 
 class SiteController extends Controller
 {
@@ -47,12 +50,11 @@ class SiteController extends Controller
             ],
         ];
     }
-
     public function actionIndex()
     {
         return $this->render('index');
     }
-    public function actionUser()
+    public function actionSelect()
     {
         $request = Yii::$app->request;
         if ($request->isPost) {
@@ -67,51 +69,25 @@ class SiteController extends Controller
                 $options = array();
                 if (is_array($param["filter"]) ) {
                     $options = $param["filter"];
-                    if (gettype($options["data"]) == "string") {
-                        $data = json_decode($options["data"], TRUE);
-
-                    } else {
-                        $data = json_encode($options["data"]);
-                        $data = json_decode($data, TRUE);
-                    }
                     $fbid = Yii::$app->user->identity->fbid;
-                    $user = UserMaster::findOne(['fbid'=>$fbid,'status' => 1]);
-                    $result["data"] = ($user)?$user->attributes:null;
-                    $result["status"] = TRUE;
-                }
-            } catch(Exceptions $ex) {
-                $result["status"] = FALSE;
-                $result["error"] = $ex;
-                $result["message"] =  "เกิดข้อผิดพลาด ไม่สามารถบันทึกข้อมูลได้";
-            }
-            echo json_encode($result);
-        }
-    }
-    public function actionTopup()
-    {
-        $request = Yii::$app->request;
-        if ($request->isPost) {
-            $param = array("filter"=>FALSE);
-            foreach ($param as $key => $val) {
-                if (isset($_REQUEST[$key])) {
-                    $param[$key] = $_REQUEST[$key];
-                }
-            }
-            $result = array("status" => FALSE, "data" => "");
-            try {
-                $options = array();
-                if (is_array($param["filter"]) ) {
-                    $options = $param["filter"];
-                    if (gettype($options["data"]) == "string") {
-                        $data = json_decode($options["data"], TRUE);
-
-                    } else {
-                        $data = json_encode($options["data"]);
-                        $data = json_decode($data, TRUE);
+                    switch($options["section"]){
+                        case "profile":
+                            $user = UserMaster::findOne(['fbid'=>$fbid,'status' => 1]);
+                            $result["data"] = ($user)?$user->attributes:null;
+                            break;
+                        case "tmtopup":
+                            $topup = Tmtopup::findOne(['fbid'=>$fbid]);
+                            $result["data"] = ($topup)?$topup->attributes:null;
+                            break;
+                        case "banks":
+                            $bank = Banks::findAll(['status' => 1]);
+                            $result["data"] = JSONUtil::convertModelToArray($bank);
+                            break;
+                        case "accounts":
+                            $account = Accounts::find(['fbid'=>$fbid,'status' => 1])->with('banks')->asArray()->all();
+                            $result["data"] = $account;
+                            break;
                     }
-                    $fbid = Yii::$app->user->identity->fbid;
-                    $topup = Tmtopup::findOne(['fbid'=>$fbid]);
-                    $result["data"] = ($topup)?$topup->attributes:null;
                     $result["status"] = TRUE;
                 }
             } catch(Exceptions $ex) {
@@ -159,7 +135,15 @@ class SiteController extends Controller
                             $result["data"] = $topup->attributes;
                             break;
 
-                        case "profile":
+                        case "account":
+                            $account = new Accounts();
+                            $account->fbid = $fbid;
+                            (isset($data["account"]["id"]))?$account->bank_id = $data["account"]["id"]:$account->bank_id = '';
+                            (isset($data["name"]))?$account->name = $data["name"]:$account->name = '';
+                            (isset($data["number"]))?$account->number = $data["number"]:$account->number = '';
+                            $account->created_on = time();
+                            $account->save();
+                            $result["data"] = $data;
                             break;
                     }
                     $result["toast"] = 'success';

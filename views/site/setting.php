@@ -88,7 +88,7 @@ Icon::map($this);
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                     <button class="btn btn-success pull-right"
                                         ng-click="updateProfile()"
-                                        ng-disable="processing">
+                                        ng-disabled="processing">
                                         <i class="fa" ng-class="(processing)?'fa-spinner fa-spin':' fa-save';"></i> บันทึกการแก้ไข
                                     </button>
                                 </div>
@@ -146,7 +146,7 @@ Icon::map($this);
                                             <div class="row setting-input">
                                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                                     <button class="btn btn-success"
-                                                      ng-disable="processing"
+                                                      ng-disabled="processing"
                                                       ng-click="updateTmtopup()">
                                                         <i class="fa" ng-class="(processing)?'fa-spinner fa-spin':' fa-save';"></i>  บันทึกการตั้งค่า
                                                     </button>

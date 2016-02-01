@@ -3,29 +3,27 @@
 namespace app\models;
 
 use Yii;
-use yii\base\NotSupportedException;
 
 /**
- * This is the model class for table "tmtopup".
+ * This is the model class for table "accounts".
  *
  * @property integer $id
- * @property integer $uid
- * @property string $ref_1
- * @property string $ref_2
- * @property string $ref_3
- * @property string $passkey
+ * @property integer $bank_id
+ * @property string $name
+ * @property string $number
  * @property string $fbid
+ * @property integer $status
  * @property double $created_on
  * @property double $updated_on
  */
-class Tmtopup extends \yii\db\ActiveRecord
+class Accounts extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'tmtopup';
+        return 'accounts';
     }
 
     /**
@@ -34,10 +32,11 @@ class Tmtopup extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            // [['uid', 'ref_1', 'ref_2', 'ref_3', 'passkey', 'fbid', 'created_on', 'updated_on'], 'required'],
-            [['uid'], 'integer'],
+            // [['bank_id', 'name', 'number', 'fbid', 'created_on', 'updated_on'], 'required'],
+            [['bank_id', 'status'], 'integer'],
             [['created_on', 'updated_on'], 'number'],
-            [['ref_1', 'ref_2', 'ref_3', 'passkey'], 'string', 'max' => 50],
+            [['name'], 'string', 'max' => 50],
+            [['number'], 'string', 'max' => 15],
             [['fbid'], 'string', 'max' => 30]
         ];
     }
@@ -51,7 +50,6 @@ class Tmtopup extends \yii\db\ActiveRecord
         return array(
         );
     }
-
     /**
      * @inheritdoc
      */
@@ -59,14 +57,17 @@ class Tmtopup extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'uid' => 'Uid',
-            'ref_1' => 'Ref 1',
-            'ref_2' => 'Ref 2',
-            'ref_3' => 'Ref 3',
-            'passkey' => 'Passkey',
+            'bank_id' => 'Bank ID',
+            'name' => 'Name',
+            'number' => 'Number',
             'fbid' => 'Fbid',
+            'status' => 'Status',
             'created_on' => 'Created On',
             'updated_on' => 'Updated On',
         ];
+    }
+    public function getBanks()
+    {
+        return $this->hasMany(Banks::className(), ['id' => 'bank_id']);
     }
 }

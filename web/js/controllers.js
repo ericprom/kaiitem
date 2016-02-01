@@ -1,18 +1,9 @@
 var controllers = angular.module('controllers', ['toaster', 'ngAnimate']);
 controllers.factory('API', function($window,$q,$timeout,$http,$rootScope,toaster){
-    var Profile = function(param) {
+    var Select = function(param) {
         $rootScope.processing = true;
         var deferred = $q.defer();
-        $http.post("../web/user", param).success(function(results) {
-            deferred.resolve(results);
-            $rootScope.processing = false;
-        });
-        return deferred.promise;
-    }
-    var TMTopup = function(param) {
-        $rootScope.processing = true;
-        var deferred = $q.defer();
-        $http.post("../web/topup", param).success(function(results) {
+        $http.post("../web/select", param).success(function(results) {
             deferred.resolve(results);
             $rootScope.processing = false;
         });
@@ -45,8 +36,7 @@ controllers.factory('API', function($window,$q,$timeout,$http,$rootScope,toaster
         });
     }
     return {
-        Profile:Profile,
-        TMTopup:TMTopup,
+        Select:Select,
         Insert:Insert,
         Update:Update,
         Toaster:Toaster
@@ -144,8 +134,8 @@ controllers.controller('ProfileController', ['API','$scope', '$location', '$wind
     function (API, $scope, $location, $window) {
         $scope.Profile = {};
         $scope.initializingData = function(){
-            var criteria = {filter: {section:"request", "data":"profile" }};
-            API.Profile(criteria).then(function (result) {
+            var criteria = {filter: {section:"profile"}};
+            API.Select(criteria).then(function (result) {
                 if(result.status){
                     $scope.Profile = result.data;
                 }
@@ -222,16 +212,30 @@ controllers.controller('CheckoutController', ['$scope', '$location', '$window',
 controllers.controller('SettingController', ['API','$scope', '$http', '$window', '$location',
     function (API,$scope, $http, $window, $location) {
         $scope.Accounts =  [];
+        $scope.Banks = [];
         $scope.Profile = {};
         $scope.TMTopup = {};
         $scope.setupTMTopup = false;
         $scope.initializingData = function(){
-            API.Profile({filter: {section:"request", "data":"profile" }}).then(function (result) {
+            API.Select({filter: {section:"profile"}}).then(function (result) {
                 if(result.status){
                     $scope.Profile = result.data;
                 }
             });
-            API.TMTopup({filter: {section:"request", "data":"topup" }}).then(function (result) {
+            API.Select({filter: {section:"banks"}}).then(function (result) {
+                if(result.status){
+                    $scope.Banks = result.data;
+                }
+            });
+            API.Select({filter: {section:"accounts"}}).then(function (result) {
+                if(result.status){
+                    angular.forEach(result.data, function (element, index, array) {
+                        element.account = element.banks[0];
+                        $scope.Accounts.push(element);
+                    });
+                }
+            });
+            API.Select({filter: {section:"tmtopup"}}).then(function (result) {
                 if(result.status){
                     $scope.TMTopup = result.data;
                     if(result.data == null){
@@ -241,37 +245,6 @@ controllers.controller('SettingController', ['API','$scope', '$http', '$window',
             });
         }
         $scope.initializingData();
-        $scope.Banks =  [{
-            code:'bay',
-            name: 'ธนาคารกรุงศรีอยุธยา'
-        },{
-            code:'bbank',
-            name: 'ธนาคารกรุงเทพ'
-        },{
-            code:'cimb',
-            name: 'ธนาคาร ซีไอเอ็มบี ไทย'
-        },{
-            code:'gsb',
-            name: 'ธนาคารออมสิน'
-        },{
-            code:'kbank',
-            name: 'ธนาคารกสิกร'
-        },{
-            code:'ktb',
-            name: 'ธนาคารกรุงไทย'
-        },{
-            code:'scb',
-            name: 'ธนาคารไทยพาณิชย์'
-        },{
-            code:'tmb',
-            name: 'ธนาคารทหารไทย'
-        },{
-            code:'tnc',
-            name: 'ธนาคารธนชาต'
-        },{
-            code:'uob',
-            name: 'ธนาคาร ยูโอบี'
-        }];
         $scope.initialBank = function(){
             $scope.Bank = {
                 account:{
@@ -285,9 +258,21 @@ controllers.controller('SettingController', ['API','$scope', '$http', '$window',
             $scope.isAccount = true;
         }
         $scope.saveNewAccount = function(){
-            $scope.isAccount = false;
-            $scope.Accounts.push($scope.Bank);
-            $scope.initialBank();
+            var criteria = {filter: {section:"account", "data":$scope.Bank}};
+            API.Insert(criteria).then(function (result) {
+                console.log(result);
+                if(result.status){
+                    if(result.data != null){
+                        $scope.isAccount = false;
+                        $scope.Accounts.push(result.data);
+                        $scope.initialBank();
+                    }
+                    else{
+                        $scope.initialBank();
+                    }
+                }
+                API.Toaster(result.toast,'KaiiteM',result.message);
+            });
         }
         $scope.Status = 'Online';
         $scope.switchOnOff = function(){

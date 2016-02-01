@@ -259,20 +259,24 @@ controllers.controller('SettingController', ['API','$scope', '$http', '$window',
         }
         $scope.saveNewAccount = function(){
             var criteria = {filter: {section:"account", "data":$scope.Bank}};
-            API.Insert(criteria).then(function (result) {
-                console.log(result);
-                if(result.status){
-                    if(result.data != null){
-                        $scope.isAccount = false;
-                        $scope.Accounts.push(result.data);
-                        $scope.initialBank();
+            if($scope.Bank.name&& $scope.Bank.number){
+                API.Insert(criteria).then(function (result) {
+                    if(result.status){
+                        if(result.data != null){
+                            $scope.isAccount = false;
+                            $scope.Accounts.push(result.data);
+                            $scope.initialBank();
+                        }
+                        else{
+                            $scope.initialBank();
+                        }
                     }
-                    else{
-                        $scope.initialBank();
-                    }
-                }
-                API.Toaster(result.toast,'KaiiteM',result.message);
-            });
+                    API.Toaster(result.toast,'KaiiteM',result.message);
+                });
+            }
+            else{
+                API.Toaster('warning','KaiiteM','กรุณากรอกชื่อ และเลขบัญชีธนาคาร');
+            }
         }
         $scope.Status = 'Online';
         $scope.switchOnOff = function(){

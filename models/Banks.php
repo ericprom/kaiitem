@@ -57,8 +57,8 @@ class Banks extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getAccounts()
-    {
-        return $this->hasMany(Accounts::className(), ['bank_id' => 'id']);
-    }
+    // public function getAccounts()
+    // {
+    //     return $this->hasMany(Accounts::className(), ['bank_id' => 'id']);
+    // }
 }

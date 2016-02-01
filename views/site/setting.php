@@ -168,9 +168,9 @@ Icon::map($this);
                                                 </span>
                                             </td>
                                             <td class="bank-list">
-                                                <div>{{bank.account.name}}</div>
-                                                <div>ชื่อบัญชี: {{bank.name}}</div>
-                                                <div>เลขที่บัญชี: {{bank.number}}</div>
+                                                <div><b>{{bank.account.name}}</b></div>
+                                                <div>ชื่อบัญชี: <b>{{bank.name}}</b></div>
+                                                <div>เลขที่บัญชี: <b>{{bank.number}}</b></div>
                                             </td>
                                         </tr>
                                         <tr>
@@ -195,8 +195,10 @@ Icon::map($this);
                                                     </div>
                                                     <div class="col-md-3 col-sm-3 col-xs-12">
                                                         &nbsp;
-                                                        <button class="btn btn-success btn-block" ng-click="saveNewAccount()">
-                                                            <i class="fa" ng-class="(processing)?'fa-spinner fa-spin':' fa-save';"></i> บันทึก
+                                                        <button class="btn btn-success btn-block"
+                                                          ng-disabled="processing"
+                                                          ng-click="saveNewAccount()">
+                                                          <i class="fa" ng-class="(processing)?'fa-spinner fa-spin':' fa-save';"></i> บันทึก
                                                         </button>
                                                     </div>
                                                 </div>

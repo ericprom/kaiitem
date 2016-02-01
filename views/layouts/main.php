@@ -68,6 +68,7 @@ AppAsset::register($this);
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
         <?=$content?>
+        <toaster-container></toaster-container>
     </div>
 </div>
 <footer class="footer">

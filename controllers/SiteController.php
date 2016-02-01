@@ -117,10 +117,13 @@ class SiteController extends Controller
                     (isset($data["bio"]))?$user->bio = $data["bio"]:$user->bio = '';
                     $user->update();
                     $result["data"] = $user->attributes;
+                    $result["toast"] = 'success';
                     $result["status"] = TRUE;
+                    $result["message"] =  "บันทึกข้อมูลเรียบร้อย";
                 }
             } catch(Exceptions $ex) {
                 $result["status"] = FALSE;
+                $result["toast"] = 'warning';
                 $result["error"] = $ex;
                 $result["message"] =  "เกิดข้อผิดพลาด ไม่สามารถบันทึกข้อมูลได้";
             }

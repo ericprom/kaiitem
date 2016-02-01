@@ -1,5 +1,5 @@
-var controllers = angular.module('controllers', []);
-controllers.factory('API', function($window,$q,$timeout,$http,$rootScope){
+var controllers = angular.module('controllers', ['toaster', 'ngAnimate']);
+controllers.factory('API', function($window,$q,$timeout,$http,$rootScope,toaster){
     var Profile = function(param) {
         $rootScope.processing = true;
         var deferred = $q.defer();
@@ -19,13 +19,12 @@ controllers.factory('API', function($window,$q,$timeout,$http,$rootScope){
         return deferred.promise;
     }
     var Toaster = function(type,title,message){
-        console.log(type,title,message);
-        // toaster.pop({
-        //     type: type,
-        //     title: title,
-        //     body: message,
-        //     showCloseButton: true
-        // });
+        toaster.pop({
+            type: type,
+            title: title,
+            body: message,
+            showCloseButton: true
+        });
     }
     return {
         Profile:Profile,
@@ -284,8 +283,10 @@ controllers.controller('SettingController', ['API','$scope', '$http', '$window',
             var criteria = {filter: {section:"update", "data":$scope.Profile }};
             API.Update(criteria).then(function (result) {
                 console.log(result);
-                $scope.Profile = result.data;
-                API.Toaster('success','KaiiteM','Update success.');
+                if(result.status){
+                    $scope.Profile = result.data;
+                }
+                API.Toaster(result.toast,'KaiiteM',result.message);
             });
         }
     }

@@ -12,8 +12,13 @@ use yii\web\View;
 class BowerAsset extends AssetBundle
 {
     public $sourcePath = '@bower/bower-asset';
+    public $css = [
+        'toaster/toaster.css',
+    ];
     public $js = [
         'angular/angular.min.js',
+        'angular-animate/angular-animate.min.js',
+        'toaster/toaster.min.js',
     ];
     public $jsOptions = [
         'position' => View::POS_HEAD,

@@ -3,7 +3,6 @@
 namespace app\controllers;
 
 use Yii;
-use app\commands\JSONUtil;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -72,16 +71,16 @@ class SiteController extends Controller
                     $fbid = Yii::$app->user->identity->fbid;
                     switch($options["section"]){
                         case "profile":
-                            $user = UserMaster::findOne(['fbid'=>$fbid,'status' => 1]);
+                            $user = UserMaster::find(['fbid'=>$fbid,'status' => 1])->one();
                             $result["data"] = ($user)?$user->attributes:null;
                             break;
                         case "tmtopup":
-                            $topup = Tmtopup::findOne(['fbid'=>$fbid]);
+                            $topup = Tmtopup::find(['fbid'=>$fbid])->one();
                             $result["data"] = ($topup)?$topup->attributes:null;
                             break;
                         case "banks":
-                            $bank = Banks::findAll(['status' => 1]);
-                            $result["data"] = JSONUtil::convertModelToArray($bank);
+                            $bank = Banks::find(['status' => 1])->asArray()->all();
+                            $result["data"] = $bank;
                             break;
                         case "accounts":
                             $account = Accounts::find(['fbid'=>$fbid,'status' => 1])->with('banks')->asArray()->all();

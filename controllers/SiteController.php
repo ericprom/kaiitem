@@ -46,7 +46,7 @@ class SiteController extends Controller
             'auth' => [
                 'class' => 'yii\authclient\AuthAction',
                 'successCallback' => [$this, 'onAuthSuccess'],
-            ],
+            ]
         ];
     }
     public function actionIndex()
@@ -71,19 +71,19 @@ class SiteController extends Controller
                     $fbid = Yii::$app->user->identity->fbid;
                     switch($options["section"]){
                         case "profile":
-                            $user = UserMaster::find(['fbid'=>$fbid,'status' => 1])->one();
+                            $user = UserMaster::find(['fbid'=>$fbid,'status' => 1])->where(['<>', 'status', 0])->one();
                             $result["data"] = ($user)?$user->attributes:null;
                             break;
                         case "tmtopup":
                             $topup = Tmtopup::find(['fbid'=>$fbid])->one();
                             $result["data"] = ($topup)?$topup->attributes:null;
                             break;
-                        case "banks":
-                            $bank = Banks::find(['status' => 1])->asArray()->all();
+                        case "bank":
+                            $bank = Banks::find(['status' => 1])->where(['<>', 'status', 0])->asArray()->all();
                             $result["data"] = $bank;
                             break;
-                        case "accounts":
-                            $account = Accounts::find(['fbid'=>$fbid,'status' => 1])->with('banks')->asArray()->all();
+                        case "account":
+                            $account = Accounts::find(['fbid'=>$fbid,'status' => 1])->where(['<>', 'status', 0])->with('banks')->asArray()->all();
                             $result["data"] = $account;
                             break;
                     }
@@ -195,7 +195,7 @@ class SiteController extends Controller
                             break;
 
                         case "profile":
-                            $user = UserMaster::findOne(['fbid'=>$fbid,'status' => 1]);
+                            $user = UserMaster::find(['fbid'=>$fbid,'status' => 1])->where(['<>', 'status', 0])->one();
                             (isset($data["username"]))?$user->username = $data["username"]:$user->username = '';
                             (isset($data["email"]))?$user->email = $data["email"]:$user->email = '';
                             (isset($data["phone"]))?$user->phone = $data["phone"]:$user->phone = '';
@@ -205,10 +205,80 @@ class SiteController extends Controller
                             $user->update();
                             $result["data"] = $user->attributes;
                             break;
+                        case "online":
+                            $user = UserMaster::find(['fbid'=>$fbid,'status' => 1])->where(['<>', 'status', 0])->one();
+                            (isset($data["action"]))?$user->online = $data["action"]:$user->online = '';
+                            $user->updated_on = time();
+                            $user->update();
+                            $result["data"] = $user->attributes;
+                            break;
+                        case "account":
+                            $account = Accounts::find(['id'=>$data["id"],'status' => 1])->where(['<>', 'status', 0])->one();
+                            $account->fbid = $fbid;
+                            (isset($data["account"]["id"]))?$account->bank_id = $data["account"]["id"]:$account->bank_id = '';
+                            (isset($data["name"]))?$account->name = $data["name"]:$account->name = '';
+                            (isset($data["number"]))?$account->number = $data["number"]:$account->number = '';
+                            $account->updated_on = time();
+                            $account->update();
+                            $result["data"] = $data;
+                            break;
                     }
                     $result["toast"] = 'success';
                     $result["status"] = TRUE;
                     $result["message"] =  "บันทึกข้อมูลเรียบร้อย";
+                }
+            } catch(Exceptions $ex) {
+                $result["status"] = FALSE;
+                $result["toast"] = 'warning';
+                $result["error"] = $ex;
+                $result["message"] =  "เกิดข้อผิดพลาด ไม่สามารถบันทึกข้อมูลได้";
+            }
+            echo json_encode($result);
+        }
+    }
+    public function actionDelete()
+    {
+        $request = Yii::$app->request;
+        if ($request->isPost) {
+            $param = array("filter"=>FALSE);
+            foreach ($param as $key => $val) {
+                if (isset($_REQUEST[$key])) {
+                    $param[$key] = $_REQUEST[$key];
+                }
+            }
+            $result = array("status" => FALSE, "data" => "");
+            try {
+                $options = array();
+                if (is_array($param["filter"]) ) {
+                    $options = $param["filter"];
+                    if (gettype($options["data"]) == "string") {
+                        $data = json_decode($options["data"], TRUE);
+
+                    } else {
+                        $data = json_encode($options["data"]);
+                        $data = json_decode($data, TRUE);
+                    }
+                    $fbid = Yii::$app->user->identity->fbid;
+                    switch($options["section"]){
+                        case "user":
+                            $user = UserMaster::find(['fbid'=>$fbid,'status' => 1])->where(['<>', 'status', 0])->one();
+                            $user->online = 0;
+                            $user->status = 0;
+                            $user->updated_on = time();
+                            $user->update();
+                            $result["data"] = $user->attributes;
+                            break;
+                        case "account":
+                            $account = Accounts::find(['id'=>$data["id"]])->where(['<>', 'status', 0])->one();
+                            $account->status = 0;
+                            $account->updated_on = time();
+                            $account->update();
+                            $result["data"] = $account->attributes;
+                            break;
+                    }
+                    $result["toast"] = 'success';
+                    $result["status"] = TRUE;
+                    $result["message"] =  "ลบข้อมูลเรียบร้อย";
                 }
             } catch(Exceptions $ex) {
                 $result["status"] = FALSE;
@@ -233,21 +303,17 @@ class SiteController extends Controller
     }
     public function actionSetting()
     {
-        //$user = UserMaster::find()->where(['fbid' => Yii::$app->user->identity->fbid])->one();
-        //if ($user->load(Yii::$app->request->post())) {
-            // return $this->redirect(['setting', 'id' => $user->id]);
-            // if($user->save()){
-            //     //echo 1;
-            // }
-            // else{
-            //     echo 0;
-            // }
-        //} else {
-            //return $this->render('setting', ['user' => $user]);
-        //}
         return $this->render('setting');
     }
+    public function actionStock()
+    {
+        return $this->render('stock');
+    }
 
+    public function actionReactivate()
+    {
+        return $this->render('reactivate');
+    }
     public function onAuthSuccess($client)
     {
         $userAttributes = $client->getUserAttributes();
@@ -257,7 +323,7 @@ class SiteController extends Controller
 
         $user = UserMaster::find()->where(['fbid' => $fbid])->one();
 
-        if(empty($user))    {
+        if(empty($user)){
             $user = new UserMaster();
             $user->fbid = $fbid;
             $user->created_on = time();

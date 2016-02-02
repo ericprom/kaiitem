@@ -172,6 +172,12 @@ Icon::map($this);
                                                 <div>ชื่อบัญชี: <b>{{bank.name}}</b></div>
                                                 <div>เลขที่บัญชี: <b>{{bank.number}}</b></div>
                                             </td>
+                                            <td>
+                                              <span class="manage">
+                                                <i class="fa fa-edit" ng-click="editAccount(bank)"></i>
+                                                <i class="fa fa-trash" ng-click="confirmDelete(bank)"></i>
+                                              </span>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td class="bank-list" width="100">
@@ -220,12 +226,12 @@ Icon::map($this);
                                 <div class="row" style="margin-top:100px;">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         <button class="btn btn-default center-block" ng-click="switchOnOff()">
-                                            <i class="fa" ng-class="(Status=='Online'?'fa-toggle-on':'fa-toggle-off')"></i> Your are {{Status}}
+                                            <i class="fa" ng-class="(Status.action)?'fa-toggle-on':'fa-toggle-off';"></i> Your are {{Status.text}}
                                         </button>
                                     </div>
                                 </div>
                             </div>
-                            <span class="pull-right" style="cursor:pointer;">
+                            <span class="pull-right" style="cursor:pointer;color:#e4e4e4;" ng-click="confirmDeactive()">
                                 Deactivate Account
                             </span>
                         </div>
@@ -233,6 +239,70 @@ Icon::map($this);
                 </div>
             </div>
         </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="modal fade" id="confirm-deactive" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <i class="fa fa-cogs"></i>  <b>ระบบยกเลิกบัญชีผู้ใช้งาน</b>
+                </div>
+                <div class="modal-body">
+                    GG?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-danger btn-ok" ng-click="oKDeactive()">Deactivate</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <i class="fa fa-trash"></i>  <b>ระบบลบบัญชีธนาคาร</b>
+                </div>
+                <div class="modal-body">
+                    คุณต้องการที่จะลบ <b>{{deletedObj.account.name}}</b> ใช่หรือไม่?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-danger btn-ok" ng-click="oKDelete()">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="update-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <form name="accountForm" ng-submit="submitForm()" novalidate>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <i class="fa fa-edit"></i>  <b>ระบบแก้ไขบัญชีธนาคาร</b>
+                </div>
+                <div class="modal-body" style="padding-right:25px;">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            ธนาคาร:
+                            <select id="bank_list" class="form-control"
+                                ng-model="updateObject.account"
+                                ng-options="item as item.name for item in Banks"></select>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            ชื่อบัญชี: <input type="text" name="account-name" class="form-control input" ng-model="updateObject.name" >
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            เลขที่บัญชี: <input type="text" name="account-number" class="form-control input"  ng-model="updateObject.number">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <a class="btn btn-default" data-dismiss="modal">Cancel</a>
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+        </form>
     </div>
 </div>
 

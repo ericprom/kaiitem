@@ -40,3 +40,15 @@
 .user-verified{
   color: #35BD00 !important;
 }
+
+
+.manage {
+    display:none;
+}
+td {
+    position: relative;
+}
+tr:hover .manage {
+    display:block;
+    cursor: pointer;
+}

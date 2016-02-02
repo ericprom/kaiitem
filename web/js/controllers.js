@@ -27,6 +27,15 @@ controllers.factory('API', function($window,$q,$timeout,$http,$rootScope,toaster
         });
         return deferred.promise;
     }
+    var Delete = function(param) {
+        $rootScope.processing = true;
+        var deferred = $q.defer();
+        $http.post("../web/delete", param).success(function(results) {
+            deferred.resolve(results);
+            $rootScope.processing = false;
+        });
+        return deferred.promise;
+    }
     var Toaster = function(type,title,message){
         toaster.pop({
             type: type,
@@ -35,11 +44,17 @@ controllers.factory('API', function($window,$q,$timeout,$http,$rootScope,toaster
             showCloseButton: true
         });
     }
+    var Remove = function (list, item) {
+        var index = list.indexOf(item);
+        list.splice(index, 1);
+    };
     return {
         Select:Select,
         Insert:Insert,
         Update:Update,
-        Toaster:Toaster
+        Delete:Delete,
+        Toaster:Toaster,
+        Remove:Remove
     };
 });
 controllers.controller('MainController', ['API','$scope', '$location', '$window',
@@ -215,19 +230,27 @@ controllers.controller('SettingController', ['API','$scope', '$http', '$window',
         $scope.Banks = [];
         $scope.Profile = {};
         $scope.TMTopup = {};
+        $scope.Status = {}
         $scope.setupTMTopup = false;
         $scope.initializingData = function(){
             API.Select({filter: {section:"profile"}}).then(function (result) {
                 if(result.status){
                     $scope.Profile = result.data;
+                    $scope.Status.action=parseInt($scope.Profile.online);
+                    if($scope.Status.action){
+                        $scope.Status.text = 'Online';
+                    }
+                    else{
+                        $scope.Status.text = 'Offline';
+                    }
                 }
             });
-            API.Select({filter: {section:"banks"}}).then(function (result) {
+            API.Select({filter: {section:"bank"}}).then(function (result) {
                 if(result.status){
                     $scope.Banks = result.data;
                 }
             });
-            API.Select({filter: {section:"accounts"}}).then(function (result) {
+            API.Select({filter: {section:"account"}}).then(function (result) {
                 if(result.status){
                     angular.forEach(result.data, function (element, index, array) {
                         element.account = element.banks[0];
@@ -278,14 +301,19 @@ controllers.controller('SettingController', ['API','$scope', '$http', '$window',
                 API.Toaster('warning','KaiiteM','กรุณากรอกชื่อ และเลขบัญชีธนาคาร');
             }
         }
-        $scope.Status = 'Online';
         $scope.switchOnOff = function(){
-            if($scope.Status == 'Online'){
-                $scope.Status = 'Offline';
+            if($scope.Status.action){
+                $scope.Status.text = 'Offline';
+                $scope.Status.action = 0;
             }
             else{
-                $scope.Status = 'Online';
+                $scope.Status.text = 'Online';
+                $scope.Status.action = 1;
             }
+            var criteria = {filter: {section:"online", "data":$scope.Status }};
+            API.Update(criteria).then(function (result) {
+                API.Toaster(result.toast,'KaiiteM',result.message);
+            });
         }
         $scope.updateProfile = function(){
             var criteria = {filter: {section:"profile", "data":$scope.Profile }};
@@ -340,5 +368,121 @@ controllers.controller('SettingController', ['API','$scope', '$http', '$window',
                 }
             }
         }
+        $scope.updateObject = {};
+        $scope.editAccount = function (data) {
+            $('#update-form').modal('show');
+            $scope.updateObject = data;
+             angular.forEach($scope.Banks, function (element, index, array) {
+                if(element.id == data.account.id){
+                    $scope.updateObject.account = element;
+                }
+            });
+
+        };
+        $scope.submitForm = function(){
+            if ($scope.updateObject.id != ''){
+                API.Update({filter: {section:"account", "data":$scope.updateObject }}).then(function (result) {
+                    if (result.status) {
+                        $('#update-form').modal('hide');
+                    }
+                    else{
+                        $('#update-form').modal('hide');
+                    }
+                    API.Toaster(result.toast,'KaiiteM',result.message);
+                });
+            }
+        }
+
+        $scope.deletedObj = {};
+        $scope.confirmDelete = function (data) {
+            $('#confirm-delete').modal('show');
+            $scope.deletedObj = data;
+        };
+        $scope.oKDelete = function () {
+            API.Remove($scope.Accounts,$scope.deletedObj);
+            $('#confirm-delete').modal('hide');
+            var criteria = {filter: {section:"account", "data":$scope.deletedObj}};
+            API.Delete(criteria).then(function(result){
+                if (result.status) {
+                    API.Toaster(result.toast,'KaiiteM',result.message);
+                }
+            });
+        };
+
+        $scope.confirmDeactive = function () {
+            $('#confirm-deactive').modal('show');
+        };
+        $scope.oKDeactive = function () {
+            $('#confirm-deactive').modal('hide');
+            var criteria = {filter: {section:"user", "data":"me"}};
+            API.Delete(criteria).then(function(result){
+                if (result.status) {
+                    API.Toaster(result.toast,'KaiiteM',result.message);
+                }
+            });
+        };
+    }
+]);
+
+controllers.controller('StockController', ['API','$scope', '$http', '$window', '$location',
+    function (API,$scope, $http, $window, $location) {
+      $scope.Items = [
+            {
+                title:"Chroma 2 Case Key",
+                thumb:"box.png",
+                quntity: 20,
+                price: 100,
+                available: true,
+            },
+            {
+                title:"Operation Phoenix Weapon Case",
+                thumb:"box.png",
+                quntity: 6120,
+                price: 100,
+                available: false,
+            },
+            {
+                title:"AWP | Asiimov",
+                thumb:"box.png",
+                quntity: 20,
+                price: 100,
+                available: true,
+            },
+            {
+                title:"Kinetic Gem",
+                thumb:"box.png",
+                quntity: 20,
+                price: 100,
+                available: true,
+            },
+            {
+                title:"Summer Skull",
+                thumb:"box.png",
+                quntity: 20,
+                price: 100,
+                available: true,
+            },
+            {
+                title:"Tan Boots",
+                thumb:"box.png",
+                quntity: 20,
+                price: 100,
+                available: true,
+            },
+            {
+                title:"Horzine Supply Crate | Series #1",
+                thumb:"box.png",
+                quntity: 20,
+                price: 100,
+                available: true,
+            },
+            {
+                title:"Dino Crate #2",
+                thumb:"box.png",
+                quntity: 20,
+                price: 100,
+                available: true,
+            },
+        ];
     }
 ]);

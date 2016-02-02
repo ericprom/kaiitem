@@ -49,7 +49,7 @@ AppAsset::register($this);
             <a href="#" class="dropdown-toggle visible-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.Icon::show('cog').' ตั้งค่า</a>
             <ul class="dropdown-menu">
                 <li>'.Html::a(Icon::show('user').' ตั้งค่าบัญชีผู้ใช้', ['site/setting'],['data' => ['method' => 'post']]).'</li>
-                <li>'.Html::a(Icon::show('shopping-basket').' จัดการคลังสินค้า', ['site/armory'],['data' => ['method' => 'post']]).'</li>
+                <li>'.Html::a(Icon::show('shopping-basket').' จัดการคลังสินค้า', ['site/stock'],['data' => ['method' => 'post']]).'</li>
                 <li role="separator" class="divider"></li>
                 <li>'.Html::a(Icon::show('sign-out').' ออกจากระบบ', ['site/logout'],['data' => ['method' => 'post']]).'</li>
             </ul>

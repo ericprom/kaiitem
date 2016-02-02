@@ -59,7 +59,7 @@
 .item-review{
     border-top: 1px solid #eee;
     background: #fff;
-    padding: 0.65em 0.5em 0.4em 0.4em;
+    padding: 0.65em 0.5em 0.65em 0.5em;
     width: 100%;
     -webkit-border-bottom-right-radius: 4px;
     -webkit-border-bottom-left-radius: 4px;

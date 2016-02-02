@@ -12,7 +12,7 @@ Icon::map($this);
         <div class="col-md-3 col-sm-4 col-xs-12" ng-repeat="get in Items" style="padding-top:25px;">
             <div class="stock-list">
                 <div class="stock-poster">
-                    <?=Html::a(Html::img('@web/armory/{{get.thumb}}', ['alt'=>Yii::$app->name], ['class'=>'img-responsive']), ['site/store'], [
+                    <?=Html::a(Html::img('@web/armory/{{get.thumb}}', ['alt'=>'{{get.title}}'], ['class'=>'img-responsive']), ['site/store'], [
                         'class'=>'',
                         'data'=>[
                             'method'=>'post',
@@ -33,6 +33,12 @@ Icon::map($this);
                     </span>
                     <div class="clearfix"></div>
                 </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-4 col-xs-12" style="padding-top:25px;">
+            <div class="add-new-stock center-block">
+                <h1><i class="fa fa-plus" ng-click="addNewItem()"></i></h1>
             </div>
         </div>
     </div>

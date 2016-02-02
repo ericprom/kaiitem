@@ -447,42 +447,7 @@ controllers.controller('StockController', ['API','$scope', '$http', '$window', '
                 quntity: 20,
                 price: 100,
                 available: true,
-            },
-            {
-                title:"Kinetic Gem",
-                thumb:"box.png",
-                quntity: 20,
-                price: 100,
-                available: true,
-            },
-            {
-                title:"Summer Skull",
-                thumb:"box.png",
-                quntity: 20,
-                price: 100,
-                available: true,
-            },
-            {
-                title:"Tan Boots",
-                thumb:"box.png",
-                quntity: 20,
-                price: 100,
-                available: true,
-            },
-            {
-                title:"Horzine Supply Crate | Series #1",
-                thumb:"box.png",
-                quntity: 20,
-                price: 100,
-                available: true,
-            },
-            {
-                title:"Dino Crate #2",
-                thumb:"box.png",
-                quntity: 20,
-                price: 100,
-                available: true,
-            },
+            }
         ];
     }
 ]);

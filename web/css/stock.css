@@ -52,3 +52,23 @@
     float: right;
     padding: 0;
 }
+.add-new-stock{
+    color: #ccc;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    height: 280px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    display: -webkit-flex; /* For Safari */
+    -webkit-justify-content: center; /* For Safari */
+    -webkit-align-items: center; /* For Safari */
+}
+.add-new-stock:hover{
+    color: #35BD00;
+    border: 1px solid #35BD00;
+    cursor: pointer;
+}

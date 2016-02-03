@@ -381,15 +381,20 @@ controllers.controller('SettingController', ['API','$scope', '$http', '$window',
         };
         $scope.submitForm = function(){
             if ($scope.updateObject.id != ''){
-                API.Update({filter: {section:"account", "data":$scope.updateObject }}).then(function (result) {
-                    if (result.status) {
-                        $('#update-form').modal('hide');
-                    }
-                    else{
-                        $('#update-form').modal('hide');
-                    }
-                    API.Toaster(result.toast,'KaiiteM',result.message);
-                });
+                if($scope.updateObject.name&& $scope.updateObject.number){
+                    API.Update({filter: {section:"account", "data":$scope.updateObject }}).then(function (result) {
+                        if (result.status) {
+                            $('#update-form').modal('hide');
+                        }
+                        else{
+                            $('#update-form').modal('hide');
+                        }
+                        API.Toaster(result.toast,'KaiiteM',result.message);
+                    });
+                }
+                else{
+                    API.Toaster('warning','KaiiteM','กรุณากรอกชื่อ และเลขบัญชีธนาคาร');
+                }
             }
         }
 
@@ -432,22 +437,29 @@ controllers.controller('StockController', ['API','$scope', '$http', '$window', '
                 thumb:"box.png",
                 quntity: 20,
                 price: 100,
-                available: true,
+                available: 1,
             },
             {
                 title:"Operation Phoenix Weapon Case",
                 thumb:"box.png",
                 quntity: 6120,
                 price: 100,
-                available: false,
+                available: 0,
             },
             {
                 title:"AWP | Asiimov",
                 thumb:"box.png",
                 quntity: 20,
                 price: 100,
-                available: true,
+                available: 1,
             }
         ];
+        $scope.makeAvailable = function(get){
+            if(get.available){
+                get.available = 0;
+            }else{
+                get.available = 1;
+            }
+        }
     }
 ]);

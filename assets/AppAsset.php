@@ -20,6 +20,7 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/fonts.css',
         'css/site.css',
+        'css/ios-switch.css',
         'css/profile.css',
         'css/masonry.css',
         'css/store.css',
@@ -30,6 +31,7 @@ class AppAsset extends AssetBundle
     public $js = [
         'js/app.js',
         'js/controllers.js',
+        'js/ios-switch-directive.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

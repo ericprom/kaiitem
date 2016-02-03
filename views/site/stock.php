@@ -1,7 +1,7 @@
 <?php
 
 /* @var $this yii\web\View */
-
+use yii\helpers\Url;
 use yii\helpers\Html;
 use kartik\icons\Icon;
 Icon::map($this);
@@ -12,15 +12,9 @@ Icon::map($this);
         <div class="col-md-3 col-sm-4 col-xs-12" ng-repeat="get in Items" style="padding-top:25px;">
             <div class="stock-list">
                 <div class="stock-poster">
-                    <?=Html::a(Html::img('@web/armory/{{get.thumb}}', ['alt'=>'{{get.title}}'], ['class'=>'img-responsive']), ['site/store'], [
-                        'class'=>'',
-                        'data'=>[
-                            'method'=>'post',
-                            'params'=>[
-                                'item'=>'1',
-                            ],
-                        ]
-                    ])?>
+                    <a href="item/{{get.id}}">
+                    <?=Html::img('@web/armory/{{get.thumb}}', ['alt'=>'{{get.title}}'], ['class'=>'img-responsive'])?>
+                    </a>
                 </div>
                 <div class="stock-caption">
                     <span class="stock-title">{{get.title}}</span>

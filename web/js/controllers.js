@@ -1,9 +1,9 @@
 var controllers = angular.module('controllers', ['toaster', 'ngAnimate']);
-controllers.factory('API', function($window,$q,$timeout,$http,$rootScope,toaster){
+controllers.factory('API', function($window,$q,$timeout,$http,$rootScope,toaster,$location){
     var Select = function(param) {
         $rootScope.processing = true;
         var deferred = $q.defer();
-        $http.post("../web/select", param).success(function(results) {
+        $http.post($window.location.href.split('web')[0]+"web/select", param).success(function(results) {
             deferred.resolve(results);
             $rootScope.processing = false;
         });
@@ -12,7 +12,7 @@ controllers.factory('API', function($window,$q,$timeout,$http,$rootScope,toaster
     var Insert = function(param) {
         $rootScope.processing = true;
         var deferred = $q.defer();
-        $http.post("../web/insert", param).success(function(results) {
+        $http.post($window.location.href.split('web')[0]+"web/insert", param).success(function(results) {
             deferred.resolve(results);
             $rootScope.processing = false;
         });
@@ -21,7 +21,7 @@ controllers.factory('API', function($window,$q,$timeout,$http,$rootScope,toaster
     var Update = function(param) {
         $rootScope.processing = true;
         var deferred = $q.defer();
-        $http.post("../web/update", param).success(function(results) {
+        $http.post($window.location.href.split('web')[0]+"web/update", param).success(function(results) {
             deferred.resolve(results);
             $rootScope.processing = false;
         });
@@ -30,7 +30,7 @@ controllers.factory('API', function($window,$q,$timeout,$http,$rootScope,toaster
     var Delete = function(param) {
         $rootScope.processing = true;
         var deferred = $q.defer();
-        $http.post("../web/delete", param).success(function(results) {
+        $http.post($window.location.href.split('web')[0]+"web/delete", param).success(function(results) {
             deferred.resolve(results);
             $rootScope.processing = false;
         });
@@ -61,6 +61,7 @@ controllers.controller('MainController', ['API','$scope', '$location', '$window'
     function (API, $scope, $location, $window) {
         $scope.Items = [
             {
+                id:'123456',
                 shop:"Noob",
                 title:"Chroma 2 Case Key",
                 thumb:"box.png",
@@ -70,6 +71,7 @@ controllers.controller('MainController', ['API','$scope', '$location', '$window'
                 like: 100,
             },
             {
+                id:'123456',
                 shop:"Grean",
                 title:"Operation Phoenix Weapon Case",
                 thumb:"box.png",
@@ -79,6 +81,7 @@ controllers.controller('MainController', ['API','$scope', '$location', '$window'
                 like: 100,
             },
             {
+                id:'123456',
                 shop:"Light",
                 title:"AWP | Asiimov",
                 thumb:"box.png",
@@ -88,6 +91,7 @@ controllers.controller('MainController', ['API','$scope', '$location', '$window'
                 like: 100,
             },
             {
+                id:'123456',
                 shop:"DKS",
                 title:"Kinetic Gem",
                 thumb:"box.png",
@@ -97,6 +101,7 @@ controllers.controller('MainController', ['API','$scope', '$location', '$window'
                 like: 100,
             },
             {
+                id:'123456',
                 shop:"Joker",
                 title:"Summer Skull",
                 thumb:"box.png",
@@ -106,6 +111,7 @@ controllers.controller('MainController', ['API','$scope', '$location', '$window'
                 like: 100,
             },
             {
+                id:'123456',
                 shop:"X Man",
                 title:"Tan Boots",
                 thumb:"box.png",
@@ -115,6 +121,7 @@ controllers.controller('MainController', ['API','$scope', '$location', '$window'
                 like: 100,
             },
             {
+                id:'123456',
                 shop:"Eric Prom",
                 title:"Horzine Supply Crate | Series #1",
                 thumb:"box.png",
@@ -124,6 +131,7 @@ controllers.controller('MainController', ['API','$scope', '$location', '$window'
                 like: 100,
             },
             {
+                id:'123456',
                 shop:"MAN",
                 title:"Dino Crate #2",
                 thumb:"box.png",
@@ -135,7 +143,7 @@ controllers.controller('MainController', ['API','$scope', '$location', '$window'
         ];
     }
 ]);
-controllers.controller('StoreController', ['$scope', '$location', '$window',
+controllers.controller('ItemController', ['$scope', '$location', '$window',
     function ($scope, $location, $window) {
         $scope.Store = {
             owner: {
@@ -145,12 +153,30 @@ controllers.controller('StoreController', ['$scope', '$location', '$window',
         }
     }
 ]);
+controllers.controller('StoreController', ['API','$scope', '$location', '$window',
+    function (API,$scope, $location, $window) {
+        $scope.Store = {};
+        $scope.initializingData = function(){
+            var criteria = {filter: {section:"profile"}};
+            API.Select(criteria).then(function (result) {
+                if(result.status){
+                    $scope.Store = result.data;
+                }
+                else{
+
+                }
+            });
+        }
+        $scope.initializingData();
+    }
+]);
 controllers.controller('ProfileController', ['API','$scope', '$location', '$window',
     function (API, $scope, $location, $window) {
         $scope.Profile = {};
         $scope.initializingData = function(){
             var criteria = {filter: {section:"profile"}};
             API.Select(criteria).then(function (result) {
+              console.log(result);
                 if(result.status){
                     $scope.Profile = result.data;
                 }
@@ -433,6 +459,7 @@ controllers.controller('StockController', ['API','$scope', '$http', '$window', '
     function (API,$scope, $http, $window, $location) {
       $scope.Items = [
             {
+                id:'123456',
                 title:"Chroma 2 Case Key",
                 thumb:"box.png",
                 quntity: 20,
@@ -440,6 +467,7 @@ controllers.controller('StockController', ['API','$scope', '$http', '$window', '
                 available: 1,
             },
             {
+                id:'123456',
                 title:"Operation Phoenix Weapon Case",
                 thumb:"box.png",
                 quntity: 6120,
@@ -447,6 +475,7 @@ controllers.controller('StockController', ['API','$scope', '$http', '$window', '
                 available: 0,
             },
             {
+                id:'123456',
                 title:"AWP | Asiimov",
                 thumb:"box.png",
                 quntity: 20,

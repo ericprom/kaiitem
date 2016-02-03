@@ -4,116 +4,73 @@
 
 use yii\helpers\Html;
 use kartik\icons\Icon;
-Icon::map($this);  
+Icon::map($this);
 
 // $this->title = 'Store';
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-store" ng-controller="StoreController" ng-cloak>
-    <div class="row">
-        <div class="col-md-8 col-sm-8 col-xs-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="store-item-title">
-                        Operation Phoenix Weapon Case
-                    </div>
+   <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="card hovercard">
+                <div class="cardheader"></div>
+                <div class="avatar">
+                    <?= Html::img('http://graph.facebook.com/{{Store.fbid}}/picture?width=100&height=100', ['alt'=>'{{Store.name}}']);?>
                 </div>
-                <div class="panel-body">
-                    <div class="store-item-thumb">
-                    <?=Html::img(Yii::getAlias('@web').'/armory/box.png', ['class' => 'img-responsive'])?>
-                    </div>
-                </div>
-            </div>
-            <?php if(!Yii::$app->user->isGuest){ ?>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <span class="store-header">ข้อมูลสินค้า</span>
-                </div>
-                <div class="panel-body">
-                    <pre>
-    Contains one of the following:
-    AK-47 | Elite Build
-    MP7 | Armor Core
-    Desert Eagle | Bronze Deco
-    P250 | Valence
-    Negev | Man-o'-war
-    Sawed-Off | Origami
-    AWP | Worm God
-    MAG-7 | Heat
-    CZ75-Auto | Pole Position
-    UMP-45 | Grand Prix
-    Five-SeveN | Monkey Business
-    Galil AR | Eco
-    FAMAS | Djinn
-    M4A1-S | Hyper Beast
-    MAC-10 | Neon Rider
-    or an Exceedingly Rare Special Item!
-                    </pre>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <span class="store-header">คอมเม้น</span>
-                </div>
-                <div class="panel-body">
-                </div>
-            </div>
-            <?php }?>
-        </div>
-        <div class="col-md-4 col-sm-4 col-xs-12">
-            <?php if(!Yii::$app->user->isGuest){ ?>
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <?=Html::a(Icon::show('shopping-cart').' ซื้อเลย', ['site/checkout'], [
-                        'class'=>'btn btn-block btn-success btn-lg',
-                        'data'=>[
-                            'method'=>'post',
-                            'params'=>[
-                                'item'=>'1',
-                            ],
-                        ]
-                    ])?>
-                </div>
-            </div>
-            <div class="social-panel">
-                <button class="btn social-btn-facebook btn-sm social-btn">
-                    <i class="fa fa-facebook"></i>
-                </button>
-                <button class="btn social-btn-twitter  btn-sm social-btn">
-                    <i class="fa fa-twitter"></i>
-                </button>
-                <button class="btn social-btn-google  btn-sm social-btn">
-                    <i class="fa fa-google-plus"></i>
-                </button>
-                <button class="btn social-btn-linkedin btn-sm social-btn">
-                    <i class="fa fa-linkedin"></i>
-                </button>
-                <button class="btn btn-default btn-sm social-btn">
-                    <i class="fa fa-envelope-o"></i>
-                </button>
-                <div class="clearfix"></div>
-            </div>
-            <?php }?>
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="card hovercard">
-                        <div style="height:50px;"></div>
-                        <div class="avatar">
-                            <?= Html::img('http://graph.facebook.com/{{Store.owner.fbid}}/picture?width=100&height=100', ['alt'=>'{{Store.owner.name}}']);?> 
-                        </div>
-                        <div class="info">
-                            <div class="title">
-                                {{Store.owner.name}}
+                    <div class="row" style="margin-top:10px;">
+                        <div class="col-md-3 col-sm-3 col-xs-3"></div>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="info">
+                                <div class="title">
+                                    {{Store.name}}
+                                </div>
                             </div>
                         </div>
+                        <div class="col-md-3 col-sm-3 col-xs-3"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 col-sm-3 col-xs-1"></div>
+                        <div class="col-md-6 col-sm-6 col-xs-10">
+                            <div class="strike">
+                               <span>About</span>
+                            </div>
+                            <div class="about">
+                                <span>Verified by</span>
+                                <span class="btn btn-success btn-sm verified-btn" rel="publisher">
+                                    <i class="fa fa-facebook"></i>
+                                </span>
+                                <span class="btn btn-sm verified-btn" ng-class="(Store.verified_phone==1)?'btn-success':'btn-default';" ng-show="Store.phone!=''">
+                                    <i class="fa fa-phone"></i>
+                                </span>
+                                <span class="btn btn-sm verified-btn" ng-class="(Store.verified_email==1)?'btn-success':'btn-default';" ng-show="Store.email!=''">
+                                    <i class="fa fa-envelope-o"></i>
+                                </span>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <i class="fa" ng-class="(Store.online==1)?'fa-circle':'fa-circle-o'"></i>
+                                    <span ng-show="Store.online"> Online</span>
+                                    <span ng-show="!Store.online"> Offline</span>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <i class="fa fa-steam" ng-show="Store.username!=''"></i> {{Store.username}}
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <i class="fa fa-map-marker" ng-show="Store.location!=''"></i> {{Store.location}}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="strike">
+                               <span>Bio</span>
+                            </div>
+                            <div class="bio">
+                            {{Store.bio}}
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-1"></div>
                     </div>
                 </div>
-                <?php if(!Yii::$app->user->isGuest){ ?>
-                <div class="panel-footer">
-                        <button class="btn btn-default pull-right"> <i class="fa fa-comments-o"></i> ติดต่อผู้ขาย</button>
-                        <div class="clearfix"></div>
-                    </div>
-                <?php }?>
             </div>
         </div>
     </div>

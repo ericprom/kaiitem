@@ -290,6 +290,10 @@ class SiteController extends Controller
         }
     }
 
+    public function actionItem()
+    {
+        return $this->render('item');
+    }
     public function actionStore()
     {
         return $this->render('store');

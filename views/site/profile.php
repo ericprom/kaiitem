@@ -14,7 +14,7 @@ Icon::map($this);
             <div class="card hovercard">
                 <div class="cardheader"></div>
                 <div class="avatar">
-                    <?= Html::img('http://graph.facebook.com/{{Profile.fbid}}/picture?width=100&height=100', ['alt'=>'{{Profile.name}}']);?>
+                <img ng-src="http://graph.facebook.com/{{Profile.fbid}}/picture?width=100&height=100">
                 </div>
                     <div class="row" style="margin-top:10px;">
                         <div class="col-md-3 col-sm-3 col-xs-3"></div>

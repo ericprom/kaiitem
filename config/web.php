@@ -60,6 +60,8 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 '' => 'site/index',
+                'item/<id:\d+>' => 'site/item',
+                'store/<id:\d+>' => 'site/store',
                 '<action>'=>'site/<action>',
             ],
         ],

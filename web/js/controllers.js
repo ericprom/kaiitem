@@ -457,7 +457,8 @@ controllers.controller('SettingController', ['API','$scope', '$http', '$window',
 
 controllers.controller('StockController', ['API','$scope', '$http', '$window', '$location',
     function (API,$scope, $http, $window, $location) {
-      $scope.Items = [
+        $scope.newItem = false;
+        $scope.Items = [
             {
                 id:'123456',
                 title:"Chroma 2 Case Key",
@@ -489,6 +490,10 @@ controllers.controller('StockController', ['API','$scope', '$http', '$window', '
             }else{
                 get.available = 1;
             }
+        }
+        $scope.addNewItem = function(){
+            console.log('add');
+             $scope.newItem = true;
         }
     }
 ]);

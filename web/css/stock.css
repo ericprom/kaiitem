@@ -72,3 +72,7 @@
     border: 1px solid #35BD00;
     cursor: pointer;
 }
+.stock-item-thumb {
+  text-align: center;;
+  border: 1px solid #35BD00;
+}

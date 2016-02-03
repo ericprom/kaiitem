@@ -23,7 +23,7 @@ class AppAsset extends AssetBundle
         'css/ios-switch.css',
         'css/profile.css',
         'css/masonry.css',
-        'css/store.css',
+        'css/item.css',
         'css/setting.css',
         'css/checkout.css',
         'css/stock.css',

@@ -32,10 +32,10 @@ class AppAsset extends AssetBundle
         'js/app.js',
         'js/controllers.js',
         'js/ios-switch-directive.js',
+        'js/angular-img-cropper.min.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
         'app\assets\BowerAsset',
     ];
 }

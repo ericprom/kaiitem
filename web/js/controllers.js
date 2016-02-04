@@ -1,4 +1,4 @@
-var controllers = angular.module('controllers', ['toaster', 'ngAnimate']);
+var controllers = angular.module('controllers', ['toaster', 'ngAnimate','angular-img-cropper']);
 controllers.factory('API', function($window,$q,$timeout,$http,$rootScope,toaster,$location){
     var Select = function(param) {
         $rootScope.processing = true;
@@ -458,6 +458,7 @@ controllers.controller('SettingController', ['API','$scope', '$http', '$window',
 controllers.controller('StockController', ['API','$scope', '$http', '$window', '$location',
     function (API,$scope, $http, $window, $location) {
         $scope.newItem = false;
+        $scope.Item = {};
         $scope.Items = [
             {
                 id:'123456',
@@ -494,6 +495,27 @@ controllers.controller('StockController', ['API','$scope', '$http', '$window', '
         $scope.addNewItem = function(){
             console.log('add');
              $scope.newItem = true;
+        }
+        $scope.resetCropSencor = function(){
+            $scope.cropper = {};
+            $scope.cropper.sourceImage = null;
+            $scope.cropper.croppedImage   = null;
+            $scope.bounds = {};
+            $scope.bounds.left = 0;
+            $scope.bounds.right = 613;
+            $scope.bounds.top = 0;
+            $scope.bounds.bottom = 409;
+        }
+        $scope.resetCropSencor();
+        $scope.sourceFile = "local";
+        $scope.selectSource = function(src){
+            $scope.sourceFile = src;
+        }
+        $scope.saveToStore = function(){
+            console.log($scopItem);
+        }
+        $scope.cancelSale = function(){
+            $scope.newItem = false;
         }
     }
 ]);

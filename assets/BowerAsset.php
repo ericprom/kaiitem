@@ -21,6 +21,6 @@ class BowerAsset extends AssetBundle
         'toaster/toaster.min.js',
     ];
     public $jsOptions = [
-        'position' => View::POS_HEAD,
+        'position' => View::POS_END,
     ];
 }

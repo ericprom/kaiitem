@@ -1,6 +1,7 @@
 <?php
 
 /* @var $this yii\web\View */
+use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use kartik\icons\Icon;
@@ -39,15 +40,14 @@ Icon::map($this);
         </div>
     </div>
     <div  ng-show="newItem">
-        <!-- <div class="row">
-            <div class="col-md-2 col-sm-2 col-xs-12 hidden-xs"></div>
+        <div class="row">
+            <div class="col-md-2 col-sm-2 col-xs-12"></div>
             <div class="col-md-8 col-sm-8 col-xs-12">
-                <div class="alert alert-info" role="alert">ขายง่าย ขายเร็ว ขายไอเท็ม ต้องใส่รายละเอียด</div>
-                <h1>ขายไอเท็ม</h1>
+              <i class="fa fa-times pull-right" ng-click="cancelSale()" style="cursor:pointer;color:#ccc;"></i>
             </div>
             <div class="col-md-2 col-sm-2 col-xs-12 hidden-xs"></div>
-        </div> -->
-        <div class="strike" style="margin:40px 0 40px;">
+        </div>
+        <div class="strike" style="margin:10px 0 40px;">
            <span>ขายไอเท็ม</span>
         </div>
         <div class="row">
@@ -62,36 +62,40 @@ Icon::map($this);
         </div>
         <div class="row">
             <div class="col-md-2 col-sm-2 col-xs-12 hidden-xs"></div>
-            <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="form-group">
-                    <label>รายละเอียดสินค้า</label>
-                    <textarea name="item-desc" class="form-control input" ng-model="Item.detail" rows="9"></textarea>
-                </div>
-            </div>
-             <div class="col-md-2 col-sm-2 col-xs-12">
+            <div class="col-md-8 col-sm-8 col-xs-12">
                 <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <label>จำนวนไอเทม</label>
+                    <div class="col-md-8 col-sm-8 col-xs-12">
                         <div class="form-group">
-                            <input type="text" name="item-inventory" class="form-control input" ng-model="Item.inventory">
+                            <label>รายละเอียดสินค้า</label>
+                            <textarea name="item-desc" class="form-control input" ng-model="Item.detail" rows="9"></textarea>
                         </div>
                     </div>
-                </div>
-                <div class="row" style="margin-top:10px;">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <label>ราคาบัตรทรู</label>
-                        <div class="input-group">
-                            <input type="text" name="item-true-price" class="form-control input" ng-model="Item.true_price">
-                            <span class="input-group-addon" id="basic-addon2">บาท</span>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <label>จำนวนไอเทม</label>
+                                <div class="form-group">
+                                    <input type="text" name="item-inventory" class="form-control input" ng-model="Item.inventory">
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="row" style="margin-top:20px;">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <label>ราคาโอน</label>
-                        <div class="input-group">
-                            <input type="text" name="item-transfer-price" class="form-control input" ng-model="Item.transfer_price">
-                            <span class="input-group-addon" id="basic-addon2">บาท</span>
+                        <div class="row" style="margin-top:10px;">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <label>ราคาบัตรทรู</label>
+                                <div class="input-group">
+                                    <input type="text" name="item-true-price" class="form-control input" ng-model="Item.true_price">
+                                    <span class="input-group-addon" id="basic-addon2">บาท</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:20px;">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <label>ราคาโอน</label>
+                                <div class="input-group">
+                                    <input type="text" name="item-transfer-price" class="form-control input" ng-model="Item.transfer_price">
+                                    <span class="input-group-addon" id="basic-addon2">บาท</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -110,14 +114,34 @@ Icon::map($this);
         <div class="row">
             <div class="col-md-2 col-sm-2 col-xs-12 hidden-xs"></div>
             <div class="col-md-8 col-sm-8 col-xs-12">
-                <div class="alert alert-info" role="alert">คำแนะนำ: ขนาดรูปที่เหมาะสม 613x409</div>
-                <div class="stock-item-thumb">
-                    <?=Html::img(Yii::getAlias('@web').'/armory/box.png', ['class' => 'img-responsive'])?>
+                <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn" ng-class="(sourceFile=='local')?'btn-primary':'btn-default';" ng-click="selectSource('local')">รูปจากเครื่อง</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn" ng-class="(sourceFile=='link')?'btn-primary':'btn-default';" ng-click="selectSource('link')">รูปจากลิงค์</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn" ng-class="(sourceFile=='youtube')?'btn-primary':'btn-default';" ng-click="selectSource('youtube')">Youtube วิดีโอ</button>
+                    </div>
+                </div>
+                <div class="stock-item-thumb" style="margin-top:40px;">
+                    <input class="btn btn-primary" type="file" img-cropper-fileread image="cropper.sourceImage" ng-click="resetCropSencor()"/>
+                    <div ng-show="cropper.sourceImage">
+                         <canvas width="613" height="409" id="canvas" image-cropper image="cropper.sourceImage" cropped-image="cropper.croppedImage" crop-width="613" crop-height="409" keep-aspect="true" touch-radius="30" crop-area-bounds="bounds"></canvas>
+                    </div>
                 </div>
             </div>
             <div class="col-md-2 col-sm-2 col-xs-12 hidden-xs"></div>
         </div>
 
+        <div class="row" style="margin-top:40px;">
+            <div class="col-md-2 col-sm-2 col-xs-12 hidden-xs"></div>
+            <div class="col-md-8 col-sm-8 col-xs-12">
+                <button class="btn btn-success pull-right" ng-click="saveToStore()"><?=Icon::show('save')?> ลงขาย</button>
+            </div>
+            <div class="col-md-2 col-sm-2 col-xs-12 hidden-xs"></div>
+        </div>
         <div class="strike" style="margin-top:40px;">
            <span>&bull;</span>
         </div>

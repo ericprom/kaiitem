@@ -24,6 +24,7 @@ AppAsset::register($this);
     <script>paceOptions = {ajax: {trackMethods: ['GET', 'POST']}};</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/red/pace-theme-minimal.css" rel="stylesheet" />
+    <script src="https://www.youtube.com/iframe_api"></script>
 </head>
 <body>
 <?php $this->beginBody() ?>

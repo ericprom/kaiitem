@@ -11,6 +11,7 @@ use app\models\UserMaster;
 use app\models\Tmtopup;
 use app\models\Banks;
 use app\models\Accounts;
+use app\models\Items;
 
 class SiteController extends Controller
 {
@@ -86,6 +87,10 @@ class SiteController extends Controller
                             $account = Accounts::find(['fbid'=>$fbid,'status' => 1])->where(['<>', 'status', 0])->with('banks')->asArray()->all();
                             $result["data"] = $account;
                             break;
+                        case "stock":
+                            $item = Items::find(['fbid'=>$fbid,'status' => 1])->where(['<>', 'status', 0])->with('shops')->asArray()->all();
+                            $result["data"] = $item;
+                            break;
                     }
                     $result["status"] = TRUE;
                 }
@@ -99,6 +104,8 @@ class SiteController extends Controller
     }
     public function actionInsert()
     {
+
+        $transaction=Yii::$app->db->beginTransaction();
         $request = Yii::$app->request;
         if ($request->isPost) {
             $param = array("filter"=>FALSE);
@@ -132,6 +139,9 @@ class SiteController extends Controller
                             $topup->created_on = time();
                             $topup->save();
                             $result["data"] = $topup->attributes;
+                            $result["toast"] = 'success';
+                            $result["status"] = TRUE;
+                            $result["message"] =  "บันทึกข้อมูลเรียบร้อย";
                             break;
 
                         case "account":
@@ -143,23 +153,47 @@ class SiteController extends Controller
                             $account->created_on = time();
                             $account->save();
                             $result["data"] = $data;
+                            $result["toast"] = 'success';
+                            $result["status"] = TRUE;
+                            $result["message"] =  "บันทึกข้อมูลเรียบร้อย";
+                            break;
+                        case "item":
+                            $item = new Items();
+                            $item->fbid = $fbid;
+                            (isset($data["title"]))?$item->title = $data["title"]:$item->title = '';
+                            (isset($data["detail"]))?$item->detail = $data["detail"]:$item->detail = '';
+                            (isset($data["quntity"]))?$item->quntity = $data["quntity"]:$item->quntity = '';
+                            (isset($data["online_price"]))?$item->online_price = $data["online_price"]:$item->online_price = '';
+                            (isset($data["transfer_price"]))?$item->transfer_price = $data["transfer_price"]:$item->transfer_price = '';
+                            (isset($data["thumb"]))?$item->thumb = $data["thumb"]:$item->thumb = '';
+                            (isset($data["youtube"]))?$item->youtube = $data["youtube"]:$item->youtube = '';
+                            $item->available = 1;
+                            $item->liked = 1;
+                            $item->seen = 1;
+                            $item->status = 1;
+                            $item->created_on = time();
+                            $item->save();
+                            $result["data"] = $item->attributes;
+                            $result["toast"] = 'success';
+                            $result["status"] = TRUE;
+                            $result["message"] =  "บันทึกข้อมูลเรียบร้อย";
                             break;
                     }
-                    $result["toast"] = 'success';
-                    $result["status"] = TRUE;
-                    $result["message"] =  "บันทึกข้อมูลเรียบร้อย";
+                    $transaction->commit();
                 }
             } catch(Exceptions $ex) {
                 $result["status"] = FALSE;
                 $result["toast"] = 'warning';
                 $result["error"] = $ex;
                 $result["message"] =  "เกิดข้อผิดพลาด ไม่สามารถบันทึกข้อมูลได้";
+                $transaction->rollback();
             }
             echo json_encode($result);
         }
     }
     public function actionUpdate()
     {
+        $transaction=Yii::$app->db->beginTransaction();
         $request = Yii::$app->request;
         if ($request->isPost) {
             $param = array("filter"=>FALSE);
@@ -192,10 +226,13 @@ class SiteController extends Controller
                             $topup->updated_on = time();
                             $topup->update();
                             $result["data"] = $topup->attributes;
+                            $result["toast"] = 'success';
+                            $result["status"] = TRUE;
+                            $result["message"] =  "บันทึกข้อมูลเรียบร้อย";
                             break;
 
                         case "profile":
-                            $user = UserMaster::find(['fbid'=>$fbid,'status' => 1])->where(['<>', 'status', 0])->one();
+                            $user = UserMaster::findOne(['fbid'=>$fbid]);
                             (isset($data["username"]))?$user->username = $data["username"]:$user->username = '';
                             (isset($data["email"]))?$user->email = $data["email"]:$user->email = '';
                             (isset($data["phone"]))?$user->phone = $data["phone"]:$user->phone = '';
@@ -204,16 +241,22 @@ class SiteController extends Controller
                             $user->updated_on = time();
                             $user->update();
                             $result["data"] = $user->attributes;
+                            $result["toast"] = 'success';
+                            $result["status"] = TRUE;
+                            $result["message"] =  "บันทึกข้อมูลเรียบร้อย";
                             break;
                         case "online":
-                            $user = UserMaster::find(['fbid'=>$fbid,'status' => 1])->where(['<>', 'status', 0])->one();
+                            $user = UserMaster::findOne(['fbid'=>$fbid]);
                             (isset($data["action"]))?$user->online = $data["action"]:$user->online = '';
                             $user->updated_on = time();
                             $user->update();
                             $result["data"] = $user->attributes;
+                            $result["toast"] = 'success';
+                            $result["status"] = TRUE;
+                            $result["message"] =  "บันทึกข้อมูลเรียบร้อย";
                             break;
                         case "account":
-                            $account = Accounts::find(['id'=>$data["id"],'status' => 1])->where(['<>', 'status', 0])->one();
+                            $account = Accounts::findOne(['id'=>$data["id"]]);
                             $account->fbid = $fbid;
                             (isset($data["account"]["id"]))?$account->bank_id = $data["account"]["id"]:$account->bank_id = '';
                             (isset($data["name"]))?$account->name = $data["name"]:$account->name = '';
@@ -221,17 +264,50 @@ class SiteController extends Controller
                             $account->updated_on = time();
                             $account->update();
                             $result["data"] = $data;
+                            $result["toast"] = 'success';
+                            $result["status"] = TRUE;
+                            $result["message"] =  "บันทึกข้อมูลเรียบร้อย";
+                            break;
+                        case "item":
+                            $item = Items::findOne(['fbid'=>$fbid, 'id'=> $data["id"]]);
+                            (isset($data["title"]))?$item->title = $data["title"]:$item->title = '';
+                            (isset($data["detail"]))?$item->detail = $data["detail"]:$item->detail = '';
+                            (isset($data["quntity"]))?$item->quntity = $data["quntity"]:$item->quntity = '';
+                            (isset($data["online_price"]))?$item->online_price = $data["online_price"]:$item->online_price = '';
+                            (isset($data["transfer_price"]))?$item->transfer_price = $data["transfer_price"]:$item->transfer_price = '';
+                            (isset($data["thumb"]))?$item->thumb = $data["thumb"]:$item->thumb = '';
+                            (isset($data["youtube"]))?$item->youtube = $data["youtube"]:$item->youtube = '';
+                            $item->updated_on = time();
+                            $item->update();
+                            $result["data"] = $item->attributes;
+                            $result["toast"] = 'success';
+                            $result["status"] = TRUE;
+                            $result["message"] =  "บันทึกข้อมูลเรียบร้อย";
+                            break;
+                        case "available":
+                            $item = Items::findOne(['fbid'=>$fbid, 'id'=> $data["id"]]);
+                            (isset($data["available"]))?$item->available = $data["available"]:$item->available = '';
+                            $item->updated_on = time();
+                            $item->update();
+                            $result["data"] = $item->attributes;
+                            $result["toast"] = 'success';
+                            $result["status"] = TRUE;
+                            if($data["available"]==1){
+                                $result["message"] =  "บันทึกข้อมูลเรียบร้อย";
+                            }
+                            else{
+                                $result["message"] =  "บันทึกข้อมูลเรียบร้อย";
+                            }
                             break;
                     }
-                    $result["toast"] = 'success';
-                    $result["status"] = TRUE;
-                    $result["message"] =  "บันทึกข้อมูลเรียบร้อย";
+                    $transaction->commit();
                 }
             } catch(Exceptions $ex) {
                 $result["status"] = FALSE;
                 $result["toast"] = 'warning';
                 $result["error"] = $ex;
                 $result["message"] =  "เกิดข้อผิดพลาด ไม่สามารถบันทึกข้อมูลได้";
+                $transaction->rollback();
             }
             echo json_encode($result);
         }
@@ -261,7 +337,7 @@ class SiteController extends Controller
                     $fbid = Yii::$app->user->identity->fbid;
                     switch($options["section"]){
                         case "user":
-                            $user = UserMaster::find(['fbid'=>$fbid,'status' => 1])->where(['<>', 'status', 0])->one();
+                            $user = UserMaster::findOne(['fbid'=>$fbid,'status' => 1]);
                             $user->online = 0;
                             $user->status = 0;
                             $user->updated_on = time();
@@ -269,11 +345,18 @@ class SiteController extends Controller
                             $result["data"] = $user->attributes;
                             break;
                         case "account":
-                            $account = Accounts::find(['id'=>$data["id"]])->where(['<>', 'status', 0])->one();
+                            $account = Accounts::findOne(['id'=> $data["id"]]);
                             $account->status = 0;
                             $account->updated_on = time();
                             $account->update();
                             $result["data"] = $account->attributes;
+                            break;
+                        case "item":
+                            $item = Items::findOne(['id'=> $data["id"]]);
+                            $item->status = 0;
+                            $item->updated_on = time();
+                            $item->update();
+                            $result["data"] = $item->attributes;
                             break;
                     }
                     $result["toast"] = 'success';

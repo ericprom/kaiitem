@@ -1,4 +1,48 @@
-var controllers = angular.module('controllers', ['toaster', 'ngAnimate','angular-img-cropper']);
+var controllers = angular.module('controllers', ['toaster', 'ngAnimate','angular-img-cropper','youtube-embed']);
+controllers.directive('validNumber', function() {
+    return {
+        require: '?ngModel',
+        link: function(scope, element, attrs, ngModelCtrl) {
+            if(!ngModelCtrl) {
+                return;
+            }
+
+            ngModelCtrl.$parsers.push(function(val) {
+                if (angular.isUndefined(val)) {
+                        var val = '';
+                }
+                var clean = val.replace(/[^0-9\.]/g, '');
+                var decimalCheck = clean.split('.');
+
+                if(!angular.isUndefined(decimalCheck[1])) {
+                        decimalCheck[1] = decimalCheck[1].slice(0,2);
+                        clean =decimalCheck[0] + '.' + decimalCheck[1];
+                }
+
+                if (val !== clean) {
+                    ngModelCtrl.$setViewValue(clean);
+                    ngModelCtrl.$render();
+                }
+                return clean;
+            });
+
+            element.bind('keypress', function(event) {
+                if(event.keyCode === 32) {
+                    event.preventDefault();
+                }
+            });
+        }
+    };
+});
+controllers.filter("GetYouTubeID", function ($sce) {
+  return function (text) {
+    var video_id;
+    if(text){
+        video_id = text.split('v=')[1].split('&')[0];
+    }
+    return video_id;
+  }
+});
 controllers.factory('API', function($window,$q,$timeout,$http,$rootScope,toaster,$location){
     var Select = function(param) {
         $rootScope.processing = true;
@@ -458,64 +502,134 @@ controllers.controller('SettingController', ['API','$scope', '$http', '$window',
 controllers.controller('StockController', ['API','$scope', '$http', '$window', '$location',
     function (API,$scope, $http, $window, $location) {
         $scope.newItem = false;
+        $scope.updateItem = false;
         $scope.Item = {};
-        $scope.Items = [
-            {
-                id:'123456',
-                title:"Chroma 2 Case Key",
-                thumb:"box.png",
-                quntity: 20,
-                price: 100,
-                available: 1,
-            },
-            {
-                id:'123456',
-                title:"Operation Phoenix Weapon Case",
-                thumb:"box.png",
-                quntity: 6120,
-                price: 100,
-                available: 0,
-            },
-            {
-                id:'123456',
-                title:"AWP | Asiimov",
-                thumb:"box.png",
-                quntity: 20,
-                price: 100,
-                available: 1,
+        $scope.Items = [];
+        API.Select({filter: {section:"stock"}}).then(function (result) {
+            if(result.status){
+                angular.forEach(result.data, function (element, index, array) {
+                    element.available = parseInt(element.available);
+                    $scope.Items.push(element);
+                });
             }
-        ];
+        });
         $scope.makeAvailable = function(get){
             if(get.available){
                 get.available = 0;
             }else{
                 get.available = 1;
             }
+
+            if (get.id != ''){
+                API.Update({filter: {section:"available", "data":get }}).then(function (result) {
+                   API.Toaster(result.toast,'KaiiteM',result.message);
+                });
+            }
+            else{
+                API.Toaster('warning','KaiiteM','เกิดข้อผิดพลาด');
+            }
         }
         $scope.addNewItem = function(){
-            console.log('add');
              $scope.newItem = true;
         }
         $scope.resetCropSencor = function(){
+            angular.element('#itemImage').value = '';
             $scope.cropper = {};
             $scope.cropper.sourceImage = null;
             $scope.cropper.croppedImage   = null;
             $scope.bounds = {};
             $scope.bounds.left = 0;
-            $scope.bounds.right = 613;
+            $scope.bounds.right = 640;
             $scope.bounds.top = 0;
-            $scope.bounds.bottom = 409;
+            $scope.bounds.bottom = 480;
         }
         $scope.resetCropSencor();
-        $scope.sourceFile = "local";
         $scope.selectSource = function(src){
+            $scope.resetCropSencor();
+            switch(src){
+                case "local":
+                    angular.element('#itemImage').trigger('click');
+                    $scope.Item.youtube = '';
+                    break;
+                case "youtube":
+                    $scope.Item.thumb = '';
+                    break;
+                case "link":
+                    break;
+            }
             $scope.sourceFile = src;
         }
-        $scope.saveToStore = function(){
-            console.log($scopItem);
+        $scope.stockItem = function(){
+            $scope.Item.thumb = $scope.cropper.croppedImage;
+            var criteria = {filter: {section:"item", "data":$scope.Item}};
+            if($scope.sourceFile == 'local' && $scope.Item.thumb && $scope.Item.title || $scope.sourceFile == 'youtube' && $scope.Item.title){
+                API.Insert(criteria).then(function (result) {
+                    if(result.status){
+                        if(result.data != null){
+                            $scope.cancelSale();
+                            $scope.Items.push(result.data);
+                        }
+                    }
+                    API.Toaster(result.toast,'KaiiteM',result.message);
+                });
+            }
+            else{
+                API.Toaster('warning','KaiiteM','กรุณากรอกข้อมูลให้ครบ');
+            }
         }
         $scope.cancelSale = function(){
+            $scope.Item = {};
             $scope.newItem = false;
+            $scope.updateItem = false;
+            $scope.sourceFile = "";
+            $scope.resetCropSencor();
         }
+        $scope.editItem = function (data) {
+            $scope.Item = data;
+            if(data.youtube != ''){
+                $scope.sourceFile ='youtube';
+            }
+            else{
+                $scope.sourceFile = 'local';
+                $scope.resetCropSencor();
+                $scope.cropper.sourceImage = data.thumb;
+            }
+            $scope.updateItem = true;
+
+        };
+
+        $scope.updateStock = function(){
+            $scope.Item.thumb = $scope.cropper.croppedImage;
+            var criteria = {filter: {section:"item", "data":$scope.Item}};
+            if($scope.sourceFile == 'local' && $scope.Item.thumb && $scope.Item.title || $scope.sourceFile == 'youtube' && $scope.Item.title){
+                API.Update(criteria).then(function (result) {
+                    if(result.status){
+                        if(result.data != null){
+                            $scope.cancelSale();
+                        }
+                    }
+                    API.Toaster(result.toast,'KaiiteM',result.message);
+                });
+            }
+            else{
+                API.Toaster('warning','KaiiteM','กรุณากรอกข้อมูลให้ครบ');
+            }
+        }
+        $scope.deletedObj = {};
+        $scope.confirmDelete = function (data) {
+            $('#confirm-delete').modal('show');
+            $scope.deletedObj = data;
+        };
+        $scope.oKDelete = function () {
+            console.log($scope.deletedObj);
+            API.Remove($scope.Items,$scope.deletedObj);
+            $('#confirm-delete').modal('hide');
+            var criteria = {filter: {section:"item", "data":$scope.deletedObj}};
+            API.Delete(criteria).then(function(result){
+                if (result.status) {
+                    API.Toaster(result.toast,'KaiiteM',result.message);
+                }
+            });
+        };
     }
 ]);

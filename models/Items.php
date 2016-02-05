@@ -76,4 +76,12 @@ class Items extends \yii\db\ActiveRecord
     {
         return $this->hasMany(UserMaster::className(), ['fbid' => 'fbid']);
     }
+    public function getAccounts()
+    {
+        return $this->hasMany(Accounts::className(), ['fbid' => 'fbid'])->with('banks');
+    }
+    public function getTmtopup()
+    {
+        return $this->hasMany(Tmtopup::className(), ['fbid' => 'fbid']);
+    }
 }

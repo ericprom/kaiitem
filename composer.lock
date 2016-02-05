@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6e8022ac7ee93b9a484522a3ff7502eb",
-    "content-hash": "714bc417fe1489fc370d9c909962fd1f",
+    "hash": "89a2f667c2775d5b4924fe8fa74e64fa",
+    "content-hash": "6f601598ac12be58aee29af52fb7dcb9",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -444,6 +444,55 @@
             "time": "2013-11-30 08:25:19"
         },
         {
+            "name": "facebook/php-sdk-v4",
+            "version": "4.0.23",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/facebook/facebook-php-sdk-v4.git",
+                "reference": "c82611e05596622c9bd7abfa1cea1512d885c95e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/facebook/facebook-php-sdk-v4/zipball/c82611e05596622c9bd7abfa1cea1512d885c95e",
+                "reference": "c82611e05596622c9bd7abfa1cea1512d885c95e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "~4.0",
+                "mockery/mockery": "dev-master",
+                "phpunit/phpunit": "3.7.*"
+            },
+            "suggest": {
+                "guzzlehttp/guzzle": "Allows for implementation of the Guzzle HTTP client"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Facebook\\": "src/Facebook/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Facebook Platform"
+            ],
+            "authors": [
+                {
+                    "name": "Facebook",
+                    "homepage": "https://github.com/facebook/facebook-php-sdk-v4/contributors"
+                }
+            ],
+            "description": "Facebook SDK for PHP",
+            "homepage": "https://github.com/facebook/facebook-php-sdk-v4",
+            "keywords": [
+                "facebook",
+                "sdk"
+            ],
+            "time": "2015-04-03 20:31:47"
+        },
+        {
             "name": "fortawesome/font-awesome",
             "version": "v4.5.0",
             "source": {
@@ -612,6 +661,54 @@
                 "yii2"
             ],
             "time": "2016-01-10 12:26:29"
+        },
+        {
+            "name": "kartik-v/yii2-social",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kartik-v/yii2-social.git",
+                "reference": "8d95480641cf03162828cb0dab5f7559a98196cc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kartik-v/yii2-social/zipball/8d95480641cf03162828cb0dab5f7559a98196cc",
+                "reference": "8d95480641cf03162828cb0dab5f7559a98196cc",
+                "shasum": ""
+            },
+            "require": {
+                "facebook/php-sdk-v4": "~4.0",
+                "kartik-v/yii2-krajee-base": "~1.7"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "kartik\\social\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Kartik Visweswaran",
+                    "email": "kartikv2@gmail.com",
+                    "homepage": "http://www.krajee.com/"
+                }
+            ],
+            "description": "Module containing useful widgets for Yii Framework 2.0 that integrates social functionalities from DISQUS, Facebook, Google etc.",
+            "homepage": "https://github.com/kartik-v/yii2-social",
+            "keywords": [
+                "disqus",
+                "extension",
+                "facebook",
+                "social",
+                "twitter",
+                "widget",
+                "yii2"
+            ],
+            "time": "2016-01-10 14:40:08"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -1310,7 +1407,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "kartik-v/yii2-icons": 20
+        "kartik-v/yii2-icons": 20,
+        "kartik-v/yii2-social": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

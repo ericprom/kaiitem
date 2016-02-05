@@ -4,7 +4,7 @@
 
 use yii\helpers\Html;
 use kartik\icons\Icon;
-Icon::map($this);  
+Icon::map($this);
 
 // $this->title = 'Checkout';
 // $this->params['breadcrumbs'][] = $this->title;
@@ -86,7 +86,7 @@ Icon::map($this);
                     </div>
                     <div class="row checkout-total checkout-form-input">
                         <div class="col-md-6 col-sm-6 col-xs-6">
-                            Total: 
+                            Total:
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <span class="pull-right">{{Checkout.payment.cost | number}} บาท</span>

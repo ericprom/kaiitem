@@ -1,24 +1,29 @@
 <?php
 
 /* @var $this yii\web\View */
-
+use kartik\social\FacebookPlugin;
 use yii\helpers\Html;
 use kartik\icons\Icon;
 Icon::map($this);
 
 ?>
-<div class="site-item" ng-controller="ItemController" ng-cloak>
+<div class="site-item" ng-controller="ItemController" ng-cloak >
     <div class="row">
         <div class="col-md-8 col-sm-8 col-xs-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="store-item-title">
-                        Operation Phoenix Weapon Case
+                        {{Item.title}}
                     </div>
                 </div>
                 <div class="panel-body">
                     <div class="store-item-thumb">
-                    <?=Html::img(Yii::getAlias('@web').'/armory/box.png', ['class' => 'img-responsive'])?>
+                        <div ng-show="Item.thumb!=''">
+                            <img data-ng-src="{{Item.thumb}}" class="img-responsive"/>
+                        </div>
+                        <div class="embed-responsive embed-responsive-16by9" ng-show="Item.youtube!=''">
+                          <youtube-video class="embed-responsive-item" video-url="Item.youtube"></youtube-video>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -28,25 +33,7 @@ Icon::map($this);
                     <span class="store-header">ข้อมูลสินค้า</span>
                 </div>
                 <div class="panel-body">
-                    <pre>
-    Contains one of the following:
-    AK-47 | Elite Build
-    MP7 | Armor Core
-    Desert Eagle | Bronze Deco
-    P250 | Valence
-    Negev | Man-o'-war
-    Sawed-Off | Origami
-    AWP | Worm God
-    MAG-7 | Heat
-    CZ75-Auto | Pole Position
-    UMP-45 | Grand Prix
-    Five-SeveN | Monkey Business
-    Galil AR | Eco
-    FAMAS | Djinn
-    M4A1-S | Hyper Beast
-    MAC-10 | Neon Rider
-    or an Exceedingly Rare Special Item!
-                    </pre>
+                    <pre>{{Item.detail}}</pre>
                 </div>
             </div>
             <div class="panel panel-default">
@@ -54,6 +41,7 @@ Icon::map($this);
                     <span class="store-header">คอมเม้น</span>
                 </div>
                 <div class="panel-body">
+                    <?=FacebookPlugin::widget(['type'=>FacebookPlugin::COMMENT, 'settings' => ['data-width'=>'100%', 'data-numposts'=>5]]);?>
                 </div>
             </div>
             <?php }?>
@@ -62,21 +50,15 @@ Icon::map($this);
             <?php if(!Yii::$app->user->isGuest){ ?>
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <?=Html::a(Icon::show('shopping-cart').' ซื้อเลย', ['site/checkout'], [
-                        'class'=>'btn btn-block btn-success btn-lg',
-                        'data'=>[
-                            'method'=>'post',
-                            'params'=>[
-                                'item'=>'1',
-                            ],
-                        ]
-                    ])?>
+                <a href="../checkout/{{Item.id}}" class="btn btn-block btn-success btn-lg">
+                    <?=Icon::show('shopping-cart')?> ซื้อเลย
+                </a>
                 </div>
             </div>
-            <div class="social-panel">
+            <!-- <div class="social-panel">
                 <button class="btn social-btn-facebook btn-sm social-btn">
                     <i class="fa fa-facebook"></i>
-                </button>
+                 </button>
                 <button class="btn social-btn-twitter  btn-sm social-btn">
                     <i class="fa fa-twitter"></i>
                 </button>
@@ -87,31 +69,31 @@ Icon::map($this);
                     <i class="fa fa-linkedin"></i>
                 </button>
                 <button class="btn btn-default btn-sm social-btn">
-                    <i class="fa fa-envelope-o"></i>
+                    <i class="fa fa-heart-o"></i>
                 </button>
                 <div class="clearfix"></div>
-            </div>
+            </div> -->
             <?php }?>
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="card hovercard">
                         <div style="height:50px;"></div>
                         <div class="avatar">
-                            <?= Html::img('http://graph.facebook.com/{{Store.owner.fbid}}/picture?width=100&height=100', ['alt'=>'{{Store.owner.name}}']);?>
+                            <?= Html::img('http://graph.facebook.com/{{Item.shops[0].fbid}}/picture?width=100&height=100', ['alt'=>'{{Store.owner.name}}']);?>
                         </div>
                         <div class="info">
                             <div class="title">
-                                {{Store.owner.name}}
+                                {{Item.shops[0].name}}
                             </div>
                         </div>
                     </div>
                 </div>
                 <?php if(!Yii::$app->user->isGuest){ ?>
                 <div class="panel-footer">
-                    <a class="btn btn-info" href="../store/{{Store.owner.fbid}}">
+                    <a class="btn btn-info" href="../store/{{Item.shops[0].fbid}}">
                       <i class="fa fa-cubes"></i> สินค้าทั้งหมด
                     </a>
-                    <a class="btn btn-default pull-right" href="../store/{{Store.owner.fbid}}">
+                    <a class="btn btn-default pull-right" href="../store/{{Item.shops[0].fbid}}">
                       <i class="fa fa-comments-o"></i> ติดต่อผู้ขาย
                     </a>
                     <div class="clearfix"></div>

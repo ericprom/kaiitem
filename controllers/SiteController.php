@@ -69,7 +69,7 @@ class SiteController extends Controller
                 $options = array();
                 if (is_array($param["filter"]) ) {
                     $options = $param["filter"];
-                    $fbid = Yii::$app->user->identity->fbid;
+                    (isset(Yii::$app->user->identity->fbid))?$fbid=Yii::$app->user->identity->fbid:$fbid='';
                     switch($options["section"]){
                         case "profile":
                             $user = UserMaster::find(['fbid'=>$fbid,'status' => 1])->where(['<>', 'status', 0])->one();
@@ -86,6 +86,18 @@ class SiteController extends Controller
                         case "account":
                             $account = Accounts::find(['fbid'=>$fbid,'status' => 1])->where(['<>', 'status', 0])->with('banks')->asArray()->all();
                             $result["data"] = $account;
+                            break;
+                        case "item":
+                            $item = Items::find()->where(['and', ['<>','available', 0], ['<>', 'status', 0]])->with('shops')->asArray()->all();
+                            $result["data"] = $item;
+                            break;
+                        case "detail":
+                            $item = Items::find()->where(['and', ['=','id', $options["item"]], ['<>', 'status', 0]])->with('shops')->asArray()->all();
+                            $result["data"] = $item;
+                            break;
+                        case "checkout":
+                            $item = Items::find()->where(['and', ['=','id', $options["item"]], ['<>', 'status', 0]])->with(['shops','accounts','tmtopup'])->asArray()->all();
+                            $result["data"] = $item;
                             break;
                         case "stock":
                             $item = Items::find(['fbid'=>$fbid,'status' => 1])->where(['<>', 'status', 0])->with('shops')->asArray()->all();
@@ -168,8 +180,8 @@ class SiteController extends Controller
                             (isset($data["thumb"]))?$item->thumb = $data["thumb"]:$item->thumb = '';
                             (isset($data["youtube"]))?$item->youtube = $data["youtube"]:$item->youtube = '';
                             $item->available = 1;
-                            $item->liked = 1;
-                            $item->seen = 1;
+                            $item->liked = 0;
+                            $item->seen = 0;
                             $item->status = 1;
                             $item->created_on = time();
                             $item->save();
@@ -434,5 +446,49 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+    public function actionMark()
+    {
+        $request = Yii::$app->request;
+        if ($request->isPost) {
+            $param = array("filter"=>FALSE);
+            foreach ($param as $key => $val) {
+                if (isset($_REQUEST[$key])) {
+                    $param[$key] = $_REQUEST[$key];
+                }
+            }
+            $result = array("status" => FALSE, "data" => "");
+            try {
+                $options = array();
+                if (is_array($param["filter"]) ) {
+                    $options = $param["filter"];
+                    if (gettype($options["data"]) == "string") {
+                        $data = json_decode($options["data"], TRUE);
+
+                    } else {
+                        $data = json_encode($options["data"]);
+                        $data = json_decode($data, TRUE);
+                    }
+                    $fbid = Yii::$app->user->identity->fbid;
+                    switch($options["section"]){
+                        case "item":
+                            $item = Items::findOne(['id'=> $data["id"]]);
+                            $item->seen += 1;
+                            $item->update();
+                            $result["data"] = $item->attributes;
+                            break;
+                    }
+                    $result["toast"] = 'success';
+                    $result["status"] = TRUE;
+                    $result["message"] =  "นับสถิติข้อมูลเรียบร้อย";
+                }
+            } catch(Exceptions $ex) {
+                $result["status"] = FALSE;
+                $result["toast"] = 'warning';
+                $result["error"] = $ex;
+                $result["message"] =  "เกิดข้อผิดพลาด ไม่สามารถบันทึกข้อมูลได้";
+            }
+            echo json_encode($result);
+        }
     }
 }

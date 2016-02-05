@@ -9,6 +9,38 @@ $config = [
     'modules' => [
         'gii' => [
             'class' => 'yii\gii\Module',
+        ],
+        'social' => [
+            // the module class
+            'class' => 'kartik\social\Module',
+
+            // the global settings for the disqus widget
+            // 'disqus' => [
+            //     'settings' => ['shortname' => 'DISQUS_SHORTNAME'] // default settings
+            // ],
+
+            // the global settings for the facebook plugins widget
+            'facebook' => [
+                'appId' => '1046596572030272',
+                'secret' => 'a883dbc53a6d232568af93d9e02f03e7',
+            ],
+
+            // the global settings for the google plugins widget
+            // 'google' => [
+            //     'pageId' => 'GOOGLE_PLUS_PAGE_ID',
+            //     'clientId' => 'GOOGLE_API_CLIENT_ID',
+            // ],
+
+            // the global settings for the google analytic plugin widget
+            // 'googleAnalytics' => [
+            //     'id' => 'TRACKING_ID',
+            //     'domain' => 'TRACKING_DOMAIN',
+            // ],
+
+            // the global settings for the twitter plugins widget
+            // 'twitter' => [
+            //     'screenName' => 'TWITTER_SCREEN_NAME'
+            // ],
         ]
     ],
     'components' => [
@@ -62,6 +94,7 @@ $config = [
                 '' => 'site/index',
                 'item/<id:\d+>' => 'site/item',
                 'store/<id:\d+>' => 'site/store',
+                'checkout/<id:\d+>' => 'site/checkout',
                 '<action>'=>'site/<action>',
             ],
         ],

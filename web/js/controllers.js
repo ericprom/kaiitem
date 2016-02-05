@@ -80,6 +80,15 @@ controllers.factory('API', function($window,$q,$timeout,$http,$rootScope,toaster
         });
         return deferred.promise;
     }
+    var Mark = function(param) {
+        $rootScope.processing = true;
+        var deferred = $q.defer();
+        $http.post($window.location.href.split('web')[0]+"web/mark", param).success(function(results) {
+            deferred.resolve(results);
+            $rootScope.processing = false;
+        });
+        return deferred.promise;
+    }
     var Toaster = function(type,title,message){
         toaster.pop({
             type: type,
@@ -93,6 +102,7 @@ controllers.factory('API', function($window,$q,$timeout,$http,$rootScope,toaster
         list.splice(index, 1);
     };
     return {
+        Mark:Mark,
         Select:Select,
         Insert:Insert,
         Update:Update,
@@ -103,97 +113,39 @@ controllers.factory('API', function($window,$q,$timeout,$http,$rootScope,toaster
 });
 controllers.controller('MainController', ['API','$scope', '$location', '$window',
     function (API, $scope, $location, $window) {
-        $scope.Items = [
-            {
-                id:'123456',
-                shop:"Noob",
-                title:"Chroma 2 Case Key",
-                thumb:"box.png",
-                quntity: 20,
-                price: 100,
-                seen: 100,
-                like: 100,
-            },
-            {
-                id:'123456',
-                shop:"Grean",
-                title:"Operation Phoenix Weapon Case",
-                thumb:"box.png",
-                quntity: 20,
-                price: 100,
-                seen: 100,
-                like: 100,
-            },
-            {
-                id:'123456',
-                shop:"Light",
-                title:"AWP | Asiimov",
-                thumb:"box.png",
-                quntity: 20,
-                price: 100,
-                seen: 100,
-                like: 100,
-            },
-            {
-                id:'123456',
-                shop:"DKS",
-                title:"Kinetic Gem",
-                thumb:"box.png",
-                quntity: 20,
-                price: 100,
-                seen: 100,
-                like: 100,
-            },
-            {
-                id:'123456',
-                shop:"Joker",
-                title:"Summer Skull",
-                thumb:"box.png",
-                quntity: 20,
-                price: 100,
-                seen: 100,
-                like: 100,
-            },
-            {
-                id:'123456',
-                shop:"X Man",
-                title:"Tan Boots",
-                thumb:"box.png",
-                quntity: 20,
-                price: 100,
-                seen: 100,
-                like: 100,
-            },
-            {
-                id:'123456',
-                shop:"Eric Prom",
-                title:"Horzine Supply Crate | Series #1",
-                thumb:"box.png",
-                quntity: 20,
-                price: 100,
-                seen: 100,
-                like: 100,
-            },
-            {
-                id:'123456',
-                shop:"MAN",
-                title:"Dino Crate #2",
-                thumb:"box.png",
-                quntity: 20,
-                price: 100,
-                seen: 100,
-                like: 100,
-            },
-        ];
+        API.Select({filter: {section:"item"}}).then(function (result) {
+            console.log(result);
+            if(result.status){
+                $scope.Items = result.data;
+            }
+        });
     }
 ]);
-controllers.controller('ItemController', ['$scope', '$location', '$window',
-    function ($scope, $location, $window) {
-        $scope.Store = {
-            owner: {
-                fbid:'10156502635205529',
-                name:'Eric Prom'
+controllers.controller('ItemController', ['API','$scope', '$location', '$window','$timeout',
+    function (API,$scope, $location, $window,$timeout) {
+        $scope.itemID = $window.location.pathname.split('/item/')[1];
+        $scope.Item = {};
+        var criteria = {filter: {section:"detail", item:$scope.itemID}};
+        API.Select(criteria).then(function (result) {
+            if(result.status){
+                if(result.data != null){
+                    $scope.Item = result.data[0];
+                    $scope.markAsSeen($scope.itemID);
+                }
             }
+        });
+
+        $scope.markAsSeen = function(){
+            var number = Math.floor(Math.random() * 30) + 13;
+            var random = number*1000;
+            $timeout(function() {
+                var criteria = {filter: {section:"item", "data":{id:$scope.itemID}}};
+                API.Mark(criteria).then(function(result){
+                    if (result.status) {
+                        //API.Toaster(result.toast,'KaiiteM',result.message);
+                    }
+                });
+            }, random);
         }
     }
 ]);
@@ -204,10 +156,9 @@ controllers.controller('StoreController', ['API','$scope', '$location', '$window
             var criteria = {filter: {section:"profile"}};
             API.Select(criteria).then(function (result) {
                 if(result.status){
-                    $scope.Store = result.data;
-                }
-                else{
-
+                    if(result.data != null){
+                        $scope.Store = result.data;
+                    }
                 }
             });
         }
@@ -232,8 +183,19 @@ controllers.controller('ProfileController', ['API','$scope', '$location', '$wind
         $scope.initializingData();
     }
 ]);
-controllers.controller('CheckoutController', ['$scope', '$location', '$window',
-    function ($scope, $location, $window) {
+controllers.controller('CheckoutController', ['API', '$scope', '$location', '$window',
+    function (API, $scope, $location, $window) {
+        $scope.checkoutID = $window.location.pathname.split('/checkout/')[1];
+        var criteria = {filter: {section:"checkout", item:$scope.checkoutID}};
+        API.Select(criteria).then(function (result) {
+            console.log(result);
+            // if(result.status){
+            //     if(result.data != null){
+            //         $scope.Item = result.data[0];
+            //         $scope.markAsSeen($scope.itemID);
+            //     }
+            // }
+        });
         $scope.Checkout = {
             method : [{
                 code:'tmtopup',
@@ -621,7 +583,6 @@ controllers.controller('StockController', ['API','$scope', '$http', '$window', '
             $scope.deletedObj = data;
         };
         $scope.oKDelete = function () {
-            console.log($scope.deletedObj);
             API.Remove($scope.Items,$scope.deletedObj);
             $('#confirm-delete').modal('hide');
             var criteria = {filter: {section:"item", "data":$scope.deletedObj}};

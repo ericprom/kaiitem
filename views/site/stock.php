@@ -15,10 +15,10 @@ Icon::map($this);
                 <div class="stock-list">
                     <div class="stock-poster">
                         <a href="item/{{get.id}}" ng-show="get.thumb!=''">
-                            <img data-ng-src="{{get.thumb}}" alt="{{get.title}}" class="img-responsive"/>
+                            <img data-ng-src="{{get.thumb}}" class="img-responsive" ng-show="get.thumb!=''"/>
                         </a>
                         <a href="item/{{get.id}}" ng-show="get.youtube!=''">
-                            <img data-ng-src="http://img.youtube.com/vi/{{get.youtube | GetYouTubeID}}/0.jpg" alt="{{get.title}}" class="img-responsive"/>
+                            <img data-ng-src="http://img.youtube.com/vi/{{get.youtube | GetYouTubeID}}/0.jpg" class="img-responsive"  ng-show="get.youtube!=''"/>
                         </a>
                     </div>
                     <div class="stock-caption">

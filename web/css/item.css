@@ -7,7 +7,10 @@
 	font-size: 22px;
 }
 .store-item-thumb {
-	background: #000;
+  background: #000;
+}
+.store-item-thumb img{
+  width: 100%;
 }
 .social-panel{
 	text-align: center;
@@ -56,4 +59,26 @@ pre {
 .social-btn-linkedin{
 	background: #1276BA;
 	color: #fff;
+}
+
+.embed-responsive {
+  position: relative;
+  display: block;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.embed-responsive.embed-responsive-16by9 {
+  padding-bottom: 56.25%;
+}
+
+.embed-responsive-item {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }

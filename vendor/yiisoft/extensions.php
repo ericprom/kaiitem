@@ -103,4 +103,22 @@ return array (
       '@kartik/icons' => $vendorDir . '/kartik-v/yii2-icons',
     ),
   ),
+  'ijackua/yii2-sharelinks-widget' => 
+  array (
+    'name' => 'ijackua/yii2-sharelinks-widget',
+    'version' => '9999999-dev',
+    'alias' => 
+    array (
+      '@ijackua/sharelinks' => $vendorDir . '/ijackua/yii2-sharelinks-widget',
+    ),
+  ),
+  'kartik-v/yii2-social' => 
+  array (
+    'name' => 'kartik-v/yii2-social',
+    'version' => '9999999-dev',
+    'alias' => 
+    array (
+      '@kartik/social' => $vendorDir . '/kartik-v/yii2-social',
+    ),
+  ),
 );

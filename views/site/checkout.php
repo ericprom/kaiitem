@@ -1,15 +1,10 @@
 <?php
 
-/* @var $this yii\web\View */
-
 use yii\helpers\Html;
 use kartik\icons\Icon;
 Icon::map($this);
 
-// $this->title = 'Checkout';
-// $this->params['breadcrumbs'][] = $this->title;
 ?>
-<!-- <script type="text/javascript" src='https://www.tmtopup.com/topup/3rdTopup.php?uid=177427'></script> -->
 <div class="site-checkout" ng-controller="CheckoutController" ng-cloak>
     <div class="row">
         <div class="col-md-8 col-sm-8 col-xs-12">
@@ -52,21 +47,46 @@ Icon::map($this);
                     <div class="row">
                         <div class="col-md-4 col-sm-4 col-xs-4">
                             <div class="checkout-item-thumb">
-                                <?=Html::img(Yii::getAlias('@web').'/armory/{{Item.thumb}}', ['class' => 'img-responsive'])?>
+                                <div  ng-show="Item.thumb!=''">
+                                    <img data-ng-src="{{Item.thumb}}" class="img-responsive"/>
+                                </div>
+                                <div ng-show="Item.youtube!=''">
+                                    <img data-ng-src="http://img.youtube.com/vi/{{Item.youtube | GetYouTubeID}}/0.jpg" class="img-responsive"/>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-8 col-sm-8 col-xs-8">
                             <div class="checkout-item-title">
-                                {{Item.name}}
+                                {{Item.title}}
                             </div>
                         </div>
                     </div>
                     <hr>
                     <div ng-show="Checkout.payment.code == 'tmtopup'">
-                        <div class="row checkout-form-input" ng-repeat="get in TMTopup">
+                        <div class="row checkout-form-input">
                             <div class="col-md-12 col-sm-12 col-xs-12">
-                                <label>{{get.title}}</label>
-                                <input type="text" name="tmt-{{get.id}}" class="form-control input" id="tmt-{{get.id}}">
+                                <label>รหัสบัตรเดิมเงิน 14 หลัก</label>
+                                <input type="text" class="form-control input" name="tmn_password" id="tmn_password" maxlength="14" valid-number>
+                            </div>
+                        </div>
+                        <div class="row checkout-form-input" ng-show="TMTopup.ref_1 != ''">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <label>{{TMTopup.ref_1}}</label>
+                                <input type="text" class="form-control input" name="ref1" id="ref1">
+                            </div>
+                        </div>
+
+                        <div class="row checkout-form-input" ng-show="TMTopup.ref_2 != ''">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <label>{{TMTopup.ref_2}}</label>
+                                <input type="text" class="form-control input" name="ref2" id="ref2">
+                            </div>
+                        </div>
+
+                        <div class="row checkout-form-input" ng-show="TMTopup.ref_3 != ''">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <label>{{TMTopup.ref_3}}</label>
+                                <input type="text" class="form-control input" name="ref3" id="ref3">
                             </div>
                         </div>
                     </div>
@@ -92,12 +112,23 @@ Icon::map($this);
                             <span class="pull-right">{{Checkout.payment.cost | number}} บาท</span>
                         </div>
                     </div>
-                    <button class="btn btn-block btn-success btn-lg">
-                    <i class="fa fa-send" ng-show="Checkout.payment.code == 'transfer'"></i>
+                    <button class="btn btn-block btn-success btn-lg" ng-show="Checkout.payment.code == 'tmtopup'" onclick="submit_tmnc()">
+                        {{Checkout.payment.button}}
+                    </button>
+                    <button class="btn btn-block btn-success btn-lg" ng-show="Checkout.payment.code == 'transfer'">
+                        <i class="fa fa-send"></i>
                         {{Checkout.payment.button}}
                     </button>
                 </div>
             </div>
         </div>
     </div>
+    <?php
+        if(isset($model)){
+            $this->registerJsFile(
+                'https://www.tmtopup.com/topup/3rdTopup.php?uid='.$model->uid.'',
+                ['depends' => [\yii\web\JqueryAsset::className()]]
+            );
+        }
+    ?>
 </div>

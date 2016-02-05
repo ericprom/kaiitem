@@ -186,71 +186,75 @@ controllers.controller('ProfileController', ['API','$scope', '$location', '$wind
 controllers.controller('CheckoutController', ['API', '$scope', '$location', '$window',
     function (API, $scope, $location, $window) {
         $scope.checkoutID = $window.location.pathname.split('/checkout/')[1];
+        $scope.Checkout = {
+            method: []
+        }
+        $scope.Item = {}
         var criteria = {filter: {section:"checkout", item:$scope.checkoutID}};
         API.Select(criteria).then(function (result) {
             console.log(result);
-            // if(result.status){
-            //     if(result.data != null){
-            //         $scope.Item = result.data[0];
-            //         $scope.markAsSeen($scope.itemID);
-            //     }
-            // }
-        });
-        $scope.Checkout = {
-            method : [{
-                code:'tmtopup',
-                title: 'TMTopup',
-                bank: [{
-                    account:{
-                        code:'tmtopup',
-                        name:'TMTopup'
-                    }
-                }],
-                cost: '1000',
-                button: 'จ่ายเงิน'
-            },{
-                code:'transfer',
-                title: 'Money Transfer',
-                bank: [{
-                    account:{
-                        code:'bay',
-                        name: 'ธนาคารกรุงศรีอยุธยา'
-                    },
-                    number:'165-2-46735-2',
-                    name:'Eric Prom'
-                }],
-                cost: '1750',
-                button: 'แจ้งโอนเงิน'
-            }]
-        };
-        $scope.Checkout.payment = $scope.Checkout.method[0];
-        $scope.TMTopup = [
-            {
-                id:1,
-                title : 'รหัสบัตรเงินสดทรูมันนี่ (14 หลัก)',
-                value:''
-            },{
-                id:2,
-                title : 'ชื่อ Steam (Ref.1)',
-                value:''
-            },{
-                id:3,
-                title : 'เบอร์โทรศัพท์มือถือ (Ref.2)',
-                value:''
-            },{
-                id:4,
-                title : 'ชื่อลูกค้า (Ref.3)',
-                value:''
+            if(result.status){
+                if(result.data.length > 0){
+                    $scope.Item = result.data[0];
+                    $scope.initializingPaymentMethod($scope.Item);
+                }
             }
-        ];
-        $scope.Item = {
-            name: 'Operation Phoenix Weapon Case',
-            thumb:'box.png'
+        });
+        $scope.initializingPaymentMethod = function(method){
+            var online_price = method.online_price;
+            var transfer_price = method.transfer_price;
+            var hasTmt = false;
+            if(method.tmtopup.length > 0){
+                hasTmt = true;
+                $scope.TMTopup = method.tmtopup[0];
+                var tmtopup = {
+                    code:'tmtopup',
+                    title: 'TMTopup',
+                    bank: [{
+                        account:{
+                            code:'tmtopup',
+                            name:'TMTopup'
+                        }
+                    }],
+                    cost: online_price,
+                    button: 'จ่ายเงิน'
+                }
+                if($scope.TMTopup.uid != ''){
+                    $scope.Checkout.method.push(tmtopup);
+                }
+            }
+            if(method.accounts.length > 0){
+                var transfer = {
+                    code:'transfer',
+                    title: 'Money transfer',
+                    bank: [],
+                    cost: transfer_price,
+                    button: 'แจ้งโอนเงิน'
+                }
+                angular.forEach(method.accounts, function (element, index, array) {
+                    var bank = {
+                        account:{
+                            code:element.banks[0].code,
+                            name:element.banks[0].name
+                        },
+                        number:element.number,
+                        name:element.name
+                    }
+                    transfer.bank.push(bank);
+                });
+                $scope.Checkout.method.push(transfer);
+            }
+            if(!hasTmt){
+                $scope.Checkout.bank = $scope.Checkout.method[0].bank[0];
+            }
+            $scope.Checkout.payment = $scope.Checkout.method[0];
         }
+
         $scope.paymentSelect = function(method){
             $scope.Checkout.payment = method;
         }
         $scope.selectedBank = function(method, bank){
+            console.log(bank);
             $scope.Checkout.payment = method;
             $scope.Checkout.bank = bank;
         }
@@ -364,7 +368,7 @@ controllers.controller('SettingController', ['API','$scope', '$http', '$window',
         $scope.updateTmtopup = function(){
             var criteria = {filter: {section:"tmtopup", "data": $scope.TMTopup }};
             if($scope.setupTMTopup == true){
-                if($scope.TMTopup !== null && $scope.TMTopup.uid != '' && $scope.TMTopup.passkey !== ''){
+                if($scope.TMTopup && $scope.TMTopup.uid && $scope.TMTopup.ref_1 && $scope.TMTopup.ref_2 && $scope.TMTopup.ref_3 && $scope.TMTopup.passkey){
                     API.Insert(criteria).then(function (result) {
                         if(result.status){
                             if(result.data != null){
@@ -378,11 +382,11 @@ controllers.controller('SettingController', ['API','$scope', '$http', '$window',
                     });
                 }
                 else{
-                    API.Toaster('warning','KaiiteM','กรุณากรอก UID และ Passkey');
+                    API.Toaster('warning','KaiiteM','กรุณากรอกข้อมูลให้ครบ');
                 }
             }
             else{
-                if($scope.TMTopup !== null && $scope.TMTopup.uid != '' && $scope.TMTopup.passkey !== ''){
+                if($scope.TMTopup && $scope.TMTopup.uid && $scope.TMTopup.ref_1 && $scope.TMTopup.ref_2 && $scope.TMTopup.ref_3 && $scope.TMTopup.passkey){
                     API.Update(criteria).then(function (result) {
                         if(result.status){
                             if(result.data != null){
@@ -396,7 +400,7 @@ controllers.controller('SettingController', ['API','$scope', '$http', '$window',
                     });
                 }
                 else{
-                    API.Toaster('warning','KaiiteM','กรุณากรอก UID และ Passkey');
+                    API.Toaster('warning','KaiiteM','กรุณากรอกข้อมูลให้ครบ');
                 }
             }
         }
@@ -404,7 +408,7 @@ controllers.controller('SettingController', ['API','$scope', '$http', '$window',
         $scope.editAccount = function (data) {
             $('#update-form').modal('show');
             $scope.updateObject = data;
-             angular.forEach($scope.Banks, function (element, index, array) {
+            angular.forEach($scope.Banks, function (element, index, array) {
                 if(element.id == data.account.id){
                     $scope.updateObject.account = element;
                 }

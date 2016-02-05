@@ -394,7 +394,14 @@ class SiteController extends Controller
         return $this->render('store');
     }
     public function actionCheckout(){
-        return $this->render('checkout');
+
+        $request = Yii::$app->request;
+        $id = $request->get('id');
+        $item = Items::find()->where(['id' => $id])->one();
+        $tmt = Tmtopup::find()->where(['fbid' => $item->fbid])->one();
+        return $this->render('checkout', [
+            'model' => $tmt,
+        ]);
     }
     public function actionProfile()
     {

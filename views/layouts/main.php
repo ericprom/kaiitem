@@ -65,7 +65,7 @@ AppAsset::register($this);
     </form>';
     NavBar::end();
     ?>
-    <div class="container" style="margin-bottom:30px;">
+    <div style="margin-bottom:30px;">
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>

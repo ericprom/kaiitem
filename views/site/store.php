@@ -10,68 +10,65 @@ Icon::map($this);
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-store" ng-controller="StoreController" ng-cloak>
-   <div class="row">
+    <div class="row store-header" ng-show="Store.name">
         <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="card hovercard">
-                <div class="cardheader"></div>
-                <div class="avatar">
-                    <?= Html::img('http://graph.facebook.com/{{Store.fbid}}/picture?width=100&height=100', ['alt'=>'{{Store.name}}']);?>
-                </div>
-                    <div class="row" style="margin-top:10px;">
-                        <div class="col-md-3 col-sm-3 col-xs-3"></div>
-                        <div class="col-md-6 col-sm-6 col-xs-6">
-                            <div class="info">
-                                <div class="title">
-                                    {{Store.name}}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-3 col-xs-3"></div>
+            <h1><span class="ChunkFive" style="color:#666;font-size:36px;">{{Store.name}}</span></h1>
+        </div>
+    </div>
+
+    <div class="container">
+    <div class="row" ng-show="Store.name">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="store-avatar">
+                        <?= Html::img('http://graph.facebook.com/{{Store.fbid}}/picture?width=100&height=100', ['alt'=>'{{Store.name}}']);?>
                     </div>
                     <div class="row">
-                        <div class="col-md-3 col-sm-3 col-xs-1"></div>
-                        <div class="col-md-6 col-sm-6 col-xs-10">
-                            <div class="strike">
-                               <span>About</span>
-                            </div>
-                            <div class="about">
-                                <span>Verified by</span>
-                                <span class="btn btn-success btn-sm verified-btn" rel="publisher">
-                                    <i class="fa fa-facebook"></i>
-                                </span>
-                                <span class="btn btn-sm verified-btn" ng-class="(Store.verified_phone==1)?'btn-success':'btn-default';" ng-show="Store.phone!=''">
-                                    <i class="fa fa-phone"></i>
-                                </span>
-                                <span class="btn btn-sm verified-btn" ng-class="(Store.verified_email==1)?'btn-success':'btn-default';" ng-show="Store.email!=''">
-                                    <i class="fa fa-envelope-o"></i>
-                                </span>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                    <i class="fa" ng-class="(Store.online==1)?'fa-circle':'fa-circle-o'"></i>
-                                    <span ng-show="Store.online"> Online</span>
-                                    <span ng-show="!Store.online"> Offline</span>
-                                </div>
-                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                    <i class="fa fa-steam" ng-show="Store.username!=''"></i> {{Store.username}}
-                                </div>
-                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                    <i class="fa fa-map-marker" ng-show="Store.location!=''"></i> {{Store.location}}
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="strike">
-                               <span>Bio</span>
-                            </div>
-                            <div class="bio">
+                        <div class="col-md-8 col-sm-8 col-xs-12">
                             {{Store.bio}}
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            <div style="height:200px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                    <h3>{{Store.name}}'s Items</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 col-sm-4 col-xs-12" ng-repeat="get in Items" style="padding-top:25px;">
+                    <div class="item-list">
+                        <div class="item-shop">
+                            <i class="fa fa-user"></i> {{get.shops[0].name}}
+                        </div>
+                        <div class="item-drift">
+                            <div class="item-poster">
+                                <a href="../item/{{get.id}}"  ng-show="get.thumb!=''">
+                                    <img data-ng-src="{{get.thumb}}" class="img-responsive"/>
+                                </a>
+                                <a href="../item/{{get.id}}" ng-show="get.youtube!=''">
+                                    <img data-ng-src="http://img.youtube.com/vi/{{get.youtube | GetYouTubeID}}/0.jpg" alt="{{get.title}}" class="img-responsive"/>
+                                </a>
+                            </div>
+                            <div class="item-caption">
+                                <span class="item-title">{{get.title}}</span>
                             </div>
                         </div>
-                        <div class="col-md-3 col-sm-3 col-xs-1"></div>
+                        <div class="item-review">
+                            <!-- <i class="fa fa-heart-o"></i> {{get.liked}} -->
+                            <i class="fa fa-eye"></i> {{get.seen}}
+                            <?php if(!Yii::$app->user->isGuest){ ?>
+                                <span class="item-price">‎฿ {{get.transfer_price}}</span>
+                            <?php }?>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </div>

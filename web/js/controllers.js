@@ -128,7 +128,7 @@ controllers.controller('ItemController', ['API','$scope', '$location', '$window'
         var criteria = {filter: {section:"detail", item:$scope.itemID}};
         API.Select(criteria).then(function (result) {
             if(result.status){
-                if(result.data != null){
+                if(result.data.length>0){
                     $scope.Item = result.data[0];
                     $scope.Item.amount = 1;
                     $scope.markAsSeen($scope.itemID);
@@ -182,13 +182,19 @@ controllers.controller('ItemController', ['API','$scope', '$location', '$window'
 ]);
 controllers.controller('StoreController', ['API','$scope', '$location', '$window',
     function (API,$scope, $location, $window) {
+        $scope.storeID = $window.location.pathname.split('/store/')[1];
         $scope.Store = {};
+        $scope.Items = {};
+        $scope.isFound = false;
         $scope.initializingData = function(){
-            var criteria = {filter: {section:"profile"}};
+            var criteria = {filter: {section:"store", store:$scope.storeID}};
             API.Select(criteria).then(function (result) {
+                console.log(result);
                 if(result.status){
                     if(result.data != null){
-                        $scope.Store = result.data;
+                        $scope.Store = result.data.profile;
+                        $scope.Items = result.data.items;
+                        $scope.isFound = true;
                     }
                 }
             });
@@ -313,8 +319,13 @@ controllers.controller('CheckoutController', ['API', '$scope', '$location', '$wi
         $scope.makePayment = function(){
             switch($scope.Checkout.payment.code){
                 case 'tmtopup':
-                    if($scope.TMN && $scope.TMN.ref1 && $scope.TMN.ref2 && $scope.TMN.ref3){
-                        submit_tmnc();
+                    if($scope.TMN && $scope.TMN.password && $scope.TMN.ref1 && $scope.TMN.ref2 && $scope.TMN.ref3){
+                        if($scope.TMN.password.length == 14){
+                            submit_tmnc();
+                        }
+                        else{
+                            API.Toaster('warning','KaiiteM','หมายเลขเติมเงินไม่ครบ 14 หลัก');
+                        }
                     }
                     else{
                         API.Toaster('warning','KaiiteM','กรุณากรอกข้อมูลให้ครบ');
@@ -432,7 +443,7 @@ controllers.controller('SettingController', ['API','$scope', '$http', '$window',
         $scope.updateTmtopup = function(){
             var criteria = {filter: {section:"tmtopup", "data": $scope.TMTopup }};
             if($scope.setupTMTopup == true){
-                if($scope.TMTopup && $scope.TMTopup.uid && $scope.TMTopup.ref_1 && $scope.TMTopup.ref_2 && $scope.TMTopup.ref_3 && $scope.TMTopup.passkey){
+                if($scope.TMTopup && $scope.TMTopup.uid && $scope.TMTopup.ref1 && $scope.TMTopup.ref2 && $scope.TMTopup.ref3){
                     API.Insert(criteria).then(function (result) {
                         if(result.status){
                             if(result.data != null){
@@ -450,7 +461,7 @@ controllers.controller('SettingController', ['API','$scope', '$http', '$window',
                 }
             }
             else{
-                if($scope.TMTopup && $scope.TMTopup.uid && $scope.TMTopup.ref_1 && $scope.TMTopup.ref_2 && $scope.TMTopup.ref_3 && $scope.TMTopup.passkey){
+                if($scope.TMTopup && $scope.TMTopup.uid && $scope.TMTopup.ref1 && $scope.TMTopup.ref2 && $scope.TMTopup.ref3){
                     API.Update(criteria).then(function (result) {
                         if(result.status){
                             if(result.data != null){

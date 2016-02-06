@@ -3,13 +3,13 @@
     background: none !important;
     border-color: #ddd;
 }
-.store-item-title {
+.item-title {
 	font-size: 22px;
 }
-.store-item-thumb {
+.item-thumb {
   background: #000;
 }
-.store-item-thumb img{
+.item-thumb img{
   width: 100%;
 }
 .social-panel{
@@ -18,7 +18,7 @@
 	margin-bottom: 20px;
 }
 
-.store-header {
+.item-header {
     font-size: 18px;
     font-weight: 700;
     color: #0e0e0f;

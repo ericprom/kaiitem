@@ -10,6 +10,8 @@ Icon::map($this);
 // $this->title = 'Setting';
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+<div class="container" style="margin-top:70px;">
 <div class="site-setting" ng-controller="SettingController" ng-cloak>
     <div class="row">
         <div class="col-md-2 col-sm-2 col-xs-12 setting-bar">
@@ -111,7 +113,9 @@ Icon::map($this);
                                     <div class="row setting-input">
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <?=Html::img(Yii::getAlias('@web').'/images/tmtopup.png', ['alt'=>'tmtopup'], ['class' => 'img-responsive'])?>
-                                            <div class="alert alert-info" role="alert">API: www.kaiitem.com/tmtopup/{{TMTopup.uid}}</div>
+                                            <div class="alert alert-info" role="alert">
+                                              ตัวอย่าง: https://www.tmtopup.com/topup/?uid=<span style="color:red;" ng-hide="TMTopup.uid">178002</span><span style="color:red;" ng-show="TMTopup.uid">{{TMTopup.uid}}</span>
+                                            </div>
                                             <div class="row setting-input">
                                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                                     <label>UID</label>
@@ -121,28 +125,21 @@ Icon::map($this);
                                             <div class="row setting-input">
                                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                                     <label>ชื่อตัวแปร 1</label>
-                                                    <input type="text" name="ref-1" class="form-control input" id="ref-1" ng-model="TMTopup.ref_1">
+                                                    <input type="text" name="ref-1" class="form-control input" id="ref-1" ng-model="TMTopup.ref1">
                                                 </div>
                                             </div>
                                             <div class="row setting-input">
                                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                                     <label>ชื่อตัวแปร 2</label>
-                                                    <input type="text" name="ref-2" class="form-control input" id="ref-2"  ng-model="TMTopup.ref_2">
+                                                    <input type="text" name="ref-2" class="form-control input" id="ref-2"  ng-model="TMTopup.ref2">
                                                 </div>
                                             </div>
                                             <div class="row setting-input">
                                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                                     <label>ชื่อตัวแปร 3</label>
-                                                    <input type="text" name="ref-3" class="form-control input" id="ref-3" ng-model="TMTopup.ref_3">
+                                                    <input type="text" name="ref-3" class="form-control input" id="ref-3" ng-model="TMTopup.ref3">
                                                 </div>
                                             </div>
-                                            <div class="row setting-input">
-                                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                                    <label>API Passkey</label>
-                                                    <input type="text" name="passkey" class="form-control input" id="passkey" ng-model="TMTopup.passkey">
-                                                </div>
-                                            </div>
-
                                             <div class="row setting-input">
                                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                                     <button class="btn btn-success"
@@ -304,5 +301,6 @@ Icon::map($this);
         </div>
         </form>
     </div>
+</div>
 </div>
 

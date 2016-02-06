@@ -5,8 +5,9 @@ use kartik\icons\Icon;
 Icon::map($this);
 
 ?>
+<div class="container" style="margin-top:70px;">
 <div class="site-checkout" ng-controller="CheckoutController" ng-cloak>
-    <div class="row">
+    <div class="row" ng-show="Checkout.method!=''">
         <div class="col-md-8 col-sm-8 col-xs-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -86,23 +87,23 @@ Icon::map($this);
                                 <input type="text" class="form-control input" ng-model="TMN.password" name="tmn_password" id="tmn_password" maxlength="14" valid-number>
                             </div>
                         </div>
-                        <div class="row checkout-form-input" ng-show="TMTopup.ref_1 != ''">
+                        <div class="row checkout-form-input" ng-show="TMTopup.ref1 != ''">
                             <div class="col-md-12 col-sm-12 col-xs-12">
-                                <label>{{TMTopup.ref_1}}</label>
+                                <label>{{TMTopup.ref1}}</label>
                                 <input type="text" class="form-control input" ng-model="TMN.ref1" name="ref1" id="ref1">
                             </div>
                         </div>
 
-                        <div class="row checkout-form-input" ng-show="TMTopup.ref_2 != ''">
+                        <div class="row checkout-form-input" ng-show="TMTopup.ref2 != ''">
                             <div class="col-md-12 col-sm-12 col-xs-12">
-                                <label>{{TMTopup.ref_2}}</label>
+                                <label>{{TMTopup.ref2}}</label>
                                 <input type="text" class="form-control input" ng-model="TMN.ref2" name="ref2" id="ref2">
                             </div>
                         </div>
 
-                        <div class="row checkout-form-input" ng-show="TMTopup.ref_3 != ''">
+                        <div class="row checkout-form-input" ng-show="TMTopup.ref3 != ''">
                             <div class="col-md-12 col-sm-12 col-xs-12">
-                                <label>{{TMTopup.ref_3}}</label>
+                                <label>{{TMTopup.ref3}}</label>
                                 <input type="text" class="form-control input" ng-model="TMN.ref3" name="ref3" id="ref3">
                             </div>
                         </div>
@@ -148,4 +149,5 @@ Icon::map($this);
             );
         }
     ?>
+</div>
 </div>

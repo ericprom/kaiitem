@@ -55,6 +55,21 @@ class SiteController extends Controller
     {
         return $this->render('index');
     }
+    public function actionFacebook(){
+        $social = Yii::$app->getModule('social');
+        $app_id = $social->facebook["appId"];
+        $app_secret = $social->facebook["secret"];
+        $app_access_token = $app_id . '|' . $app_secret;
+        // $response = $curl->get('https://graph.facebook.com/'+$app_id+'/accounts?access_token='+$app_access_token+'');
+        $parameters = array(
+            'app_id' => $social->facebook["appId"],
+            'to' => '10156502635205529',
+            'link' => 'http://kaiitem.com',
+            'redirect_uri' => 'http://my.app.url/callback'
+        );
+        $url = 'http://www.facebook.com/dialog/send?'.http_build_query($parameters);
+        echo '<script type="text/javascript">window.open('.json_encode($url).')</script>';
+    }
     public function actionSelect()
     {
         $request = Yii::$app->request;
@@ -75,6 +90,12 @@ class SiteController extends Controller
                         case "profile":
                             $user = UserMaster::find(['fbid'=>$fbid,'status' => 1])->where(['<>', 'status', 0])->one();
                             $result["data"] = ($user)?$user->attributes:null;
+                            break;
+                        case "store":
+                            $user = UserMaster::find()->where(['and', ['=','fbid', $options["store"]], ['<>', 'status', 0]])->one();
+                            $result["data"]["profile"] = ($user)?$user->attributes:null;
+                            $item = Items::find()->where(['and', ['=','fbid', $user->fbid],['<>','available', 0], ['<>', 'status', 0]])->with('shops')->asArray()->all();
+                            $result["data"]["items"] = $item;
                             break;
                         case "tmtopup":
                             $topup = Tmtopup::find(['fbid'=>$fbid])->one();
@@ -145,10 +166,9 @@ class SiteController extends Controller
                             $topup = new Tmtopup();
                             $topup->fbid = $fbid;
                             (isset($data["uid"]))?$topup->uid = $data["uid"]:$topup->uid = '';
-                            (isset($data["ref_1"]))?$topup->ref_1 = $data["ref_1"]:$topup->ref_1 = '';
-                            (isset($data["ref_2"]))?$topup->ref_2 = $data["ref_2"]:$topup->ref_2 = '';
-                            (isset($data["ref_3"]))?$topup->ref_3 = $data["ref_3"]:$topup->ref_3 = '';
-                            (isset($data["passkey"]))?$topup->passkey = $data["passkey"]:$topup->passkey = '';
+                            (isset($data["ref1"]))?$topup->ref1 = $data["ref1"]:$topup->ref1 = '';
+                            (isset($data["ref2"]))?$topup->ref2 = $data["ref2"]:$topup->ref2 = '';
+                            (isset($data["ref3"]))?$topup->ref3 = $data["ref3"]:$topup->ref3 = '';
                             $topup->created_on = time();
                             $topup->save();
                             $result["data"] = $topup->attributes;
@@ -203,7 +223,7 @@ class SiteController extends Controller
                             $result["data"] = $order->attributes;
                             $result["toast"] = 'success';
                             $result["status"] = TRUE;
-                            $result["message"] =  "บันทึกข้อมูลเรียบร้อย";
+                            $result["message"] =  "ระบบบันทึกข้อมูลการซื้อแล้ว";
                             break;
                     }
                     $transaction->commit();
@@ -246,10 +266,9 @@ class SiteController extends Controller
                         case "tmtopup":
                             $topup = Tmtopup::findOne(['fbid'=>$fbid]);
                             (isset($data["uid"]))?$topup->uid = $data["uid"]:$topup->uid = '';
-                            (isset($data["ref_1"]))?$topup->ref_1 = $data["ref_1"]:$topup->ref_1 = '';
-                            (isset($data["ref_2"]))?$topup->ref_2 = $data["ref_2"]:$topup->ref_2 = '';
-                            (isset($data["ref_3"]))?$topup->ref_3 = $data["ref_3"]:$topup->ref_3 = '';
-                            (isset($data["passkey"]))?$topup->passkey = $data["passkey"]:$topup->passkey = '';
+                            (isset($data["ref1"]))?$topup->ref1 = $data["ref1"]:$topup->ref1 = '';
+                            (isset($data["ref2"]))?$topup->ref2 = $data["ref2"]:$topup->ref2 = '';
+                            (isset($data["ref3"]))?$topup->ref3 = $data["ref3"]:$topup->ref3 = '';
                             $topup->updated_on = time();
                             $topup->update();
                             $result["data"] = $topup->attributes;
@@ -423,7 +442,11 @@ class SiteController extends Controller
         $request = Yii::$app->request;
         $id = $request->get('id');
         $order = Orders::find()->where(['id' => $id])->one();
-        $tmt = Tmtopup::find()->where(['fbid' => $order->shop_id])->one();
+        $shopID = null;
+        if($order){
+            $shopID = $order->shop_id;
+        }
+        $tmt = Tmtopup::find()->where(['fbid' => $shopID])->one();
         return $this->render('checkout', [
             'model' => $tmt,
         ]);

@@ -1,0 +1,29 @@
+.panel-default{
+    border-color: #e5e5e5 !important;
+}
+.store-header{
+    height: 230px;
+    line-height: 200px;
+    text-align: center;;
+    padding: 30px 0px 0px;
+}
+.store-header h1{
+    vertical-align: middle;
+    display: inline-block;
+}
+.store-avatar {
+    position: relative;
+    top: -70px;
+    margin-bottom: -50px;
+}
+
+.store-avatar img {
+    width: 100px;
+    height: 100px;
+    max-width: 100px;
+    max-height: 100px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    border: 5px solid rgba(255,255,255,0.5);
+}

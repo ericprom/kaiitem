@@ -8,6 +8,8 @@ use kartik\icons\Icon;
 Icon::map($this);
 
 ?>
+
+<div class="container" style="margin-top:70px;">
 <div class="site-stock" ng-controller="StockController" ng-cloak>
     <div ng-hide="newItem==true || updateItem==true">
         <div class="row" ng-hide="newItem">
@@ -190,4 +192,5 @@ Icon::map($this);
             </div>
         </div>
     </div>
+</div>
 </div>

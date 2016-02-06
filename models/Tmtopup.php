@@ -3,17 +3,15 @@
 namespace app\models;
 
 use Yii;
-use yii\base\NotSupportedException;
 
 /**
  * This is the model class for table "tmtopup".
  *
  * @property integer $id
  * @property integer $uid
- * @property string $ref_1
- * @property string $ref_2
- * @property string $ref_3
- * @property string $passkey
+ * @property string $ref1
+ * @property string $ref2
+ * @property string $ref3
  * @property string $fbid
  * @property double $created_on
  * @property double $updated_on
@@ -34,22 +32,12 @@ class Tmtopup extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            // [['uid', 'ref_1', 'ref_2', 'ref_3', 'passkey', 'fbid', 'created_on', 'updated_on'], 'required'],
+            // [['uid', 'ref1', 'ref2', 'ref3', 'fbid', 'created_on', 'updated_on'], 'required'],
             [['uid'], 'integer'],
             [['created_on', 'updated_on'], 'number'],
-            [['ref_1', 'ref_2', 'ref_3', 'passkey'], 'string', 'max' => 50],
+            [['ref1', 'ref2', 'ref3'], 'string', 'max' => 50],
             [['fbid'], 'string', 'max' => 30]
         ];
-    }
-    /**
-     * @return array relational rules.
-     */
-    public function relations()
-    {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
-        return array(
-        );
     }
 
     /**
@@ -60,10 +48,9 @@ class Tmtopup extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'uid' => 'Uid',
-            'ref_1' => 'Ref 1',
-            'ref_2' => 'Ref 2',
-            'ref_3' => 'Ref 3',
-            'passkey' => 'Passkey',
+            'ref1' => 'Ref1',
+            'ref2' => 'Ref2',
+            'ref3' => 'Ref3',
             'fbid' => 'Fbid',
             'created_on' => 'Created On',
             'updated_on' => 'Updated On',

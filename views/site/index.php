@@ -6,6 +6,7 @@ use yii\helpers\Html;
 
 $this->title = 'My Yii Application';
 ?>
+<div class="container" style="margin-top:70px;">
 <div class="site-index" ng-controller="MainController" ng-cloak>
     <div class="body-content">
         <div class="row">
@@ -38,4 +39,5 @@ $this->title = 'My Yii Application';
             </div>
         </div>
     </div>
+</div>
 </div>

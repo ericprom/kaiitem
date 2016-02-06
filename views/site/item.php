@@ -7,17 +7,18 @@ use kartik\icons\Icon;
 Icon::map($this);
 
 ?>
-<div class="site-item" ng-controller="ItemController" ng-cloak >
-    <div class="row">
+<div class="container" style="margin-top:70px;">
+<div class="site-item" ng-controller="ItemController" ng-cloak>
+    <div class="row" ng-show="Item.title">
         <div class="col-md-8 col-sm-8 col-xs-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <div class="store-item-title">
+                    <div class="item-title">
                         {{Item.title}}
                     </div>
                 </div>
                 <div class="panel-body">
-                    <div class="store-item-thumb">
+                    <div class="item-thumb">
                         <div ng-show="Item.thumb!=''">
                             <img data-ng-src="{{Item.thumb}}" class="img-responsive"/>
                         </div>
@@ -30,7 +31,7 @@ Icon::map($this);
             <?php if(!Yii::$app->user->isGuest){ ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <span class="store-header">ข้อมูลสินค้า</span>
+                    <span class="item-header">ข้อมูลสินค้า</span>
                 </div>
                 <div class="panel-body">
                     <pre>{{Item.detail}}</pre>
@@ -38,7 +39,7 @@ Icon::map($this);
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <span class="store-header">คอมเม้น</span>
+                    <span class="item-header">คอมเม้น</span>
                 </div>
                 <div class="panel-body">
                     <?=FacebookPlugin::widget(['type'=>FacebookPlugin::COMMENT, 'settings' => ['data-width'=>'100%', 'data-numposts'=>5]]);?>
@@ -124,4 +125,5 @@ Icon::map($this);
             </div>
         </div>
     </div>
+</div>
 </div>

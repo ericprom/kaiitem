@@ -12,7 +12,7 @@ use Yii;
  * @property string $detail
  * @property string $thumb
  * @property string $youtube
- * @property integer $quntity
+ * @property integer $quantity
  * @property double $online_price
  * @property double $transfer_price
  * @property integer $seen
@@ -39,9 +39,9 @@ class Items extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            // [['title', 'detail', 'thumb', 'youtube', 'quntity', 'online_price', 'transfer_price', 'fbid', 'created_on', 'updated_on'], 'required'],
+            // [['title', 'detail', 'thumb', 'youtube', 'quantity', 'online_price', 'transfer_price', 'fbid', 'created_on', 'updated_on'], 'required'],
             [['detail', 'thumb'], 'string'],
-            [['quntity', 'seen', 'liked', 'available', 'status'], 'integer'],
+            [['quantity', 'seen', 'liked', 'available', 'status'], 'integer'],
             [['online_price', 'transfer_price', 'created_on', 'updated_on'], 'number'],
             [['title'], 'string', 'max' => 80],
             [['youtube'], 'string', 'max' => 255],
@@ -60,7 +60,7 @@ class Items extends \yii\db\ActiveRecord
             'detail' => 'Detail',
             'thumb' => 'Thumb',
             'youtube' => 'Youtube',
-            'quntity' => 'Quntity',
+            'quantity' => 'Quantity',
             'online_price' => 'Online Price',
             'transfer_price' => 'Transfer Price',
             'seen' => 'Seen',
@@ -76,12 +76,12 @@ class Items extends \yii\db\ActiveRecord
     {
         return $this->hasMany(UserMaster::className(), ['fbid' => 'fbid']);
     }
-    public function getAccounts()
-    {
-        return $this->hasMany(Accounts::className(), ['fbid' => 'fbid'])->with('banks');
-    }
-    public function getTmtopup()
-    {
-        return $this->hasMany(Tmtopup::className(), ['fbid' => 'fbid']);
-    }
+    // public function getAccounts()
+    // {
+    //     return $this->hasMany(Accounts::className(), ['fbid' => 'fbid'])->with('banks');
+    // }
+    // public function getTmtopup()
+    // {
+    //     return $this->hasMany(Tmtopup::className(), ['fbid' => 'fbid']);
+    // }
 }

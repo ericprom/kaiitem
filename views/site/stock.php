@@ -78,7 +78,7 @@ Icon::map($this);
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <label>จำนวนไอเทม</label>
                                 <div class="form-group">
-                                    <input type="text" name="item-quntity" class="form-control input" ng-model="Item.quntity" valid-number>
+                                    <input type="text" name="item-quantity" class="form-control input" ng-model="Item.quantity" valid-number>
                                 </div>
                             </div>
                         </div>

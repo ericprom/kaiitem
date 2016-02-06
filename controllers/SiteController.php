@@ -12,6 +12,7 @@ use app\models\Tmtopup;
 use app\models\Banks;
 use app\models\Accounts;
 use app\models\Items;
+use app\models\Orders;
 
 class SiteController extends Controller
 {
@@ -96,8 +97,8 @@ class SiteController extends Controller
                             $result["data"] = $item;
                             break;
                         case "checkout":
-                            $item = Items::find()->where(['and', ['=','id', $options["item"]], ['<>', 'status', 0]])->with(['shops','accounts','tmtopup'])->asArray()->all();
-                            $result["data"] = $item;
+                            $order = Orders::find()->where(['and', ['=','id', $options["order"]], ['<>', 'status', 0]])->with(['items','shops','accounts','tmtopup'])->asArray()->all();
+                            $result["data"] = $order;
                             break;
                         case "stock":
                             $item = Items::find(['fbid'=>$fbid,'status' => 1])->where(['<>', 'status', 0])->with('shops')->asArray()->all();
@@ -174,7 +175,7 @@ class SiteController extends Controller
                             $item->fbid = $fbid;
                             (isset($data["title"]))?$item->title = $data["title"]:$item->title = '';
                             (isset($data["detail"]))?$item->detail = $data["detail"]:$item->detail = '';
-                            (isset($data["quntity"]))?$item->quntity = $data["quntity"]:$item->quntity = '';
+                            (isset($data["quantity"]))?$item->quantity = $data["quantity"]:$item->quantity = '';
                             (isset($data["online_price"]))?$item->online_price = $data["online_price"]:$item->online_price = '';
                             (isset($data["transfer_price"]))?$item->transfer_price = $data["transfer_price"]:$item->transfer_price = '';
                             (isset($data["thumb"]))?$item->thumb = $data["thumb"]:$item->thumb = '';
@@ -186,6 +187,20 @@ class SiteController extends Controller
                             $item->created_on = time();
                             $item->save();
                             $result["data"] = $item->attributes;
+                            $result["toast"] = 'success';
+                            $result["status"] = TRUE;
+                            $result["message"] =  "บันทึกข้อมูลเรียบร้อย";
+                            break;
+                        case "order":
+                            $order = new Orders();
+                            $order->buyer_id = $fbid;
+                            (isset($data["id"]))?$order->item_id = $data["id"]:$order->item_id = '';
+                            (isset($data["amount"]))?$order->amount = $data["amount"]:$order->amount = '';
+                            (isset($data["fbid"]))?$order->shop_id = $data["fbid"]:$order->shop_id = '';
+                            $order->created_on = time();
+                            $order->status = 1;
+                            $order->save();
+                            $result["data"] = $order->attributes;
                             $result["toast"] = 'success';
                             $result["status"] = TRUE;
                             $result["message"] =  "บันทึกข้อมูลเรียบร้อย";
@@ -284,7 +299,7 @@ class SiteController extends Controller
                             $item = Items::findOne(['fbid'=>$fbid, 'id'=> $data["id"]]);
                             (isset($data["title"]))?$item->title = $data["title"]:$item->title = '';
                             (isset($data["detail"]))?$item->detail = $data["detail"]:$item->detail = '';
-                            (isset($data["quntity"]))?$item->quntity = $data["quntity"]:$item->quntity = '';
+                            (isset($data["quantity"]))?$item->quantity = $data["quantity"]:$item->quantity = '';
                             (isset($data["online_price"]))?$item->online_price = $data["online_price"]:$item->online_price = '';
                             (isset($data["transfer_price"]))?$item->transfer_price = $data["transfer_price"]:$item->transfer_price = '';
                             (isset($data["thumb"]))?$item->thumb = $data["thumb"]:$item->thumb = '';
@@ -292,6 +307,16 @@ class SiteController extends Controller
                             $item->updated_on = time();
                             $item->update();
                             $result["data"] = $item->attributes;
+                            $result["toast"] = 'success';
+                            $result["status"] = TRUE;
+                            $result["message"] =  "บันทึกข้อมูลเรียบร้อย";
+                            break;
+                        case "order":
+                            $order = Orders::findOne(['buyer_id'=>$fbid, 'id'=> $data["id"]]);
+                            (isset($data["amount"]))?$order->amount = $data["amount"]:$item->amount = '';
+                            $order->updated_on = time();
+                            $order->update();
+                            $result["data"] = $order->attributes;
                             $result["toast"] = 'success';
                             $result["status"] = TRUE;
                             $result["message"] =  "บันทึกข้อมูลเรียบร้อย";
@@ -397,8 +422,8 @@ class SiteController extends Controller
 
         $request = Yii::$app->request;
         $id = $request->get('id');
-        $item = Items::find()->where(['id' => $id])->one();
-        $tmt = Tmtopup::find()->where(['fbid' => $item->fbid])->one();
+        $order = Orders::find()->where(['id' => $id])->one();
+        $tmt = Tmtopup::find()->where(['fbid' => $order->shop_id])->one();
         return $this->render('checkout', [
             'model' => $tmt,
         ]);

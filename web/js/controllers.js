@@ -136,6 +136,36 @@ controllers.controller('ItemController', ['API','$scope', '$location', '$window'
             }
         });
 
+        $scope.increase = function(method){
+            if($scope.Item.amount < $scope.Item.quantity){
+                $scope.Item.amount += 1;
+            }
+            else{
+                API.Toaster('info','KaiiteM','สินค้าไม่พอตามจำนวนที่คุณต้องการ');
+            }
+        }
+        $scope.subtract = function(method){
+            if($scope.Item.amount > 1){
+                $scope.Item.amount -= 1;
+            }
+            else{
+                API.Toaster('warning','KaiiteM','คุณไม่สามารถสั่งต่ำกว่าจำนวนขั้นต่ำได้');
+            }
+        }
+        $scope.ordering = false;
+        $scope.orderNow = function(){
+            $scope.ordering = true;
+            var criteria = {filter: {section:"order", "data":$scope.Item}};
+            API.Insert(criteria).then(function (result) {
+                $scope.ordering = false;
+                if(result.status){
+                    if(result.data != null){
+                        $window.location=$window.location.pathname.split('/item/')[0]+'/checkout/'+result.data.id;
+                    }
+                }
+                API.Toaster(result.toast,'KaiiteM',result.message);
+            });
+        }
         $scope.markAsSeen = function(){
             var number = Math.floor(Math.random() * 30) + 13;
             var random = number*1000;
@@ -186,25 +216,23 @@ controllers.controller('ProfileController', ['API','$scope', '$location', '$wind
 ]);
 controllers.controller('CheckoutController', ['API', '$scope', '$location', '$window',
     function (API, $scope, $location, $window) {
-        $scope.checkoutID = $window.location.pathname.split('/checkout/')[1];
+        $scope.orderID = $window.location.pathname.split('/checkout/')[1];
         $scope.Checkout = {
             method: []
         }
         $scope.Item = {}
-        var criteria = {filter: {section:"checkout", item:$scope.checkoutID}};
+        var criteria = {filter: {section:"checkout", order:$scope.orderID}};
         API.Select(criteria).then(function (result) {
-            console.log(result);
             if(result.status){
                 if(result.data.length > 0){
                     $scope.Item = result.data[0];
-                    $scope.Item.amount = 1;
                     $scope.initializingPaymentMethod($scope.Item);
                 }
             }
         });
         $scope.initializingPaymentMethod = function(method){
-            var online_price = method.online_price;
-            var transfer_price = method.transfer_price;
+            var online_price = method.items[0].online_price;
+            var transfer_price = method.items[0].transfer_price;
             var hasTmt = false;
             if(method.tmtopup.length > 0){
                 hasTmt = true;
@@ -252,13 +280,47 @@ controllers.controller('CheckoutController', ['API', '$scope', '$location', '$wi
             $scope.Checkout.payment = $scope.Checkout.method[0];
         }
 
+        $scope.increase = function(method){
+            if($scope.Item.amount < $scope.Item.items[0].quantity){
+                $scope.Item.amount = parseInt($scope.Item.amount)+1;
+                API.Update({filter: {section:"order", "data":$scope.Item }}).then(function (result) {
+                    console.log(result);
+                });
+            }
+            else{
+                API.Toaster('info','KaiiteM','สินค้าไม่พอตามจำนวนที่คุณต้องการ');
+            }
+        }
+        $scope.subtract = function(method){
+            if($scope.Item.amount > 1){
+                $scope.Item.amount = parseInt($scope.Item.amount)-1;
+                API.Update({filter: {section:"order", "data":$scope.Item }}).then(function (result) {
+                    console.log(result);
+                });
+
+            }
+            else{
+                API.Toaster('warning','KaiiteM','คุณไม่สามารถสั่งต่ำกว่าจำนวนขั้นต่ำได้');
+            }
+        }
         $scope.paymentSelect = function(method){
             $scope.Checkout.payment = method;
         }
         $scope.selectedBank = function(method, bank){
-            console.log(bank);
             $scope.Checkout.payment = method;
             $scope.Checkout.bank = bank;
+        }
+        $scope.makePayment = function(){
+            switch($scope.Checkout.payment.code){
+                case 'tmtopup':
+                    if($scope.TMN && $scope.TMN.ref1 && $scope.TMN.ref2 && $scope.TMN.ref3){
+                        submit_tmnc();
+                    }
+                    else{
+                        API.Toaster('warning','KaiiteM','กรุณากรอกข้อมูลให้ครบ');
+                    }
+                    break;
+            }
         }
     }
 ]);

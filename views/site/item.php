@@ -50,9 +50,22 @@ Icon::map($this);
             <?php if(!Yii::$app->user->isGuest){ ?>
             <div class="panel panel-default">
                 <div class="panel-body">
-                <a href="../checkout/{{Item.id}}" class="btn btn-block btn-success btn-lg">
-                    <?=Icon::show('shopping-cart')?> ซื้อเลย
-                </a>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <a href="../checkout/{{Item.id}}" class="btn btn-block btn-success btn-lg">
+                                <?=Icon::show('shopping-cart')?> ซื้อเลย
+                            </a>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row" style="margin-top:10px;">
+                        <div class="col-md-8 col-sm-8 col-xs-12">
+                            <label>จำนวนสินค้าที่ต้องการ</label>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            <input type="text" class="form-control input text-center" name="amount" ng-model="Item.amount">
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- <div class="social-panel">

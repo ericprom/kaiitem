@@ -62,10 +62,19 @@ Icon::map($this);
                         </div>
                     </div>
                     <hr>
+                     <div class="row  checkout-form-input">
+                        <div class="col-md-8 col-sm-8 col-xs-12">
+                            <label>จำนวนสินค้าที่สั่งซื้อ</label>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            {{Item.amount}}
+                        </div>
+                    </div>
+                    <hr>
                     <div ng-show="Checkout.payment.code == 'tmtopup'">
                         <div class="row checkout-form-input">
                             <div class="col-md-12 col-sm-12 col-xs-12">
-                                <label>รหัสบัตรเดิมเงิน 14 หลัก</label>
+                                <label>รหัสบัตรเติมเงิน 14 หลัก</label>
                                 <input type="text" class="form-control input" name="tmn_password" id="tmn_password" maxlength="14" valid-number>
                             </div>
                         </div>

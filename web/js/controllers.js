@@ -130,6 +130,7 @@ controllers.controller('ItemController', ['API','$scope', '$location', '$window'
             if(result.status){
                 if(result.data != null){
                     $scope.Item = result.data[0];
+                    $scope.Item.amount = 1;
                     $scope.markAsSeen($scope.itemID);
                 }
             }
@@ -196,6 +197,7 @@ controllers.controller('CheckoutController', ['API', '$scope', '$location', '$wi
             if(result.status){
                 if(result.data.length > 0){
                     $scope.Item = result.data[0];
+                    $scope.Item.amount = 1;
                     $scope.initializingPaymentMethod($scope.Item);
                 }
             }

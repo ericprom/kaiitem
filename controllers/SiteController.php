@@ -496,6 +496,15 @@ class SiteController extends Controller
             return $this->goHome();
         }
     }
+    public function actionPayment()
+    {
+        if(!Yii::$app->user->isGuest){
+            return $this->render('payment');
+        }
+        else{
+            return $this->goHome();
+        }
+    }
     public function onAuthSuccess($client)
     {
         $userAttributes = $client->getUserAttributes();

@@ -713,3 +713,12 @@ controllers.controller('StockController', ['API','$scope', '$http', '$window', '
         };
     }
 ]);
+
+controllers.controller('OrderController', ['API','$scope', '$http', '$window', '$location',
+    function (API,$scope, $http, $window, $location) {
+    }
+]);
+controllers.controller('PaymentController', ['API','$scope', '$http', '$window', '$location',
+    function (API,$scope, $http, $window, $location) {
+    }
+]);

@@ -168,18 +168,18 @@ Icon::map($this);
                     </div>
                     <div class="row" style="margin-top:10px;">
                         <div class="col-md-6 col-sm-6 col-xs-12" style="margin-top:10px;">
-                            <label>จำนวนเงินที่โอน</label>
+                            <label>จำนวนเงินที่โอน<span style="color:red;">*</span></label>
                             <div class="input-group">
                             <input type="text" name="location" class="form-control input" ng-model="Payment.amount" placeholder="100.13" valid-number>
                             <span class="input-group-addon">บาท</span>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-12" style="margin-top:10px;">
-                            <label>วันที่โอน</label>
-                            <?= DatePicker::widget(['id' => 'transferDate','name' => 'transferDate','dateFormat' => 'dd/MM/yyyy','options'=>['class'=>'form-control']]) ?>
+                            <label>วันที่โอน<span style="color:red;">*</span></label>
+                            <?=DatePicker::widget(['id' => 'transferDate','name' => 'transferDate','dateFormat' => 'MM-dd-yyyy','options'=>['class'=>'form-control']]) ?>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-12" style="margin-top:10px;">
-                            <label>เวลาที่โอน</label>
+                            <label>เวลาที่โอน<span style="color:red;">*</span></label>
                             <input type="text" name="location" class="form-control input" ng-model="Payment.time" placeholder="10:30">
                         </div>
                     </div>

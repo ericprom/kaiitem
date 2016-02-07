@@ -348,6 +348,10 @@ controllers.controller('CheckoutController', ['API', '$scope', '$location', '$wi
             }
         }
         $scope.submitForm = function(){
+            var _date_picker = angular.element('#transferDate').val();
+            var  _transfer_date= new Date(_date_picker);
+            var payment = moment(_transfer_date).unix();
+            console.log(payment);
             $('#payment-notice').modal('hide');
         }
     }

@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use kartik\icons\Icon;
+use yii\jui\DatePicker;
 Icon::map($this);
 
 ?>
@@ -169,13 +170,17 @@ Icon::map($this);
                         <div class="col-md-6 col-sm-6 col-xs-12" style="margin-top:10px;">
                             <label>จำนวนเงินที่โอน</label>
                             <div class="input-group">
-                            <input type="text" name="location" class="form-control input" ng-model="Payment.amount" placeholder="100.13">
+                            <input type="text" name="location" class="form-control input" ng-model="Payment.amount" placeholder="100.13" valid-number>
                             <span class="input-group-addon">บาท</span>
                             </div>
                         </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12" style="margin-top:10px;">
-                            <label>วันเวลาที่โอน</label>
-                            <input type="text" name="location" class="form-control input" ng-model="Payment.time" placeholder="100.13">
+                        <div class="col-md-3 col-sm-3 col-xs-12" style="margin-top:10px;">
+                            <label>วันที่โอน</label>
+                            <?= DatePicker::widget(['id' => 'transferDate','name' => 'transferDate','dateFormat' => 'dd/MM/yyyy','options'=>['class'=>'form-control']]) ?>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-12" style="margin-top:10px;">
+                            <label>เวลาที่โอน</label>
+                            <input type="text" name="location" class="form-control input" ng-model="Payment.time" placeholder="10:30">
                         </div>
                     </div>
                 </div>

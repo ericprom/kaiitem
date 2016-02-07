@@ -19,7 +19,8 @@ class BowerAsset extends AssetBundle
         'angular/angular.min.js',
         'angular-animate/angular-animate.min.js',
         'toaster/toaster.min.js',
-        'angular-youtube-embed/angular-youtube-embed.min.js'
+        'angular-youtube-embed/angular-youtube-embed.min.js',
+        'moment/moment.js',
     ];
     public $jsOptions = [
         'position' => View::POS_END,

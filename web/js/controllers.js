@@ -223,6 +223,12 @@ controllers.controller('ProfileController', ['API','$scope', '$location', '$wind
 controllers.controller('CheckoutController', ['API', '$scope', '$location', '$window',
     function (API, $scope, $location, $window) {
         $scope.orderID = $window.location.pathname.split('/checkout/')[1];
+        $scope.Transfer = {
+            order_id: $scope.orderID
+        };
+        $scope.Truemoney = {
+            order_id: $scope.orderID
+        };
         $scope.Checkout = {
             method: []
         }
@@ -269,6 +275,7 @@ controllers.controller('CheckoutController', ['API', '$scope', '$location', '$wi
                 }
                 angular.forEach(method.accounts, function (element, index, array) {
                     var bank = {
+                        id:element.id,
                         account:{
                             code:element.banks[0].code,
                             name:element.banks[0].name
@@ -281,7 +288,7 @@ controllers.controller('CheckoutController', ['API', '$scope', '$location', '$wi
                 $scope.Checkout.method.push(transfer);
             }
             if(!hasTmt){
-                $scope.Checkout.bank = $scope.Checkout.method[0].bank[0];
+                $scope.Checkout.account = $scope.Checkout.method[0].bank[0];
             }
             $scope.paymentSelect($scope.Checkout.method[0]);
         }
@@ -311,27 +318,31 @@ controllers.controller('CheckoutController', ['API', '$scope', '$location', '$wi
         }
         $scope.userNote = '';
         $scope.paymentSelect = function(method){
+            console.log(method);
             $scope.Checkout.payment = method;
-            console.log(method.code);
             switch(method.code){
                 case 'tmtopup':
-                  $scope.userNote = 'หมายเหตุ : การชำระด้วย TMTopup คุณต้องจ่ายจะกว่าจะครบรายการสินค้า เช่น ซื้อไอเทมราคา 300 จ่ายด้วยบัตรทรู ราคาใลละ 100 ต้องจ่าย 3 ครั้งจนครบจำนวนเงินที่ต้องชำระ';
+                  $scope.userNote = 'หมายเหตุ : การชำระด้วย TMTopup คุณต้องจ่ายจะกว่าจะครบรายการสินค้า เช่น ซื้อไอเทมราคา 300 จ่ายด้วยบัตรทรู ราคาใบละ 100 ต้องจ่าย 3 ครั้งจนครบจำนวนเงินที่ต้องชำระ';
                   break;
                 case 'transfer':
                   $scope.userNote = 'หมายเหตุ : กรุณาโอนเงินให้เรียบร้อยก่อนกด "แจ้งโอนเงิน" การโอนเงินเป็นเศษสตางค์ จะทำให้คุณได้รับของเร็วขึ้น เช่น 100.13 บาท';
                   break;
             }
         }
-        $scope.selectedBank = function(method, bank){
+        $scope.selectedBank = function(method, account){
             $scope.paymentSelect(method);
-            $scope.Checkout.bank = bank;
+            $scope.Checkout.account = account;
         }
         $scope.makePayment = function(){
             switch($scope.Checkout.payment.code){
                 case 'tmtopup':
                     if($scope.TMN && $scope.TMN.password && $scope.TMN.ref1 && $scope.TMN.ref2 && $scope.TMN.ref3){
                         if($scope.TMN.password.length == 14){
-                            submit_tmnc();
+                            $scope.Truemoney.shop_id = $scope.Item.shop_id;
+                            $scope.Truemoney.tmt_id = $scope.TMTopup.id;
+                            $scope.Truemoney.cash_card = $scope.TMN.password;
+                            console.log($scope.Truemoney);
+                            // submit_tmnc();
                         }
                         else{
                             API.Toaster('warning','KaiiteM','หมายเลขเติมเงินไม่ครบ 14 หลัก');
@@ -348,11 +359,19 @@ controllers.controller('CheckoutController', ['API', '$scope', '$location', '$wi
             }
         }
         $scope.submitForm = function(){
+            $scope.Transfer.shop_id = $scope.Item.shop_id;
+            $scope.Transfer.account = $scope.Checkout.account.id;
             var _date_picker = angular.element('#transferDate').val();
-            var  _transfer_date= new Date(_date_picker);
-            var payment = moment(_transfer_date).unix();
-            console.log(payment);
-            $('#payment-notice').modal('hide');
+            var _transfer_date= new Date(_date_picker);
+            var _payment_date = moment(_transfer_date).unix();
+            $scope.Transfer.transfer_date = _payment_date;
+            if($scope.Transfer.transfer_amount && $scope.Transfer.transfer_date && $scope.Transfer.transfer_time){
+                console.log($scope.Transfer);
+                $('#payment-notice').modal('hide');
+            }
+            else{
+                API.Toaster('warning','KaiiteM','กรุณากรอกข้อมูลให้ครบ');
+            }
         }
     }
 ]);

@@ -116,13 +116,13 @@ Icon::map($this);
                         <div class="row">
                             <div class="col-md-4 col-sm-4 col-xs-4">
                                 <span  class="payment-bank-icon">
-                                    <?=Html::img(Yii::getAlias('@web').'/images/{{Checkout.bank.account.code}}.png', ['class' => 'img-responsive'])?>
+                                    <?=Html::img(Yii::getAlias('@web').'/images/{{Checkout.account.account.code}}.png', ['class' => 'img-responsive'])?>
                                 </span>
                             </div>
                             <div class="col-md-8 col-sm-8 col-xs-8">
-                                <div><b>{{Checkout.bank.account.name}}</b></div>
-                                <div>ชื่อบัญชี: <b>{{Checkout.bank.name}}</b></div>
-                                <div>เลขที่บัญชี: <b>{{Checkout.bank.number}}</b></div>
+                                <div><b>{{Checkout.account.account.name}}</b></div>
+                                <div>ชื่อบัญชี: <b>{{Checkout.account.name}}</b></div>
+                                <div>เลขที่บัญชี: <b>{{Checkout.account.number}}</b></div>
                             </div>
                         </div>
                     </div>
@@ -157,20 +157,20 @@ Icon::map($this);
                     <div class="row">
                         <div class="col-md-3 col-sm-3 col-xs-4">
                             <span  class="payment-bank-icon">
-                                <?=Html::img(Yii::getAlias('@web').'/images/{{Checkout.bank.account.code}}.png', ['class' => 'img-responsive'])?>
+                                <?=Html::img(Yii::getAlias('@web').'/images/{{Checkout.account.account.code}}.png', ['class' => 'img-responsive'])?>
                             </span>
                         </div>
                         <div class="col-md-9 col-sm-9 col-xs-8">
-                            <div><b>{{Checkout.bank.account.name}}</b></div>
-                            <div>ชื่อบัญชี: <b>{{Checkout.bank.name}}</b></div>
-                            <div>เลขที่บัญชี: <b>{{Checkout.bank.number}}</b></div>
+                            <div><b>{{Checkout.account.account.name}}</b></div>
+                            <div>ชื่อบัญชี: <b>{{Checkout.account.name}}</b></div>
+                            <div>เลขที่บัญชี: <b>{{Checkout.account.number}}</b></div>
                         </div>
                     </div>
                     <div class="row" style="margin-top:10px;">
                         <div class="col-md-6 col-sm-6 col-xs-12" style="margin-top:10px;">
                             <label>จำนวนเงินที่โอน<span style="color:red;">*</span></label>
                             <div class="input-group">
-                            <input type="text" name="location" class="form-control input" ng-model="Payment.amount" placeholder="100.13" valid-number>
+                            <input type="text" name="location" class="form-control input" ng-model="Transfer.transfer_amount" placeholder="100.13" valid-number>
                             <span class="input-group-addon">บาท</span>
                             </div>
                         </div>
@@ -180,7 +180,7 @@ Icon::map($this);
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-12" style="margin-top:10px;">
                             <label>เวลาที่โอน<span style="color:red;">*</span></label>
-                            <input type="text" name="location" class="form-control input" ng-model="Payment.time" placeholder="10:30">
+                            <input type="text" name="location" class="form-control input" ng-model="Transfer.transfer_time" placeholder="10:30">
                         </div>
                     </div>
                 </div>

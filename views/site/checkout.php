@@ -36,6 +36,9 @@ Icon::map($this);
                     </div>
                 </div>
             </div>
+            <div class="alert alert-info" role="alert"  ng-show="userNote!=''">
+                  {{userNote}}
+            </div>
         </div>
         <div class="col-md-4 col-sm-4 col-xs-12">
             <div class="panel panel-default">
@@ -140,6 +143,49 @@ Icon::map($this);
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="modal fade" id="payment-notice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <form name="paymentForm" ng-submit="submitForm()" novalidate>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <i class="fa fa-send"></i>  <b>ระบบแจ้งโอนเงิน</b>
+                </div>
+                <div class="modal-body" style="padding-right:25px;">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-3 col-xs-4">
+                            <span  class="payment-bank-icon">
+                                <?=Html::img(Yii::getAlias('@web').'/images/{{Checkout.bank.account.code}}.png', ['class' => 'img-responsive'])?>
+                            </span>
+                        </div>
+                        <div class="col-md-9 col-sm-9 col-xs-8">
+                            <div><b>{{Checkout.bank.account.name}}</b></div>
+                            <div>ชื่อบัญชี: <b>{{Checkout.bank.name}}</b></div>
+                            <div>เลขที่บัญชี: <b>{{Checkout.bank.number}}</b></div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:10px;">
+                        <div class="col-md-6 col-sm-6 col-xs-12" style="margin-top:10px;">
+                            <label>จำนวนเงินที่โอน</label>
+                            <div class="input-group">
+                            <input type="text" name="location" class="form-control input" ng-model="Payment.amount" placeholder="100.13">
+                            <span class="input-group-addon">บาท</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12" style="margin-top:10px;">
+                            <label>วันเวลาที่โอน</label>
+                            <input type="text" name="location" class="form-control input" ng-model="Payment.time" placeholder="100.13">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <a class="btn btn-default" data-dismiss="modal">Cancel</a>
+                  <button type="submit" class="btn btn-primary">Send</button>
+                </div>
+            </div>
+        </div>
+        </form>
     </div>
     <?php
         if(isset($model)){

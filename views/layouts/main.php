@@ -80,11 +80,11 @@ AppAsset::register($this);
                 <p class="pull-left">&copy; <?= date('Y') ?> KaiiteM All Rights Reserved.</p>
             </div>
         </div>
-        <div class="row" style="margin-top:20px;">
+        <!-- <div class="row" style="margin-top:20px;">
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <button class="btn btn-warning">DONATE NOW</button>
             </div>
-        </div>
+        </div> -->
     </div>
 </footer>
 <?php $this->endBody() ?>

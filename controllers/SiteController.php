@@ -55,6 +55,10 @@ class SiteController extends Controller
     {
         return $this->render('index');
     }
+    public function actionItem()
+    {
+        return $this->render('item');
+    }
     public function actionFacebook(){
         $social = Yii::$app->getModule('social');
         $app_id = $social->facebook["appId"];
@@ -429,44 +433,68 @@ class SiteController extends Controller
         }
     }
 
-    public function actionItem()
-    {
-        return $this->render('item');
-    }
     public function actionStore()
     {
-        return $this->render('store');
+        if(!Yii::$app->user->isGuest){
+            return $this->render('store');
+        }
+        else{
+            return $this->goHome();
+        }
     }
     public function actionCheckout(){
-
-        $request = Yii::$app->request;
-        $id = $request->get('id');
-        $order = Orders::find()->where(['id' => $id])->one();
-        $shopID = null;
-        if($order){
-            $shopID = $order->shop_id;
+        if(!Yii::$app->user->isGuest){
+            $request = Yii::$app->request;
+            $id = $request->get('id');
+            $order = Orders::find()->where(['id' => $id])->one();
+            $shopID = null;
+            if($order){
+                $shopID = $order->shop_id;
+            }
+            $tmt = Tmtopup::find()->where(['fbid' => $shopID])->one();
+            return $this->render('checkout', [
+                'model' => $tmt,
+            ]);
         }
-        $tmt = Tmtopup::find()->where(['fbid' => $shopID])->one();
-        return $this->render('checkout', [
-            'model' => $tmt,
-        ]);
+        else{
+            return $this->goHome();
+        }
     }
     public function actionProfile()
     {
-        return $this->render('profile');
+        if(!Yii::$app->user->isGuest){
+            return $this->render('profile');
+        }
+        else{
+            return $this->goHome();
+        }
     }
     public function actionSetting()
     {
-        return $this->render('setting');
+        if(!Yii::$app->user->isGuest){
+            return $this->render('setting');
+        }
+        else{
+            return $this->goHome();
+        }
     }
     public function actionStock()
     {
-        return $this->render('stock');
+        if(!Yii::$app->user->isGuest){
+            return $this->render('stock');
+        }
+        else{
+            return $this->goHome();
+        }
     }
-
-    public function actionReactivate()
+    public function actionOrder()
     {
-        return $this->render('reactivate');
+        if(!Yii::$app->user->isGuest){
+            return $this->render('order');
+        }
+        else{
+            return $this->goHome();
+        }
     }
     public function onAuthSuccess($client)
     {
@@ -499,7 +527,6 @@ class SiteController extends Controller
     public function actionLogout()
     {
         Yii::$app->user->logout();
-
         return $this->goHome();
     }
     public function actionMark()

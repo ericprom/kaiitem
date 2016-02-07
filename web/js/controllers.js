@@ -283,7 +283,7 @@ controllers.controller('CheckoutController', ['API', '$scope', '$location', '$wi
             if(!hasTmt){
                 $scope.Checkout.bank = $scope.Checkout.method[0].bank[0];
             }
-            $scope.Checkout.payment = $scope.Checkout.method[0];
+            $scope.paymentSelect($scope.Checkout.method[0]);
         }
 
         $scope.increase = function(method){
@@ -309,11 +309,21 @@ controllers.controller('CheckoutController', ['API', '$scope', '$location', '$wi
                 API.Toaster('warning','KaiiteM','คุณไม่สามารถสั่งต่ำกว่าจำนวนขั้นต่ำได้');
             }
         }
+        $scope.userNote = '';
         $scope.paymentSelect = function(method){
             $scope.Checkout.payment = method;
+            console.log(method.code);
+            switch(method.code){
+                case 'tmtopup':
+                  $scope.userNote = 'หมายเหตุ : การชำระด้วย TMTopup คุณต้องจ่ายจะกว่าจะครบรายการสินค้า เช่น ซื้อไอเทมราคา 300 จ่ายด้วยบัตรทรู ราคาใลละ 100 ต้องจ่าย 3 ครั้งจนครบจำนวนเงินที่ต้องชำระ';
+                  break;
+                case 'transfer':
+                  $scope.userNote = 'หมายเหตุ : กรุณาโอนเงินให้เรียบร้อยก่อนกด "แจ้งโอนเงิน" การโอนเงินเป็นเศษสตางค์ จะทำให้คุณได้รับของเร็วขึ้น เช่น 100.13 บาท';
+                  break;
+            }
         }
         $scope.selectedBank = function(method, bank){
-            $scope.Checkout.payment = method;
+            $scope.paymentSelect(method);
             $scope.Checkout.bank = bank;
         }
         $scope.makePayment = function(){
@@ -328,10 +338,17 @@ controllers.controller('CheckoutController', ['API', '$scope', '$location', '$wi
                         }
                     }
                     else{
+                        angular.element('#tmn_password').focus();
                         API.Toaster('warning','KaiiteM','กรุณากรอกข้อมูลให้ครบ');
                     }
                     break;
+                case "transfer":
+                    $('#payment-notice').modal('show');
+                    break;
             }
+        }
+        $scope.submitForm = function(){
+            $('#payment-notice').modal('hide');
         }
     }
 ]);

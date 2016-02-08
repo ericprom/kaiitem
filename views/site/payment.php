@@ -27,6 +27,16 @@ Icon::map($this);
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <h3>รายการแสดงที่มาการเงิน</h3>
+                            <ul class="nav nav-tabs nav-justified">
+                                <li class="active"><a href="#online-payment" data-toggle="tab">บัญชีออนไลน์</a></li>
+                                <li><a href="#bank-transfer" data-toggle="tab">บัญชีธนาคาร</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div id="online-payment" class="tab-pane active">
+                                </div>
+                                <div id="bank-transfer" class="tab-pane">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

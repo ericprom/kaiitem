@@ -129,6 +129,18 @@ class SiteController extends Controller
                             $item = Items::find(['fbid'=>$fbid,'status' => 1])->where(['<>', 'status', 0])->with('shops')->asArray()->all();
                             $result["data"] = $item;
                             break;
+                        case "order":
+                            switch ($options["action"]) {
+                                case 'purchase':
+                                    $purchase = Orders::find()->where(['and', ['=','buyer_id', $fbid], ['<>', 'status', 0]])->limit($options["limit"])->offset($options["skip"])->with(['items','shops'])->asArray()->all();
+                                    $result["data"]["purchase"] = $purchase;
+                                    break;
+                                case 'sale':
+                                    $sale = Orders::find()->where(['and', ['=','buyer_id', $fbid], ['<>', 'status', 0]])->limit($options["limit"])->offset($options["skip"])->with(['items'])->asArray()->all();
+                                    $result["data"]["sale"] = $sale;
+                                    break;
+                            }
+                            break;
                     }
                     $result["status"] = TRUE;
                 }

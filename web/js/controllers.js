@@ -716,6 +716,43 @@ controllers.controller('StockController', ['API','$scope', '$http', '$window', '
 
 controllers.controller('OrderController', ['API','$scope', '$http', '$window', '$location',
     function (API,$scope, $http, $window, $location) {
+        $scope.Order = {
+            sale:[],
+            purchase:[]
+        };
+        $scope.limit = 10;
+        $scope.skip = {
+            sale:0,
+            purchase:0
+        }
+        $scope.feedContent = function(action,skip,limit){
+            API.Select({filter: {section:"order", action:action,skip:skip,limit:limit}}).then(function (result) {
+                if(result.status){
+                    switch(action){
+                        case "sale":
+                            if(result.data.sale.length>0){
+                                angular.forEach(result.data.sale, function (element, index, array) {
+                                    $scope.Order.sale.push(element);
+                                });
+                            }
+                            break;
+                        case "purchase":
+                            if(result.data.purchase.length>0){
+                                angular.forEach(result.data.purchase, function (element, index, array) {
+                                    $scope.Order.purchase.push(element);
+                                });
+                            }
+                            break;
+                    }
+                }
+            });
+        }
+        $scope.feedContent('sale',$scope.skip.sale,$scope.limit);
+        $scope.feedContent('purchase',$scope.skip.purchase,$scope.limit);
+        $scope.loadMore = function(action){
+            $scope.skip[action] += 10;
+            $scope.feedContent(action,$scope.skip[action],$scope.limit);
+        }
     }
 ]);
 controllers.controller('PaymentController', ['API','$scope', '$http', '$window', '$location',

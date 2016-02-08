@@ -43,6 +43,24 @@ controllers.filter("GetYouTubeID", function ($sce) {
     return video_id;
   }
 });
+controllers.filter("AbbreviateNumber", function ($sce) {
+    return function (value) {
+       var newValue = value;
+        if (value >= 1000) {
+            var suffixes = ["", "k", "m", "b","t"];
+            var suffixNum = Math.floor( (""+value).length/3 );
+            var shortValue = '';
+            for (var precision = 2; precision >= 1; precision--) {
+                shortValue = parseFloat( (suffixNum != 0 ? (value / Math.pow(1000,suffixNum) ) : value).toPrecision(precision));
+                var dotLessShortValue = (shortValue + '').replace(/[^a-zA-Z 0-9]+/g,'');
+                if (dotLessShortValue.length <= 2) { break; }
+            }
+            if (shortValue % 1 != 0)  shortNum = shortValue.toFixed(1);
+            newValue = shortValue+suffixes[suffixNum];
+        }
+        return newValue;
+    }
+});
 controllers.factory('API', function($window,$q,$timeout,$http,$rootScope,toaster,$location){
     var Select = function(param) {
         $rootScope.processing = true;
@@ -117,6 +135,7 @@ controllers.controller('MainController', ['API','$scope', '$location', '$window'
             console.log(result);
             if(result.status){
                 $scope.Items = result.data;
+                abbreviateNumber
             }
         });
     }
@@ -152,6 +171,9 @@ controllers.controller('ItemController', ['API','$scope', '$location', '$window'
                 API.Toaster('warning','KaiiteM','คุณไม่สามารถสั่งต่ำกว่าจำนวนขั้นต่ำได้');
             }
         }
+        $scope.confirmCheckout = function () {
+            $('#confirm-checkout').modal('show');
+        };
         $scope.ordering = false;
         $scope.orderNow = function(){
             $scope.ordering = true;
@@ -160,6 +182,7 @@ controllers.controller('ItemController', ['API','$scope', '$location', '$window'
                 $scope.ordering = false;
                 if(result.status){
                     if(result.data != null){
+                        $('#confirm-checkout').modal('hide');
                         $window.location=$window.location.pathname.split('/item/')[0]+'/checkout/'+result.data.id;
                     }
                 }
@@ -321,7 +344,7 @@ controllers.controller('CheckoutController', ['API', '$scope', '$location', '$wi
             $scope.Checkout.payment = method;
             switch(method.code){
                 case 'tmtopup':
-                  $scope.userNote = 'หมายเหตุ : การชำระด้วย TMTopup คุณต้องจ่ายจะกว่าจะครบรายการสินค้า เช่น ซื้อไอเทมราคา 300 จ่ายด้วยบัตรทรู ราคาใบละ 100 ต้องจ่าย 3 ครั้งจนครบจำนวนเงินที่ต้องชำระ';
+                  $scope.userNote = 'หมายเหตุ : การชำระผ่าน True Money มีค่าธรรมเนียม 14.9% หักจากเงินที่เติม';
                   break;
                 case 'transfer':
                   $scope.userNote = 'หมายเหตุ : กรุณาโอนเงินให้เรียบร้อยก่อนกด "แจ้งโอนเงิน" การโอนเงินเป็นเศษสตางค์ จะทำให้คุณได้รับของเร็วขึ้น เช่น 100.13 บาท';

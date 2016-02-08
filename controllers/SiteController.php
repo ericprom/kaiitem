@@ -618,46 +618,48 @@ class SiteController extends Controller
     }
     public function actionMark()
     {
-        $request = Yii::$app->request;
-        if ($request->isPost) {
-            $param = array("filter"=>FALSE);
-            foreach ($param as $key => $val) {
-                if (isset($_REQUEST[$key])) {
-                    $param[$key] = $_REQUEST[$key];
+        if(!Yii::$app->user->isGuest){
+            $request = Yii::$app->request;
+            if ($request->isPost) {
+                $param = array("filter"=>FALSE);
+                foreach ($param as $key => $val) {
+                    if (isset($_REQUEST[$key])) {
+                        $param[$key] = $_REQUEST[$key];
+                    }
                 }
-            }
-            $result = array("status" => FALSE, "data" => "");
-            try {
-                $options = array();
-                if (is_array($param["filter"]) ) {
-                    $options = $param["filter"];
-                    if (gettype($options["data"]) == "string") {
-                        $data = json_decode($options["data"], TRUE);
+                $result = array("status" => FALSE, "data" => "");
+                try {
+                    $options = array();
+                    if (is_array($param["filter"]) ) {
+                        $options = $param["filter"];
+                        if (gettype($options["data"]) == "string") {
+                            $data = json_decode($options["data"], TRUE);
 
-                    } else {
-                        $data = json_encode($options["data"]);
-                        $data = json_decode($data, TRUE);
+                        } else {
+                            $data = json_encode($options["data"]);
+                            $data = json_decode($data, TRUE);
+                        }
+                        $fbid = Yii::$app->user->identity->fbid;
+                        switch($options["section"]){
+                            case "item":
+                                $item = Items::findOne(['id'=> $data["id"]]);
+                                $item->seen += 1;
+                                $item->update();
+                                $result["data"] = $item->attributes;
+                                break;
+                        }
+                        $result["toast"] = 'success';
+                        $result["status"] = TRUE;
+                        $result["message"] =  "นับสถิติข้อมูลเรียบร้อย";
                     }
-                    $fbid = Yii::$app->user->identity->fbid;
-                    switch($options["section"]){
-                        case "item":
-                            $item = Items::findOne(['id'=> $data["id"]]);
-                            $item->seen += 1;
-                            $item->update();
-                            $result["data"] = $item->attributes;
-                            break;
-                    }
-                    $result["toast"] = 'success';
-                    $result["status"] = TRUE;
-                    $result["message"] =  "นับสถิติข้อมูลเรียบร้อย";
+                } catch(Exceptions $ex) {
+                    $result["status"] = FALSE;
+                    $result["toast"] = 'warning';
+                    $result["error"] = $ex;
+                    $result["message"] =  "เกิดข้อผิดพลาด ไม่สามารถบันทึกข้อมูลได้";
                 }
-            } catch(Exceptions $ex) {
-                $result["status"] = FALSE;
-                $result["toast"] = 'warning';
-                $result["error"] = $ex;
-                $result["message"] =  "เกิดข้อผิดพลาด ไม่สามารถบันทึกข้อมูลได้";
+                echo json_encode($result);
             }
-            echo json_encode($result);
         }
     }
 }

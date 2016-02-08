@@ -53,7 +53,7 @@ Icon::map($this);
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
-                            <button class="btn btn-block btn-success btn-lg" ng-click="orderNow()">
+                            <button class="btn btn-block btn-success btn-lg" ng-click="confirmCheckout()">
                                 <i class="fa" ng-class="(ordering && processing)?'fa-spinner fa-spin':' fa-shopping-cart';"></i> ซื้อเลย
                             </button>
                         </div>
@@ -122,6 +122,22 @@ Icon::map($this);
                     <div class="clearfix"></div>
                 </div>
                 <?php }?>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="confirm-checkout" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <i class="fa fa-check-square-o"></i>  <b>ยืนยันการสั่งซื้อ</b>
+                </div>
+                <div class="modal-body">
+                    คุณต้องการที่จะสั่งซื้อ <b>{{Item.title}}</b> ใช่หรือไม่?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">ยกเลิก</button>
+                    <a class="btn btn-success btn-ok" ng-click="orderNow()">ยืนยัน</a>
+                </div>
             </div>
         </div>
     </div>

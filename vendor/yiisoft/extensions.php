@@ -121,4 +121,13 @@ return array (
       '@kartik/social' => $vendorDir . '/kartik-v/yii2-social',
     ),
   ),
+  'yiisoft/yii2-sphinx' => 
+  array (
+    'name' => 'yiisoft/yii2-sphinx',
+    'version' => '2.0.5.0',
+    'alias' => 
+    array (
+      '@yii/sphinx' => $vendorDir . '/yiisoft/yii2-sphinx',
+    ),
+  ),
 );

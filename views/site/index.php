@@ -30,7 +30,7 @@ $this->title = 'My Yii Application';
                     </div>
                     <div class="item-review">
                         <!-- <i class="fa fa-heart-o"></i> {{get.liked}} -->
-                        <i class="fa fa-eye"></i> {{get.seen}}
+                        <i class="fa fa-eye"></i> {{get.seen | AbbreviateNumber}}
                         <?php if(!Yii::$app->user->isGuest){ ?>
                             <span class="item-price">‎฿ {{get.transfer_price}}</span>
                         <?php }?>

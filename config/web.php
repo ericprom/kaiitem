@@ -44,6 +44,12 @@ $config = [
         ]
     ],
     'components' => [
+        'sphinx' => [
+            'class' => 'yii\sphinx\Connection',
+            'dsn' => 'mysql:host=127.0.0.1;port=9306;',
+            'username' => 'root',
+            'password' => 'root',
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'itemojkiyd',

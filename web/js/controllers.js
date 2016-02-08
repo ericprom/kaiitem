@@ -725,12 +725,17 @@ controllers.controller('OrderController', ['API','$scope', '$http', '$window', '
             sale:0,
             purchase:0
         }
+        $scope.total = {
+            purchase:0,
+            sale:0
+        }
         $scope.feedContent = function(action,skip,limit){
             API.Select({filter: {section:"order", action:action,skip:skip,limit:limit}}).then(function (result) {
                 if(result.status){
                     switch(action){
                         case "sale":
                             if(result.data.sale.length>0){
+                                $scope.total.sale = result.data.total_sale;
                                 angular.forEach(result.data.sale, function (element, index, array) {
                                     $scope.Order.sale.push(element);
                                 });
@@ -738,6 +743,7 @@ controllers.controller('OrderController', ['API','$scope', '$http', '$window', '
                             break;
                         case "purchase":
                             if(result.data.purchase.length>0){
+                                $scope.total.purchase = result.data.total_purchase;
                                 angular.forEach(result.data.purchase, function (element, index, array) {
                                     $scope.Order.purchase.push(element);
                                 });

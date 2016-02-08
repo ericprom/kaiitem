@@ -133,11 +133,15 @@ class SiteController extends Controller
                             switch ($options["action"]) {
                                 case 'purchase':
                                     $purchase = Orders::find()->where(['and', ['=','buyer_id', $fbid], ['<>', 'status', 0]])->limit($options["limit"])->offset($options["skip"])->with(['items','shops'])->asArray()->all();
+                                    $total_purchase = Orders::find()->where(['and', ['=','buyer_id', $fbid], ['<>', 'status', 0]])->all();
                                     $result["data"]["purchase"] = $purchase;
+                                    $result["data"]["total_purchase"] = count($total_purchase);
                                     break;
                                 case 'sale':
-                                    $sale = Orders::find()->where(['and', ['=','buyer_id', $fbid], ['<>', 'status', 0]])->limit($options["limit"])->offset($options["skip"])->with(['items'])->asArray()->all();
+                                    $sale = Orders::find()->where(['and', ['=','shop_id', $fbid], ['<>', 'status', 0]])->limit($options["limit"])->offset($options["skip"])->with(['items'])->asArray()->all();
+                                    $total_sale = Orders::find()->where(['and', ['=','shop_id', $fbid], ['<>', 'status', 0]])->all();
                                     $result["data"]["sale"] = $sale;
+                                    $result["data"]["total_sale"] = count($total_sale);
                                     break;
                             }
                             break;

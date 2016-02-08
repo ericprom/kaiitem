@@ -26,7 +26,7 @@ Icon::map($this);
                 <div id="purchase" class="tab-pane active">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <h3>รายการสั่งซื้อทั้งหมด</h3>
+                            <h3>รายการสั่งซื้อทั้งหมด {{total.purchase}} รายการ</h3>
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
@@ -60,7 +60,7 @@ Icon::map($this);
                 <div id="sale" class="tab-pane">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <h3>รายการขายทั้งหมด</h3>
+                            <h3>รายการขายทั้งหมด {{total.sale}} รายการ</h3>
                             <table class="table table-striped">
                                 <thead>
                                     <tr>

@@ -41,6 +41,7 @@ Icon::map($this);
                                             <i class="fa fa-calendar"></i> {{get.created_on*1000 | date:'dd/MM/yyyy'}}
                                         </td>
                                         <td>
+                                            <i class="fa fa-trash"  style="cursor:pointer;" ng-click="cencelOrder(get)"></i>
                                             <a href="checkout/{{get.id}}">
                                                 {{get.items[0].title}}
                                             </a>
@@ -96,6 +97,23 @@ Icon::map($this);
         </div>
     </div>
     <div class="clearfix"></div>
+
+    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <i class="fa fa-times"></i>  <b>ระบบยกเลิกการสั่งซื้อสินค้า</b>
+                </div>
+                <div class="modal-body">
+                    คุณต้องการที่จะยกเลิกการสั่งซื้อ <b>{{deletedObj.items[0].title}}</b> ใช่หรือไม่?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">ยกเลิก</button>
+                    <a class="btn btn-danger btn-ok" ng-click="oKDelete()">ยืนยัน</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </div>
 

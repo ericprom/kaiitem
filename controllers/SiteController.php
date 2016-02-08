@@ -434,6 +434,13 @@ class SiteController extends Controller
                             $item->update();
                             $result["data"] = $item->attributes;
                             break;
+                        case "order":
+                            $item = Orders::findOne(['id'=> $data["id"]]);
+                            $item->status = 0;
+                            $item->updated_on = time();
+                            $item->update();
+                            $result["data"] = $item->attributes;
+                            break;
                     }
                     $result["toast"] = 'success';
                     $result["status"] = TRUE;

@@ -759,6 +759,22 @@ controllers.controller('OrderController', ['API','$scope', '$http', '$window', '
             $scope.skip[action] += 10;
             $scope.feedContent(action,$scope.skip[action],$scope.limit);
         }
+        $scope.deletedObj = {};
+        $scope.cencelOrder = function (data) {
+            $('#confirm-delete').modal('show');
+            $scope.deletedObj = data;
+        };
+        $scope.oKDelete = function () {
+            API.Remove($scope.Order.purchase,$scope.deletedObj);
+            $('#confirm-delete').modal('hide');
+            var criteria = {filter: {section:"order", "data":$scope.deletedObj}};
+            API.Delete(criteria).then(function(result){
+                if (result.status) {
+                    $scope.total.purchase -= 1;
+                    API.Toaster(result.toast,'KaiiteM',result.message);
+                }
+            });
+        };
     }
 ]);
 controllers.controller('PaymentController', ['API','$scope', '$http', '$window', '$location',

@@ -131,13 +131,25 @@ controllers.factory('API', function($window,$q,$timeout,$http,$rootScope,toaster
 });
 controllers.controller('MainController', ['API','$scope', '$location', '$window',
     function (API, $scope, $location, $window) {
-        API.Select({filter: {section:"item"}}).then(function (result) {
-            console.log(result);
-            if(result.status){
-                $scope.Items = result.data;
-                abbreviateNumber
-            }
-        });
+        $scope.Items = [];
+        $scope.limit = 10;
+        $scope.skip = 0;
+        $scope.total = 0;
+        $scope.feedItem = function(skip,limit){
+            API.Select({filter: {section:"item",skip:skip,limit:limit}}).then(function (result) {
+                if(result.status){
+                    $scope.total = result.data.total;
+                    angular.forEach(result.data.item, function (element, index, array) {
+                        $scope.Items.push(element);
+                    });
+                }
+            });
+        }
+        $scope.feedItem($scope.skip,$scope.limit);
+        $scope.loadMoreItem = function(){
+            $scope.skip += 10;
+            $scope.feedItem($scope.skip,$scope.limit);
+        }
     }
 ]);
 controllers.controller('ItemController', ['API','$scope', '$location', '$window','$timeout',
@@ -363,8 +375,12 @@ controllers.controller('CheckoutController', ['API', '$scope', '$location', '$wi
                             $scope.Truemoney.shop_id = $scope.Item.shop_id;
                             $scope.Truemoney.tmt_id = $scope.TMTopup.id;
                             $scope.Truemoney.cash_card = $scope.TMN.password;
-                            console.log($scope.Truemoney);
-                            // submit_tmnc();
+                            var criteria = {filter: {section:"topup", "data":$scope.Truemoney}};
+                            API.Insert(criteria).then(function (result) {
+                                if(result.status){
+                                    submit_tmnc();
+                                }
+                            });
                         }
                         else{
                             API.Toaster('warning','KaiiteM','หมายเลขเติมเงินไม่ครบ 14 หลัก');
@@ -806,7 +822,7 @@ controllers.controller('OrderController', ['API','$scope', '$http', '$window', '
 ]);
 controllers.controller('PaymentController', ['API','$scope', '$http', '$window', '$location',
     function (API,$scope, $http, $window, $location) {
-      $scope.Money = {
+        $scope.Money = {
             transfer:[],
             notify:[]
         };
@@ -819,7 +835,7 @@ controllers.controller('PaymentController', ['API','$scope', '$http', '$window',
             transfer:0,
             notify:0
         }
-        $scope.feedContent = function(action,skip,limit){
+        $scope.feedTransfer = function(action,skip,limit){
             API.Select({filter: {section:"money", action:action,skip:skip,limit:limit}}).then(function (result) {
                 if(result.status){
                     switch(action){
@@ -843,11 +859,11 @@ controllers.controller('PaymentController', ['API','$scope', '$http', '$window',
                 }
             });
         }
-        $scope.feedContent('transfer',$scope.skip.transfer,$scope.limit);
-        $scope.feedContent('notify',$scope.skip.notify,$scope.limit);
-        $scope.loadMore = function(action){
+        $scope.feedTransfer('transfer',$scope.skip.transfer,$scope.limit);
+        $scope.feedTransfer('notify',$scope.skip.notify,$scope.limit);
+        $scope.loadMoreTransfer = function(action){
             $scope.skip[action] += 10;
-            $scope.feedContent(action,$scope.skip[action],$scope.limit);
+            $scope.feedTransfer(action,$scope.skip[action],$scope.limit);
         }
         $scope.moneyAccept = function(data){
             var criteria = {filter: {section:"transfer",action:"accept", "data":data}};
@@ -860,6 +876,68 @@ controllers.controller('PaymentController', ['API','$scope', '$http', '$window',
         }
         $scope.moneyFraud = function(data){
             var criteria = {filter: {section:"transfer",action:"fraud", "data":data}};
+            API.Update(criteria).then(function (result) {
+                if(result.status){
+                    data.status = 3;
+                }
+                API.Toaster(result.toast,'KaiiteM',result.message);
+            });
+        }
+        //true money
+        $scope.True = {
+            topup:[],
+            money:[]
+        };
+        $scope.skip = {
+            topup:0,
+            money:0
+        }
+        $scope.total = {
+            topup:0,
+            money:0
+        }
+        $scope.feedTrue = function(action,skip,limit){
+            API.Select({filter: {section:"true", action:action,skip:skip,limit:limit}}).then(function (result) {
+                console.log(result);
+                if(result.status){
+                    switch(action){
+                        case "topup":
+                            if(result.data.topup.length>0){
+                                $scope.total.topup = result.data.total_topup;
+                                angular.forEach(result.data.topup, function (element, index, array) {
+                                    $scope.True.topup.push(element);
+                                });
+                            }
+                            break;
+                        case "money":
+                            if(result.data.money.length>0){
+                                $scope.total.money = result.data.total_money;
+                                angular.forEach(result.data.money, function (element, index, array) {
+                                    $scope.True.money.push(element);
+                                });
+                            }
+                            break;
+                    }
+                }
+            });
+        }
+        $scope.feedTrue('topup',$scope.skip.topup,$scope.limit);
+        $scope.feedTrue('money',$scope.skip.money,$scope.limit);
+        $scope.loadMoreTrue = function(action){
+            $scope.skip[action] += 10;
+            $scope.feedTrue(action,$scope.skip[action],$scope.limit);
+        }
+        $scope.topupAccept = function(data){
+            var criteria = {filter: {section:"topup",action:"accept", "data":data}};
+            API.Update(criteria).then(function (result) {
+                if(result.status){
+                    data.status = 2;
+                }
+                API.Toaster(result.toast,'KaiiteM',result.message);
+            });
+        }
+        $scope.topupFraud = function(data){
+            var criteria = {filter: {section:"topup",action:"fraud", "data":data}};
             API.Update(criteria).then(function (result) {
                 if(result.status){
                     data.status = 3;

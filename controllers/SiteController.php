@@ -61,6 +61,16 @@ class SiteController extends Controller
     {
         return $this->render('item');
     }
+    public function actionSearch(){
+        // $query = Items::find()->query([
+        //     "fuzzy_like_this" => [
+        //         "fields" => ["title", "detail"],
+        //         "like_text" => "CS:GO",
+        //         "max_query_terms" => 12
+        //     ]
+        // ]);
+        // var_dump($query->all());
+    }
     public function actionFacebook(){
         $social = Yii::$app->getModule('social');
         $app_id = $social->facebook["appId"];
@@ -116,8 +126,10 @@ class SiteController extends Controller
                             $result["data"] = $account;
                             break;
                         case "item":
-                            $item = Items::find()->where(['and', ['<>','available', 0], ['<>', 'status', 0]])->with('shops')->asArray()->all();
-                            $result["data"] = $item;
+                            $item = Items::find()->where(['and', ['<>','available', 0], ['<>', 'status', 0]])->limit($options["limit"])->offset($options["skip"])->with('shops')->asArray()->all();
+                            $total = Items::find()->where(['and', ['<>','available', 0], ['<>', 'status', 0]])->all();
+                            $result["data"]["item"] = $item;
+                            $result["data"]["total"] = count($total);
                             break;
                         case "detail":
                             $item = Items::find()->where(['and', ['=','id', $options["item"]], ['<>', 'status', 0]])->with('shops')->asArray()->all();
@@ -160,6 +172,22 @@ class SiteController extends Controller
                                     $total_notify = MoneyTransfers::find()->where(['and', ['=','shop_id', $fbid], ['<>', 'status', 0]])->all();
                                     $result["data"]["notify"] = $notify;
                                     $result["data"]["total_notify"] = count($total_notify);
+                                    break;
+                            }
+                            break;
+                        case "true":
+                            switch ($options["action"]) {
+                                case 'topup':
+                                    $topup = TrueMoneys::find()->where(['and', ['=','payer_id', $fbid], ['<>', 'status', 0]])->limit($options["limit"])->offset($options["skip"])->asArray()->all();
+                                    $total_topup = TrueMoneys::find()->where(['and', ['=','payer_id', $fbid], ['<>', 'status', 0]])->all();
+                                    $result["data"]["topup"] = $topup;
+                                    $result["data"]["total_topup"] = count($total_topup);
+                                    break;
+                                case 'money':
+                                    $money = TrueMoneys::find()->where(['and', ['=','shop_id', $fbid], ['<>', 'status', 0]])->limit($options["limit"])->offset($options["skip"])->asArray()->all();
+                                    $total_money = TrueMoneys::find()->where(['and', ['=','shop_id', $fbid], ['<>', 'status', 0]])->all();
+                                    $result["data"]["money"] = $money;
+                                    $result["data"]["total_money"] = count($total_money);
                                     break;
                             }
                             break;
@@ -276,6 +304,21 @@ class SiteController extends Controller
                             $transfer->status = 1;
                             $transfer->save();
                             $result["data"] = $transfer->attributes;
+                            $result["toast"] = 'success';
+                            $result["status"] = TRUE;
+                            $result["message"] =  "ระบบบันทึกข้อมูลการแจ้งโอนเงินแล้ว";
+                            break;
+                        case "topup":
+                            $truemoney = new TrueMoneys();
+                            $truemoney->payer_id = $fbid;
+                            (isset($data["order_id"]))?$truemoney->order_id = $data["order_id"]:$truemoney->order_id = '';
+                            (isset($data["tmt_id"]))?$truemoney->tmt_id = $data["tmt_id"]:$truemoney->tmt_id = '';
+                            (isset($data["shop_id"]))?$truemoney->shop_id = $data["shop_id"]:$truemoney->shop_id = '';
+                            (isset($data["cash_card"]))?$truemoney->cash_card = $data["cash_card"]:$truemoney->cash_card = '';
+                            $truemoney->created_on = time();
+                            $truemoney->status = 1;
+                            $truemoney->save();
+                            $result["data"] = $truemoney->attributes;
                             $result["toast"] = 'success';
                             $result["status"] = TRUE;
                             $result["message"] =  "ระบบบันทึกข้อมูลการแจ้งโอนเงินแล้ว";
@@ -427,6 +470,25 @@ class SiteController extends Controller
                             $transfer->updated_on = time();
                             $transfer->update();
                             $result["data"] = $transfer->attributes;
+                            $result["toast"] = 'success';
+                            $result["status"] = TRUE;
+                            break;
+                        case "topup":
+                            $topup = TrueMoneys::findOne(['shop_id'=>$fbid, 'id'=> $data["id"]]);
+
+                            switch ($options["action"]) {
+                                case 'accept':
+                                    $topup->status =2;
+                                    $result["message"] =  "ผ่านการอนุมัติ";
+                                    break;
+                                case 'fraud':
+                                    $topup->status = 3;
+                                    $result["message"] =  "ยังไม่ผ่านการอนุมัติ";
+                                    break;
+                            }
+                            $topup->updated_on = time();
+                            $topup->update();
+                            $result["data"] = $topup->attributes;
                             $result["toast"] = 'success';
                             $result["status"] = TRUE;
                             break;

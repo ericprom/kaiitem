@@ -121,13 +121,13 @@ return array (
       '@kartik/social' => $vendorDir . '/kartik-v/yii2-social',
     ),
   ),
-  'yiisoft/yii2-sphinx' => 
+  'yiisoft/yii2-elasticsearch' => 
   array (
-    'name' => 'yiisoft/yii2-sphinx',
-    'version' => '2.0.5.0',
+    'name' => 'yiisoft/yii2-elasticsearch',
+    'version' => '2.0.3.0',
     'alias' => 
     array (
-      '@yii/sphinx' => $vendorDir . '/yiisoft/yii2-sphinx',
+      '@yii/elasticsearch' => $vendorDir . '/yiisoft/yii2-elasticsearch',
     ),
   ),
 );

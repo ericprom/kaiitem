@@ -37,6 +37,11 @@ $this->title = 'My Yii Application';
                     </div>
                 </div>
             </div>
+            <div class="col-md-3 col-sm-4 col-xs-12" style="padding-top:25px;" ng-hide="skip >= total">
+                <div class="add-new-stock center-block">
+                    <h1><i class="fa" ng-class="(processing)?'fa-spinner fa-spin':'fa-plus';" ng-click="loadMoreItem()"></i></h1>
+                </div>
+            </div>
         </div>
     </div>
 </div>

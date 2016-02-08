@@ -107,6 +107,15 @@ controllers.factory('API', function($window,$q,$timeout,$http,$rootScope,toaster
         });
         return deferred.promise;
     }
+    var Mail = function(param) {
+        $rootScope.processing = true;
+        var deferred = $q.defer();
+        $http.post($window.location.href.split('web')[0]+"web/mail", param).success(function(results) {
+            deferred.resolve(results);
+            $rootScope.processing = false;
+        });
+        return deferred.promise;
+    }
     var Toaster = function(type,title,message){
         toaster.pop({
             type: type,
@@ -120,6 +129,7 @@ controllers.factory('API', function($window,$q,$timeout,$http,$rootScope,toaster
         list.splice(index, 1);
     };
     return {
+        Mail:Mail,
         Mark:Mark,
         Select:Select,
         Insert:Insert,
@@ -212,6 +222,21 @@ controllers.controller('ItemController', ['API','$scope', '$location', '$window'
                     }
                 });
             }, random);
+        }
+        $scope.Message = {};
+        $scope.contactForm = function(email){
+            $scope.Message.email = email;
+            $('#contact-form').modal('show');
+        }
+        $scope.contactShop = function(){
+            var criteria = {filter: {section:"email", "data":$scope.Message}};
+            API.Mail(criteria).then(function(result){
+                if (result.status) {
+                    $('#contact-form').modal('hide');
+                    API.Toaster(result.toast,'KaiiteM',result.message);
+                    $scope.Message = {};
+                }
+            });
         }
     }
 ]);

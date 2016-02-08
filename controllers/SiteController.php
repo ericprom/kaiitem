@@ -724,4 +724,61 @@ class SiteController extends Controller
             }
         }
     }
+    public function actionMail()
+    {
+        if(!Yii::$app->user->isGuest){
+            $request = Yii::$app->request;
+            if ($request->isPost) {
+                $param = array("filter"=>FALSE);
+                foreach ($param as $key => $val) {
+                    if (isset($_REQUEST[$key])) {
+                        $param[$key] = $_REQUEST[$key];
+                    }
+                }
+                $result = array("status" => FALSE, "data" => "");
+                try {
+                    $options = array();
+                    if (is_array($param["filter"]) ) {
+                        $options = $param["filter"];
+                        if (gettype($options["data"]) == "string") {
+                            $data = json_decode($options["data"], TRUE);
+
+                        } else {
+                            $data = json_encode($options["data"]);
+                            $data = json_decode($data, TRUE);
+                        }
+                        $fbid = Yii::$app->user->identity->fbid;
+                        $email = Yii::$app->user->identity->email;
+                        if($email != null){
+                            switch($options["section"]){
+                                case "email":
+                                    Yii::$app->mailer->compose()
+                                    ->setFrom('support@kaiitem.com')
+                                    ->setTo($data['email'])
+                                    ->setSubject($data['topic'])
+                                    ->setTextBody($data['body'])
+                                    // ->setHtmlBody('<b>HTML content</b>')
+                                    ->send();
+                                    break;
+                            }
+                            $result["toast"] = 'success';
+                            $result["status"] = TRUE;
+                            $result["message"] =  "ส่งอีเมล์ถึงร้านค้าแล้ว";
+                        }
+                        else{
+                            $result["toast"] = 'warning';
+                            $result["status"] = FALSE;
+                            $result["message"] =  "กรุณาอัพเดทอีเมล์";
+                        }
+                    }
+                } catch(Exceptions $ex) {
+                    $result["status"] = FALSE;
+                    $result["toast"] = 'warning';
+                    $result["error"] = $ex;
+                    $result["message"] =  "เกิดข้อผิดพลาด ไม่สามารถบันทึกข้อมูลได้";
+                }
+                echo json_encode($result);
+            }
+        }
+    }
 }

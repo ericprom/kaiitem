@@ -79,9 +79,9 @@ Icon::map($this);
                 </div>
             </div>
             <!-- <div class="social-panel">
-                <button class="btn social-btn-facebook btn-sm social-btn">
+                <a class="btn social-btn-facebook btn-sm social-btn" href="http://www.fb.com/{{Item.shops[0].fbid}}" target="_blank">
                     <i class="fa fa-facebook"></i>
-                 </button>
+                 </a>
                 <button class="btn social-btn-twitter  btn-sm social-btn">
                     <i class="fa fa-twitter"></i>
                 </button>
@@ -113,15 +113,56 @@ Icon::map($this);
                 </div>
                 <?php if(!Yii::$app->user->isGuest){ ?>
                 <div class="panel-footer">
-                    <a class="btn btn-info" href="../store/{{Item.shops[0].fbid}}">
-                      <i class="fa fa-cubes"></i> สินค้าทั้งหมด
-                    </a>
-                    <a class="btn btn-default pull-right" href="../store/{{Item.shops[0].fbid}}">
-                      <i class="fa fa-comments-o"></i> ติดต่อผู้ขาย
-                    </a>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <a class="btn btn-info" href="../store/{{Item.shops[0].fbid}}">
+                              <i class="fa fa-cubes"></i> สินค้าทั้งหมด
+                            </a>
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <a class="btn btn-default pull-right" href="http://www.fb.com/{{Item.shops[0].fbid}}" target="_blank">
+                              <i class="fa fa-facebook"></i>
+                            </a>
+                            <button class="btn btn-default pull-right" ng-show="Item.shops[0].email!=''" style="margin-right: 10px;" ng-click="contactForm(Item.shops[0].email)">
+                              <i class="fa fa-envelope-o"></i>
+                            </button>
+                        </div>
+                    </div>
                     <div class="clearfix"></div>
                 </div>
                 <?php }?>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="contact-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <i class="fa fa-envelope-o"></i>  <b>ติดต่อร้านค้า</b>
+                </div>
+                <div class="modal-body">
+                    <div class="row setting-input">
+                        <div class="col-md-3 col-sm-3 col-xs-12">
+                            <label>หัวข้อ</label>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" name="email" class="form-control input" ng-model="Message.topic">
+                        </div>
+                    </div>
+                    <div class="row setting-input">
+                        <div class="col-md-3 col-sm-3 col-xs-12">
+                            <label>ข้อความ</label>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <textarea class="form-control"  ng-model="Message.body" rows="5"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">ยกเลิก</button>
+                    <a class="btn btn-success btn-ok" ng-click="contactShop()"><i class="fa fa-send"></i> ส่ง</a>
+                </div>
             </div>
         </div>
     </div>

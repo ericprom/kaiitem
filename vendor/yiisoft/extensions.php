@@ -130,4 +130,13 @@ return array (
       '@yii/elasticsearch' => $vendorDir . '/yiisoft/yii2-elasticsearch',
     ),
   ),
+  'boundstate/yii2-mailgun' => 
+  array (
+    'name' => 'boundstate/yii2-mailgun',
+    'version' => '0.0.1.0',
+    'alias' => 
+    array (
+      '@boundstate/mailgun' => $vendorDir . '/boundstate/yii2-mailgun',
+    ),
+  ),
 );

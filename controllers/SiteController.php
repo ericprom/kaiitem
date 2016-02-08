@@ -13,6 +13,8 @@ use app\models\Banks;
 use app\models\Accounts;
 use app\models\Items;
 use app\models\Orders;
+use app\models\MoneyTransfers;
+use app\models\TrueMoneys;
 
 class SiteController extends Controller
 {
@@ -145,6 +147,22 @@ class SiteController extends Controller
                                     break;
                             }
                             break;
+                        case "money":
+                            switch ($options["action"]) {
+                                case 'transfer':
+                                    $transfer = MoneyTransfers::find()->where(['and', ['=','payer_id', $fbid], ['<>', 'status', 0]])->limit($options["limit"])->offset($options["skip"])->with(['accounts'])->asArray()->all();
+                                    $total_transfer = MoneyTransfers::find()->where(['and', ['=','payer_id', $fbid], ['<>', 'status', 0]])->all();
+                                    $result["data"]["transfer"] = $transfer;
+                                    $result["data"]["total_transfer"] = count($total_transfer);
+                                    break;
+                                case 'notify':
+                                    $notify = MoneyTransfers::find()->where(['and', ['=','shop_id', $fbid], ['<>', 'status', 0]])->limit($options["limit"])->offset($options["skip"])->with(['accounts'])->asArray()->all();
+                                    $total_notify = MoneyTransfers::find()->where(['and', ['=','shop_id', $fbid], ['<>', 'status', 0]])->all();
+                                    $result["data"]["notify"] = $notify;
+                                    $result["data"]["total_notify"] = count($total_notify);
+                                    break;
+                            }
+                            break;
                     }
                     $result["status"] = TRUE;
                 }
@@ -244,6 +262,23 @@ class SiteController extends Controller
                             $result["toast"] = 'success';
                             $result["status"] = TRUE;
                             $result["message"] =  "ระบบบันทึกข้อมูลการซื้อแล้ว";
+                            break;
+                        case "transfer":
+                            $transfer = new MoneyTransfer();
+                            $transfer->payer_id = $fbid;
+                            (isset($data["order_id"]))?$transfer->order_id = $data["order_id"]:$transfer->order_id = '';
+                            (isset($data["account_id"]))?$transfer->account_id = $data["account_id"]:$transfer->account_id = '';
+                            (isset($data["shop_id"]))?$transfer->shop_id = $data["shop_id"]:$transfer->shop_id = '';
+                            (isset($data["transfer_amount"]))?$transfer->transfer_amount = $data["transfer_amount"]:$transfer->transfer_amount = '';
+                            (isset($data["transfer_date"]))?$transfer->transfer_date = $data["transfer_date"]:$transfer->transfer_date = '';
+                            (isset($data["transfer_time"]))?$transfer->transfer_time = $data["transfer_time"]:$transfer->transfer_time = '';
+                            $transfer->created_on = time();
+                            $transfer->status = 1;
+                            $transfer->save();
+                            $result["data"] = $transfer->attributes;
+                            $result["toast"] = 'success';
+                            $result["status"] = TRUE;
+                            $result["message"] =  "ระบบบันทึกข้อมูลการแจ้งโอนเงินแล้ว";
                             break;
                     }
                     $transaction->commit();
@@ -374,6 +409,26 @@ class SiteController extends Controller
                             else{
                                 $result["message"] =  "บันทึกข้อมูลเรียบร้อย";
                             }
+                            break;
+
+                        case "transfer":
+                            $transfer = MoneyTransfers::findOne(['shop_id'=>$fbid, 'id'=> $data["id"]]);
+
+                            switch ($options["action"]) {
+                                case 'accept':
+                                    $transfer->status =2;
+                                    $result["message"] =  "ยืนยันได้รับเงินแล้ว";
+                                    break;
+                                case 'fraud':
+                                    $transfer->status = 3;
+                                    $result["message"] =  "ยังไม่ได้รับเงิน";
+                                    break;
+                            }
+                            $transfer->updated_on = time();
+                            $transfer->update();
+                            $result["data"] = $transfer->attributes;
+                            $result["toast"] = 'success';
+                            $result["status"] = TRUE;
                             break;
                     }
                     $transaction->commit();

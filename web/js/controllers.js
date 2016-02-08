@@ -318,7 +318,6 @@ controllers.controller('CheckoutController', ['API', '$scope', '$location', '$wi
         }
         $scope.userNote = '';
         $scope.paymentSelect = function(method){
-            console.log(method);
             $scope.Checkout.payment = method;
             switch(method.code){
                 case 'tmtopup':
@@ -360,14 +359,19 @@ controllers.controller('CheckoutController', ['API', '$scope', '$location', '$wi
         }
         $scope.submitForm = function(){
             $scope.Transfer.shop_id = $scope.Item.shop_id;
-            $scope.Transfer.account = $scope.Checkout.account.id;
+            $scope.Transfer.account_id = $scope.Checkout.account.id;
             var _date_picker = angular.element('#transferDate').val();
             var _transfer_date= new Date(_date_picker);
             var _payment_date = moment(_transfer_date).unix();
             $scope.Transfer.transfer_date = _payment_date;
             if($scope.Transfer.transfer_amount && $scope.Transfer.transfer_date && $scope.Transfer.transfer_time){
-                console.log($scope.Transfer);
-                $('#payment-notice').modal('hide');
+                var criteria = {filter: {section:"transfer", "data":$scope.Transfer}};
+                API.Insert(criteria).then(function (result) {
+                    if(result.status){
+                      $('#payment-notice').modal('hide');
+                    }
+                    API.Toaster(result.toast,'KaiiteM',result.message);
+                });
             }
             else{
                 API.Toaster('warning','KaiiteM','กรุณากรอกข้อมูลให้ครบ');
@@ -779,5 +783,66 @@ controllers.controller('OrderController', ['API','$scope', '$http', '$window', '
 ]);
 controllers.controller('PaymentController', ['API','$scope', '$http', '$window', '$location',
     function (API,$scope, $http, $window, $location) {
+      $scope.Money = {
+            transfer:[],
+            notify:[]
+        };
+        $scope.limit = 10;
+        $scope.skip = {
+            transfer:0,
+            notify:0
+        }
+        $scope.total = {
+            transfer:0,
+            notify:0
+        }
+        $scope.feedContent = function(action,skip,limit){
+            API.Select({filter: {section:"money", action:action,skip:skip,limit:limit}}).then(function (result) {
+                if(result.status){
+                    switch(action){
+                        case "transfer":
+                            if(result.data.transfer.length>0){
+                                $scope.total.transfer = result.data.total_transfer;
+                                angular.forEach(result.data.transfer, function (element, index, array) {
+                                    $scope.Money.transfer.push(element);
+                                });
+                            }
+                            break;
+                        case "notify":
+                            if(result.data.notify.length>0){
+                                $scope.total.notify = result.data.total_notify;
+                                angular.forEach(result.data.notify, function (element, index, array) {
+                                    $scope.Money.notify.push(element);
+                                });
+                            }
+                            break;
+                    }
+                }
+            });
+        }
+        $scope.feedContent('transfer',$scope.skip.transfer,$scope.limit);
+        $scope.feedContent('notify',$scope.skip.notify,$scope.limit);
+        $scope.loadMore = function(action){
+            $scope.skip[action] += 10;
+            $scope.feedContent(action,$scope.skip[action],$scope.limit);
+        }
+        $scope.moneyAccept = function(data){
+            var criteria = {filter: {section:"transfer",action:"accept", "data":data}};
+            API.Update(criteria).then(function (result) {
+                if(result.status){
+                    data.status = 2;
+                }
+                API.Toaster(result.toast,'KaiiteM',result.message);
+            });
+        }
+        $scope.moneyFraud = function(data){
+            var criteria = {filter: {section:"transfer",action:"fraud", "data":data}};
+            API.Update(criteria).then(function (result) {
+                if(result.status){
+                    data.status = 3;
+                }
+                API.Toaster(result.toast,'KaiiteM',result.message);
+            });
+        }
     }
 ]);

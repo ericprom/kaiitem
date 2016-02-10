@@ -847,6 +847,10 @@ controllers.controller('OrderController', ['API','$scope', '$http', '$window', '
 ]);
 controllers.controller('PaymentController', ['API','$scope', '$http', '$window', '$location',
     function (API,$scope, $http, $window, $location) {
+        $scope.True = {
+            topup:[],
+            money:[]
+        };
         $scope.Money = {
             transfer:[],
             notify:[]
@@ -854,11 +858,15 @@ controllers.controller('PaymentController', ['API','$scope', '$http', '$window',
         $scope.limit = 10;
         $scope.skip = {
             transfer:0,
-            notify:0
+            notify:0,
+            topup:0,
+            money:0
         }
         $scope.total = {
             transfer:0,
-            notify:0
+            notify:0,
+            topup:0,
+            money:0
         }
         $scope.feedTransfer = function(action,skip,limit){
             API.Select({filter: {section:"money", action:action,skip:skip,limit:limit}}).then(function (result) {
@@ -909,18 +917,6 @@ controllers.controller('PaymentController', ['API','$scope', '$http', '$window',
             });
         }
         //true money
-        $scope.True = {
-            topup:[],
-            money:[]
-        };
-        $scope.skip = {
-            topup:0,
-            money:0
-        }
-        $scope.total = {
-            topup:0,
-            money:0
-        }
         $scope.feedTrue = function(action,skip,limit){
             API.Select({filter: {section:"true", action:action,skip:skip,limit:limit}}).then(function (result) {
                 console.log(result);

@@ -50,7 +50,7 @@ Icon::map($this);
                                     </tr>
                                     <tr>
                                         <td class="text-center" colspan="3">
-                                            <button class="btn btn-info" style="width:100%;" ng-click="loadMore('purchase')" ng-disabled="total.purchase<skip.purchase">
+                                            <button class="btn btn-info" style="width:100%;" ng-click="loadMore('purchase')" ng-disabled="total.purchase<skip.purchase" ng-show="total.purchase >= skip.purchase">
                                                 <i class="fa" ng-class="(processing)?'fa-spinner fa-spin':'fa-chevron-circle-down';"></i>
                                                 Load more
                                             </button>
@@ -85,7 +85,7 @@ Icon::map($this);
                                     </tr>
                                     <tr>
                                         <td class="text-center" colspan="3">
-                                            <button class="btn btn-info" style="width:100%;" ng-click="loadMore('sale')" ng-disabled="total.sale<skip.sale"> <i class="fa fa-chevron-circle-down"></i> Load more</button>
+                                            <button class="btn btn-info" style="width:100%;" ng-click="loadMore('sale')" ng-disabled="total.sale<skip.sale" ng-show="total.sale>=skip.sale"> <i class="fa fa-chevron-circle-down"></i> Load more</button>
                                         </td>
                                     </tr>
                                 </tbody>

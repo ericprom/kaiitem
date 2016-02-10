@@ -63,7 +63,7 @@ Icon::map($this);
                                             </tr>
                                             <tr>
                                                 <td class="text-center" colspan="5">
-                                                    <button class="btn btn-info" style="width:100%;" ng-click="loadMoreTrue('money')" ng-disabled="total.money<skip.money">
+                                                    <button class="btn btn-info" style="width:100%;" ng-click="loadMoreTrue('money')" ng-disabled="total.money<skip.money" ng-show="total.money>skip.money">
                                                         <i class="fa" ng-class="(processing)?'fa-spinner fa-spin':'fa-chevron-circle-down';"></i>
                                                         Load more
                                                     </button>
@@ -111,7 +111,7 @@ Icon::map($this);
                                             </tr>
                                             <tr>
                                                 <td class="text-center" colspan="5">
-                                                    <button class="btn btn-info" style="width:100%;" ng-click="loadMoreTransfer('notify')" ng-disabled="total.notify<skip.notify">
+                                                    <button class="btn btn-info" style="width:100%;" ng-click="loadMoreTransfer('notify')" ng-disabled="total.notify<skip.notify" ng-show="total.notify>skip.notify">
                                                         <i class="fa" ng-class="(processing)?'fa-spinner fa-spin':'fa-chevron-circle-down';"></i>
                                                         Load more
                                                     </button>
@@ -158,7 +158,7 @@ Icon::map($this);
                                             </tr>
                                             <tr>
                                                 <td class="text-center" colspan="5">
-                                                    <button class="btn btn-info" style="width:100%;" ng-click="loadMoreTrue('topup')" ng-disabled="total.topup<skip.topup">
+                                                    <button class="btn btn-info" style="width:100%;" ng-click="loadMoreTrue('topup')" ng-disabled="total.topup<skip.topup" ng-show="total.topup>skip.topup">
                                                         <i class="fa" ng-class="(processing)?'fa-spinner fa-spin':'fa-chevron-circle-down';"></i>
                                                         Load more
                                                     </button>
@@ -200,7 +200,7 @@ Icon::map($this);
                                             </tr>
                                             <tr>
                                                 <td class="text-center" colspan="5">
-                                                    <button class="btn btn-info" style="width:100%;" ng-click="loadMoreTransfer('transfer')" ng-disabled="total.transfer<skip.transfer">
+                                                    <button class="btn btn-info" style="width:100%;" ng-click="loadMoreTransfer('transfer')" ng-disabled="total.transfer<skip.transfer" ng-show="total.transfer>skip.transfer">
                                                         <i class="fa" ng-class="(processing)?'fa-spinner fa-spin':'fa-chevron-circle-down';"></i>
                                                         Load more
                                                     </button>

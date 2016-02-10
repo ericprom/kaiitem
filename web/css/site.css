@@ -2,7 +2,7 @@ html,
 body {
     background: #eeeeee;
     height: 100%;
-    overflow-y:scroll;
+    /*overflow-y:scroll;*/
 }
 .navbar > .container .navbar-brand img, .navbar > .container-fluid .navbar-brand img {
     height: 32px;

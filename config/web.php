@@ -9,9 +9,47 @@ $config = [
     'modules' => [
         'gii' => [
             'class' => 'yii\gii\Module',
+        ],
+        'social' => [
+            // the module class
+            'class' => 'kartik\social\Module',
+
+            // the global settings for the disqus widget
+            // 'disqus' => [
+            //     'settings' => ['shortname' => 'DISQUS_SHORTNAME'] // default settings
+            // ],
+
+            // the global settings for the facebook plugins widget
+            'facebook' => [
+                'appId' => '1046596572030272',
+                'secret' => 'a883dbc53a6d232568af93d9e02f03e7',
+            ],
+
+            // the global settings for the google plugins widget
+            // 'google' => [
+            //     'pageId' => 'GOOGLE_PLUS_PAGE_ID',
+            //     'clientId' => 'GOOGLE_API_CLIENT_ID',
+            // ],
+
+            // the global settings for the google analytic plugin widget
+            // 'googleAnalytics' => [
+            //     'id' => 'TRACKING_ID',
+            //     'domain' => 'TRACKING_DOMAIN',
+            // ],
+
+            // the global settings for the twitter plugins widget
+            // 'twitter' => [
+            //     'screenName' => 'TWITTER_SCREEN_NAME'
+            // ],
         ]
     ],
     'components' => [
+        'elasticsearch' => [
+            'class' => 'yii\elasticsearch\Connection',
+            'nodes' => [
+                ['http_address' => '127.0.0.1:9200'],
+            ],
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'itemojkiyd',
@@ -27,11 +65,9 @@ $config = [
             'errorAction' => 'site/error',
         ],
         'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
-            // send all mails to a file by default. You have to set
-            // 'useFileTransport' to false and configure a transport
-            // for the mailer to send real emails.
-            'useFileTransport' => true,
+            'class' => 'boundstate\mailgun\Mailer',
+            'key' => 'key-4613485ce7b9137d9a8b3c516aa26c34',
+            'domain' => 'sandboxc6a5d672bcdd436080b5661000efa459.mailgun.org',
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -60,6 +96,9 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 '' => 'site/index',
+                'item/<id:\d+>' => 'site/item',
+                'store/<id:\d+>' => 'site/store',
+                'checkout/<id:\d+>' => 'site/checkout',
                 '<action>'=>'site/<action>',
             ],
         ],

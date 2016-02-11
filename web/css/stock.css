@@ -1,0 +1,93 @@
+.stock-list {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+}
+.stock-list .stock-poster{
+    padding: 5px;
+    background: #fff;
+    overflow: hidden;
+    -webkit-border-top-left-radius: 4px;
+    -webkit-border-top-right-radius: 4px;
+    -moz-border-radius-topleft: 4px;
+    -moz-border-radius-topright: 4px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+.stock-list .stock-poster img {
+    background: #000;
+    display: block;
+    width: 100%;
+    height: auto;
+}
+.stock-list  .stock-poster .img-responsive{
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+.stock-caption {
+    height: 60px;
+    padding: 5px;
+    line-height: 2em;
+    overflow: hidden;
+}
+.stock-title{
+    font-size: 1.18em;
+}
+.stock-manage{
+    border-top: 1px solid #eee;
+    background: #fff;
+    padding: 0.65em 0.5em 0.3em 0.5em;
+    width: 100%;
+    -webkit-border-bottom-right-radius: 4px;
+    -webkit-border-bottom-left-radius: 4px;
+    -moz-border-radius-bottomright: 4px;
+    -moz-border-radius-bottomleft: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+.stock-edit{
+    float: right;
+    padding: 0;
+}
+.add-new-stock{
+    color: #ccc;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    height: 298px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    display: -webkit-flex; /* For Safari */
+    -webkit-justify-content: center; /* For Safari */
+    -webkit-align-items: center; /* For Safari */
+}
+.add-new-stock:hover{
+    color: #35BD00;
+    border: 1px solid #35BD00;
+    cursor: pointer;
+}
+.stock-item-thumb {
+  text-align: center;;
+  /*border: 1px solid #35BD00;*/
+}
+.image-cropper{
+  margin-top: 40px;
+}
+
+@media (min-width: 50em) {
+  .add-new-stock{
+    height: 267px;
+  }
+}
+@media (min-width: 75em) {
+  .add-new-stock{
+    height: 298px;
+  }
+}
+

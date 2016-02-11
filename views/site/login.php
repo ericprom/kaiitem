@@ -6,11 +6,9 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-$this->title = 'Login';
-$this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="container" style="margin-top:70px;">
 <div class="site-login">
-    <?= yii\authclient\widgets\AuthChoice::widget([
-     'baseAuthUrl' => ['site/auth'],
-]) ?>
+    <?= yii\authclient\widgets\AuthChoice::widget(['baseAuthUrl' => ['site/auth']])?>
+</div>
 </div>

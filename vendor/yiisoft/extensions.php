@@ -103,4 +103,49 @@ return array (
       '@kartik/icons' => $vendorDir . '/kartik-v/yii2-icons',
     ),
   ),
+  'ijackua/yii2-sharelinks-widget' => 
+  array (
+    'name' => 'ijackua/yii2-sharelinks-widget',
+    'version' => '9999999-dev',
+    'alias' => 
+    array (
+      '@ijackua/sharelinks' => $vendorDir . '/ijackua/yii2-sharelinks-widget',
+    ),
+  ),
+  'kartik-v/yii2-social' => 
+  array (
+    'name' => 'kartik-v/yii2-social',
+    'version' => '9999999-dev',
+    'alias' => 
+    array (
+      '@kartik/social' => $vendorDir . '/kartik-v/yii2-social',
+    ),
+  ),
+  'yiisoft/yii2-elasticsearch' => 
+  array (
+    'name' => 'yiisoft/yii2-elasticsearch',
+    'version' => '2.0.3.0',
+    'alias' => 
+    array (
+      '@yii/elasticsearch' => $vendorDir . '/yiisoft/yii2-elasticsearch',
+    ),
+  ),
+  'boundstate/yii2-mailgun' => 
+  array (
+    'name' => 'boundstate/yii2-mailgun',
+    'version' => '0.0.1.0',
+    'alias' => 
+    array (
+      '@boundstate/mailgun' => $vendorDir . '/boundstate/yii2-mailgun',
+    ),
+  ),
+  'cybercog/yii2-google-analytics' => 
+  array (
+    'name' => 'cybercog/yii2-google-analytics',
+    'version' => '0.3.1.0',
+    'alias' => 
+    array (
+      '@cybercog/yii/googleanalytics' => $vendorDir . '/cybercog/yii2-google-analytics/src',
+    ),
+  ),
 );

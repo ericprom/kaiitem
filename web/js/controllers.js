@@ -149,12 +149,36 @@ controllers.factory('API', function($window,$q,$timeout,$http,$rootScope,toaster
         Remove:Remove
     };
 });
-controllers.controller('SearchController', ['API','$scope', '$location', '$window',
-    function (API, $scope, $location, $window) {
-      $scope.searchItem = function(){
+controllers.service('searchService', function() {
+  var q = '';
+
+  var addKeyword = function(keyword) {
+      q = keyword;
+  };
+  var getKeyword = function(){
+      return q;
+  };
+  return {
+    addKeyword: addKeyword,
+    getKeyword:getKeyword
+  };
+
+});
+controllers.controller('SearchBoxController', ['API','$rootScope','$scope', '$location', '$window', 'searchService',
+    function (API, $rootScope,$scope, $location, $window, searchService) {
+        $scope.searchItem = function(){
+            searchService.addKeyword($scope.keyword);
+            $('#searchModal').modal('show');
+        }
+    }
+]);
+controllers.controller('SearchModalController', ['API','$rootScope','$scope', '$location', '$window', 'searchService',
+    function (API, $rootScope, $scope, $location, $window, searchService) {
+        $scope.keyword = searchService.getKeyword();
         console.log($scope.keyword);
-        $('#searchModal').modal('show');
-      }
+        $scope.searchNow = function(keyword){
+            $('#searchModal').modal('show');
+        }
     }
 ]);
 controllers.controller('MainController', ['API','$scope', '$location', '$window',

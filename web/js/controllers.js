@@ -158,18 +158,19 @@ controllers.controller('SearchBoxController', ['API','$rootScope','$scope', '$lo
 ]);
 controllers.controller('SearchModalController', ['API','$rootScope','$scope', '$location', '$window',
     function (API, $rootScope, $scope, $location, $window) {
-        $scope.searchNow = function(keyword){
-            if($scope.keyword){
-                API.Query({filter: {section:"item"}}).then(function (result) {
+        $scope.Items = [];
+        if($scope.keyword != ''){
+            $scope.searchNow = function(keyword){
+                API.Query({filter: {section:"item", keyword:$scope.keyword}}).then(function (result) {
                     if(result.status){
-                        console.log(result);
+                        $scope.Items = [];
+                        $scope.total = result.data.total;
+                        angular.forEach(result.data.item, function (element, index, array) {
+                            $scope.Items.push(element);
+                        });
                     }
                 });
             }
-            else{
-               API.Toaster('warning','KaiiteM','กรุณากรอกข้อมูลเพื่อค้นหา');
-            }
-            // $('#searchModal').modal('hide');
         }
     }
 ]);

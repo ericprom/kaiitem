@@ -23,7 +23,6 @@ use Yii;
  * @property double $updated_on
  * @property integer $status
  */
-// class Items extends \yii\elasticsearch\ActiveRecord
 class Items extends \yii\db\ActiveRecord
 {
     /**
@@ -73,25 +72,8 @@ class Items extends \yii\db\ActiveRecord
             'status' => 'Status',
         ];
     }
-    public function attributes()
-    {
-        // path mapping for '_id' is setup to field 'id'
-        return ['id', 'title', 'detail'];
-    }
     public function getShops()
     {
         return $this->hasMany(UserMaster::className(), ['fbid' => 'fbid']);
-    }
-    // public function getAccounts()
-    // {
-    //     return $this->hasMany(Accounts::className(), ['fbid' => 'fbid'])->with('banks');
-    // }
-    // public function getTmtopup()
-    // {
-    //     return $this->hasMany(Tmtopup::className(), ['fbid' => 'fbid']);
-    // }
-    public static function active($query)
-    {
-        $query->andWhere(['status' => 1]);
     }
 }

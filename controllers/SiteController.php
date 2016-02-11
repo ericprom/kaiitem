@@ -272,9 +272,9 @@ class SiteController extends Controller
                             $item->fbid = $fbid;
                             (isset($data["title"]))?$item->title = $data["title"]:$item->title = '';
                             (isset($data["detail"]))?$item->detail = $data["detail"]:$item->detail = '';
-                            (isset($data["quantity"]))?$item->quantity = $data["quantity"]:$item->quantity = '';
-                            (isset($data["online_price"]))?$item->online_price = $data["online_price"]:$item->online_price = '';
-                            (isset($data["transfer_price"]))?$item->transfer_price = $data["transfer_price"]:$item->transfer_price = '';
+                            (isset($data["quantity"]))?$item->quantity = (int)$data["quantity"]:$item->quantity = '';
+                            (isset($data["online_price"]))?$item->online_price = (float)$data["online_price"]:$item->online_price = '';
+                            (isset($data["transfer_price"]))?$item->transfer_price = (float)$data["transfer_price"]:$item->transfer_price = '';
                             (isset($data["thumb"]))?$item->thumb = $data["thumb"]:$item->thumb = '';
                             (isset($data["youtube"]))?$item->youtube = $data["youtube"]:$item->youtube = '';
                             $item->available = 1;
@@ -292,7 +292,7 @@ class SiteController extends Controller
                             $order = new Orders();
                             $order->buyer_id = $fbid;
                             (isset($data["id"]))?$order->item_id = $data["id"]:$order->item_id = '';
-                            (isset($data["amount"]))?$order->amount = $data["amount"]:$order->amount = '';
+                            (isset($data["amount"]))?$order->amount = (int)$data["amount"]:$order->amount = '';
                             (isset($data["fbid"]))?$order->shop_id = $data["fbid"]:$order->shop_id = '';
                             $order->created_on = time();
                             $order->status = 1;
@@ -308,7 +308,7 @@ class SiteController extends Controller
                             (isset($data["order_id"]))?$transfer->order_id = $data["order_id"]:$transfer->order_id = '';
                             (isset($data["account_id"]))?$transfer->account_id = $data["account_id"]:$transfer->account_id = '';
                             (isset($data["shop_id"]))?$transfer->shop_id = $data["shop_id"]:$transfer->shop_id = '';
-                            (isset($data["transfer_amount"]))?$transfer->transfer_amount = $data["transfer_amount"]:$transfer->transfer_amount = '';
+                            (isset($data["transfer_amount"]))?$transfer->transfer_amount = (float)$data["transfer_amount"]:$transfer->transfer_amount = '';
                             (isset($data["transfer_date"]))?$transfer->transfer_date = $data["transfer_date"]:$transfer->transfer_date = '';
                             (isset($data["transfer_time"]))?$transfer->transfer_time = $data["transfer_time"]:$transfer->transfer_time = '';
                             $transfer->created_on = time();
@@ -427,9 +427,9 @@ class SiteController extends Controller
                             $item = Items::findOne(['fbid'=>$fbid, 'id'=> $data["id"]]);
                             (isset($data["title"]))?$item->title = $data["title"]:$item->title = '';
                             (isset($data["detail"]))?$item->detail = $data["detail"]:$item->detail = '';
-                            (isset($data["quantity"]))?$item->quantity = $data["quantity"]:$item->quantity = '';
-                            (isset($data["online_price"]))?$item->online_price = $data["online_price"]:$item->online_price = '';
-                            (isset($data["transfer_price"]))?$item->transfer_price = $data["transfer_price"]:$item->transfer_price = '';
+                            (isset($data["quantity"]))?$item->quantity = (int)$data["quantity"]:$item->quantity = '';
+                            (isset($data["online_price"]))?$item->online_price = (float)$data["online_price"]:$item->online_price = '';
+                            (isset($data["transfer_price"]))?$item->transfer_price = (float)$data["transfer_price"]:$item->transfer_price = '';
                             (isset($data["thumb"]))?$item->thumb = $data["thumb"]:$item->thumb = '';
                             (isset($data["youtube"]))?$item->youtube = $data["youtube"]:$item->youtube = '';
                             $item->updated_on = time();
@@ -441,7 +441,7 @@ class SiteController extends Controller
                             break;
                         case "order":
                             $order = Orders::findOne(['buyer_id'=>$fbid, 'id'=> $data["id"]]);
-                            (isset($data["amount"]))?$order->amount = $data["amount"]:$item->amount = '';
+                            (isset($data["amount"]))?$order->amount = (int)$data["amount"]:$item->amount = '';
                             $order->updated_on = time();
                             $order->update();
                             $result["data"] = $order->attributes;

@@ -3,7 +3,6 @@
 /* @var $this yii\web\View */
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
-use yii\helpers\Url;
 use yii\helpers\Html;
 use kartik\icons\Icon;
 Icon::map($this);

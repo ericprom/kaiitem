@@ -2,7 +2,7 @@
 
 /* @var $this \yii\web\View */
 /* @var $content string */
-
+use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
@@ -73,18 +73,18 @@ AppAsset::register($this);
         <?=$content?>
         <toaster-container></toaster-container>
         <div id="searchModal" ng-controller="SearchModalController"
-            class="modal animated bounceIn"
+            class="modal modal-x animated bounceIn"
             tabindex="-1"
             role="dialog"
             aria-labelledby="myModalLabel"
             aria-hidden="true" >
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
+            <div class="modal-dialog modal-dialog-x">
+                <div class="modal-content modal-content-x">
+                    <div class="modal-header modal-header-x">
                         <div class="row">
                             <div class="col-md-10 col-sm-10 col-xs-10">
                                 <h1 id="myModalLabel"
-                                    class="modal-title">
+                                    class="modal-title modal-title-x">
                                     Search Items
                                 </h1>
                             </div>
@@ -96,11 +96,11 @@ AppAsset::register($this);
                         </div>
 
                     </div>
-                    <div class="modal-body center-block">
+                    <div class="modal-body modal-body-x center-block">
                         <div class="row">
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="input-group">
-                                    <input type="text" class="form-control input-lg" placeholder="Search for..." ng-model="keyword" ng-change="searchNow()">
+                                    <input type="text" class="form-control input-lg" placeholder="Search for..." ng-model="keyword" ng-model-options="{debounce: 500}" ng-change="searchNow()">
                                     <span class="input-group-btn">
                                         <button class="btn btn-default btn-lg" type="button" ng-click="searchNow()"><i class="fa fa-search"></i></button>
                                     </span>
@@ -115,10 +115,10 @@ AppAsset::register($this);
                                     </div>
                                     <div class="item-drift">
                                         <div class="item-poster">
-                                            <a href="web/item/{{get.id}}"  ng-show="get.thumb!=''">
+                                            <a href="<?=Url::to(['site/item'])?>/{{get.id}}"  ng-show="get.thumb!=''">
                                                 <img data-ng-src="{{get.thumb}}" class="img-responsive"/>
                                             </a>
-                                            <a href="item/{{get.id}}" ng-show="get.youtube!=''">
+                                            <a href="<?=Url::to(['site/item'])?>/{{get.id}}" ng-show="get.youtube!=''">
                                                 <img data-ng-src="http://img.youtube.com/vi/{{get.youtube | GetYouTubeID}}/0.jpg" alt="{{get.title}}" class="img-responsive"/>
                                             </a>
                                         </div>

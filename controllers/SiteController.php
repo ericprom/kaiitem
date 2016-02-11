@@ -81,7 +81,7 @@ class SiteController extends Controller
                     (isset(Yii::$app->user->identity->fbid))?$fbid=Yii::$app->user->identity->fbid:$fbid='';
                     switch($options["section"]){
                         case "item":
-                            $item = Items::find()->where(['or', ['LIKE','title', $options["keyword"]], ['LIKE','detail', $options["keyword"]]])->andWhere(['and', ['<>','available', 0], ['<>', 'status', 0]])->with('shops')->asArray()->all();
+                            $item = Items::find()->where(['or', ['LIKE','title', $options["keyword"]], ['LIKE','detail', $options["keyword"]]])->andWhere(['and', ['<>','available', 0], ['<>', 'status', 0]])->limit($options["limit"])->offset($options["skip"])->with('shops')->asArray()->all();
                             $total = Items::find()->where(['or', ['LIKE','title', $options["keyword"]], ['LIKE','detail', $options["keyword"]]])->andWhere(['and', ['<>','available', 0], ['<>', 'status', 0]])->all();
                             $result["data"]["item"] = $item;
                             $result["data"]["total"] = count($total);

@@ -159,18 +159,31 @@ controllers.controller('SearchBoxController', ['API','$rootScope','$scope', '$lo
 controllers.controller('SearchModalController', ['API','$rootScope','$scope', '$location', '$window',
     function (API, $rootScope, $scope, $location, $window) {
         $scope.Items = [];
+        $scope.limit = 10;
+        $scope.skip = 0;
+        $scope.total = 0;
+        $scope.feedSearch = function(skip,limit){
+           API.Query({filter: {section:"item", keyword:$scope.keyword,skip:skip,limit:limit}}).then(function (result) {
+                if(result.status){
+                    $scope.total = result.data.total;
+                    angular.forEach(result.data.item, function (element, index, array) {
+                        $scope.Items.push(element);
+                    });
+                }
+            });
+        }
+        $scope.loadMoreSearch = function(){
+            $scope.skip += 10;
+            $scope.feedSearch($scope.skip,$scope.limit);
+        }
         if($scope.keyword != ''){
             $scope.searchNow = function(keyword){
-                API.Query({filter: {section:"item", keyword:$scope.keyword}}).then(function (result) {
-                    if(result.status){
-                        $scope.Items = [];
-                        $scope.total = result.data.total;
-                        angular.forEach(result.data.item, function (element, index, array) {
-                            $scope.Items.push(element);
-                        });
-                    }
-                });
+                $scope.Items = [];
+                $scope.feedSearch($scope.skip,$scope.limit);
             }
+        }
+        else{
+            $scope.Items = [];
         }
     }
 ]);

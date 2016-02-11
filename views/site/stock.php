@@ -1,6 +1,7 @@
 <?php
 
 /* @var $this yii\web\View */
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\helpers\Html;
@@ -16,10 +17,10 @@ Icon::map($this);
             <div class="col-md-3 col-sm-4 col-xs-12" ng-repeat="get in Items" style="padding-top:25px;">
                 <div class="stock-list">
                     <div class="stock-poster">
-                        <a href="item/{{get.id}}" ng-show="get.thumb!=''">
+                        <a href="<?=Url::to(['site/item'])?>/{{get.id}}" ng-show="get.thumb!=''">
                             <img data-ng-src="{{get.thumb}}" class="img-responsive" ng-show="get.thumb!=''"/>
                         </a>
-                        <a href="item/{{get.id}}" ng-show="get.youtube!=''">
+                        <a href="<?=Url::to(['site/item'])?>/{{get.id}}" ng-show="get.youtube!=''">
                             <img data-ng-src="http://img.youtube.com/vi/{{get.youtube | GetYouTubeID}}/0.jpg" class="img-responsive"  ng-show="get.youtube!=''"/>
                         </a>
                     </div>

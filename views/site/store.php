@@ -2,6 +2,7 @@
 
 /* @var $this yii\web\View */
 
+use yii\helpers\Url;
 use yii\helpers\Html;
 use kartik\icons\Icon;
 Icon::map($this);
@@ -47,10 +48,10 @@ Icon::map($this);
                         </div>
                         <div class="item-drift">
                             <div class="item-poster">
-                                <a href="../item/{{get.id}}"  ng-show="get.thumb!=''">
+                                <a href="<?=Url::to(['site/item'])?>/{{get.id}}"  ng-show="get.thumb!=''">
                                     <img data-ng-src="{{get.thumb}}" class="img-responsive"/>
                                 </a>
-                                <a href="../item/{{get.id}}" ng-show="get.youtube!=''">
+                                <a href="<?=Url::to(['site/item'])?>/{{get.id}}" ng-show="get.youtube!=''">
                                     <img data-ng-src="http://img.youtube.com/vi/{{get.youtube | GetYouTubeID}}/0.jpg" alt="{{get.title}}" class="img-responsive"/>
                                 </a>
                             </div>

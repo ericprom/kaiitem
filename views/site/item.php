@@ -1,6 +1,7 @@
 <?php
 
 /* @var $this yii\web\View */
+use yii\helpers\Url;
 use kartik\social\FacebookPlugin;
 use yii\helpers\Html;
 use kartik\icons\Icon;
@@ -115,7 +116,7 @@ Icon::map($this);
                 <div class="panel-footer">
                     <div class="row">
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <a class="btn btn-info" href="../store/{{Item.shops[0].fbid}}">
+                            <a class="btn btn-info" href="<?=Url::to(['site/store'])?>/{{Item.shops[0].fbid}}">
                               <i class="fa fa-cubes"></i> สินค้าทั้งหมด
                             </a>
                         </div>

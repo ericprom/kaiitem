@@ -2,6 +2,7 @@
 
 /* @var $this yii\web\View */
 
+use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\icons\Icon;
@@ -42,7 +43,7 @@ Icon::map($this);
                                         </td>
                                         <td>
                                             <i class="fa fa-trash"  style="cursor:pointer;" ng-click="cencelOrder(get)"></i>
-                                            <a href="checkout/{{get.id}}">
+                                            <a href="<?=Url::to(['site/checkout'])?>/{{get.id}}">
                                                 {{get.items[0].title}}
                                             </a>
                                         </td>

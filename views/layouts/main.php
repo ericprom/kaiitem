@@ -59,9 +59,9 @@ AppAsset::register($this);
         </li>
       </ul>';
     }
-    echo '<form class="navbar-form" role="search" ng-controller="SearchBoxController" ng-submit="searchItem()">
+    echo '<form class="navbar-form" role="search" ng-controller="SearchBoxController">
         <div class="form-group has-feedback">
-            <input id="searchbox" type="text" placeholder="Search" class="form-control" ng-model="keyword" ng-change="searchItem()">
+            <input id="searchbox" type="text" placeholder="Search" class="form-control" ng-focus="searchModalOpen()">
         </div>
     </form>';
     NavBar::end();

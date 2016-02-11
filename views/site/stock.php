@@ -122,10 +122,10 @@ Icon::map($this);
                 <!-- <div class="alert alert-warning" role="alert">หมายเหตุ: ระบบยังไม่รองรับรูปภาพจากลิงค์</div> -->
                 <div class="btn-group btn-group-justified" role="group">
                     <div class="btn-group" role="group">
-                        <button type="button" class="btn" ng-class="(sourceFile=='local')?'btn-primary':'btn-default';" ng-click="selectSource('local')">รูปจากเครื่อง</button>
+                        <button type="button" class="btn" ng-class="(sourceFile=='local')?'btn-primary':'btn-default';" ng-click="selectSource('local')"><i class="fa fa-laptop"></i> รูปจากเครื่อง</button>
                     </div>
                     <div class="btn-group" role="group">
-                        <button type="button" class="btn" ng-class="(sourceFile=='youtube')?'btn-primary':'btn-default';" ng-click="selectSource('youtube')">Youtube วิดีโอ</button>
+                        <button type="button" class="btn" ng-class="(sourceFile=='youtube')?'btn-primary':'btn-default';" ng-click="selectSource('youtube')"><i class="fa fa-youtube-play"></i> Youtube วิดีโอ</button>
                     </div>
                 </div>
                 <div class="stock-item-thumb" style="margin-top:40px;" ng-show="sourceFile=='local'">

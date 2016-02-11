@@ -294,7 +294,6 @@ controllers.controller('StoreController', ['API','$scope', '$location', '$window
         $scope.initializingData = function(){
             var criteria = {filter: {section:"store", store:$scope.storeID}};
             API.Select(criteria).then(function (result) {
-                console.log(result);
                 if(result.status){
                     if(result.data != null){
                         $scope.Store = result.data.profile;
@@ -313,7 +312,6 @@ controllers.controller('ProfileController', ['API','$scope', '$location', '$wind
         $scope.initializingData = function(){
             var criteria = {filter: {section:"profile"}};
             API.Select(criteria).then(function (result) {
-              console.log(result);
                 if(result.status){
                     $scope.Profile = result.data;
                 }
@@ -402,7 +400,7 @@ controllers.controller('CheckoutController', ['API', '$scope', '$location', '$wi
             if($scope.Item.amount < $scope.Item.items[0].quantity){
                 $scope.Item.amount = parseInt($scope.Item.amount)+1;
                 API.Update({filter: {section:"order", "data":$scope.Item }}).then(function (result) {
-                    console.log(result);
+                    //console.log(result);
                 });
             }
             else{
@@ -413,7 +411,7 @@ controllers.controller('CheckoutController', ['API', '$scope', '$location', '$wi
             if($scope.Item.amount > 1){
                 $scope.Item.amount = parseInt($scope.Item.amount)-1;
                 API.Update({filter: {section:"order", "data":$scope.Item }}).then(function (result) {
-                    console.log(result);
+                    //console.log(result);
                 });
 
             }
@@ -964,7 +962,6 @@ controllers.controller('PaymentController', ['API','$scope', '$http', '$window',
         //true money
         $scope.feedTrue = function(action,skip,limit){
             API.Select({filter: {section:"true", action:action,skip:skip,limit:limit}}).then(function (result) {
-                console.log(result);
                 if(result.status){
                     switch(action){
                         case "topup":

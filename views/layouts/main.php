@@ -9,6 +9,7 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use kartik\icons\Icon;
+use cybercog\yii\googleanalytics\widgets\GATracking;
 Icon::map($this);
 AppAsset::register($this);
 ?>
@@ -25,6 +26,12 @@ AppAsset::register($this);
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/red/pace-theme-minimal.css" rel="stylesheet" />
     <script src="https://www.youtube.com/iframe_api"></script>
+    <?= $this->registerJs(
+      GATracking::widget([
+          'trackingId' => 'UA-73685503-1',
+          'omitScriptTag' => true
+      ]), \yii\web\View::POS_END
+  ); ?>
 </head>
 <body>
 <?php $this->beginBody() ?>

@@ -21,6 +21,7 @@ return array(
     'kartik\\icons\\' => array($vendorDir . '/kartik-v/yii2-icons'),
     'kartik\\base\\' => array($vendorDir . '/kartik-v/yii2-krajee-base'),
     'dektrium\\user\\' => array($vendorDir . '/dektrium/yii2-user'),
+    'cybercog\\yii\\googleanalytics\\' => array($vendorDir . '/cybercog/yii2-google-analytics/src'),
     'cebe\\markdown\\' => array($vendorDir . '/cebe/markdown'),
     'boundstate\\mailgun\\' => array($vendorDir . '/boundstate/yii2-mailgun'),
     'React\\Promise\\' => array($vendorDir . '/react/promise/src'),

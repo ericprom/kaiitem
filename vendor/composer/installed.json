@@ -1805,5 +1805,48 @@
             "swiftmailer",
             "yii2"
         ]
+    },
+    {
+        "name": "cybercog/yii2-google-analytics",
+        "version": "0.3.1",
+        "version_normalized": "0.3.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/cybercog/yii2-google-analytics.git",
+            "reference": "70a765c5f2a52a061679cc14875668c4b59991b3"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/cybercog/yii2-google-analytics/zipball/70a765c5f2a52a061679cc14875668c4b59991b3",
+            "reference": "70a765c5f2a52a061679cc14875668c4b59991b3",
+            "shasum": ""
+        },
+        "require": {
+            "yiisoft/yii2": "*"
+        },
+        "time": "2015-07-30 10:17:50",
+        "type": "yii2-extension",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "cybercog\\yii\\googleanalytics\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Anton Komarev",
+                "email": "ell@cybercog.su"
+            }
+        ],
+        "description": "Google Analytics extension for the Yii2 framework",
+        "keywords": [
+            "analytics",
+            "google",
+            "yii2"
+        ]
     }
 ]

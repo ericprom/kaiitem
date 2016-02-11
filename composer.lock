@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "54fc51bd2cd412aad191ffed220ed747",
-    "content-hash": "3f935b1dc1da933eee71b247f87fd35a",
+    "hash": "4f8131de2a9e216e412b0470860a5d4a",
+    "content-hash": "a95a8af932a80191b82b28d7437995e6",
     "packages": [
         {
             "name": "boundstate/yii2-mailgun",
@@ -381,6 +381,47 @@
             ],
             "description": "CSS for vector based country flags",
             "time": "2016-01-22 14:19:38"
+        },
+        {
+            "name": "cybercog/yii2-google-analytics",
+            "version": "0.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cybercog/yii2-google-analytics.git",
+                "reference": "70a765c5f2a52a061679cc14875668c4b59991b3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cybercog/yii2-google-analytics/zipball/70a765c5f2a52a061679cc14875668c4b59991b3",
+                "reference": "70a765c5f2a52a061679cc14875668c4b59991b3",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "cybercog\\yii\\googleanalytics\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Anton Komarev",
+                    "email": "ell@cybercog.su"
+                }
+            ],
+            "description": "Google Analytics extension for the Yii2 framework",
+            "keywords": [
+                "analytics",
+                "google",
+                "yii2"
+            ],
+            "time": "2015-07-30 10:17:50"
         },
         {
             "name": "dektrium/yii2-user",

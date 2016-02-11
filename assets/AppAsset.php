@@ -27,6 +27,7 @@ class AppAsset extends AssetBundle
         'css/setting.css',
         'css/checkout.css',
         'css/stock.css',
+        'css/modal.css',
         'css/store.css'
     ];
     public $js = [

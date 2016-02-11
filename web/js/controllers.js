@@ -98,6 +98,15 @@ controllers.factory('API', function($window,$q,$timeout,$http,$rootScope,toaster
         });
         return deferred.promise;
     }
+    var Lookingfor = function(param) {
+        $rootScope.processing = true;
+        var deferred = $q.defer();
+        $http.post($window.location.href.split('web')[0]+"web/Lookingfor", param).success(function(results) {
+            deferred.resolve(results);
+            $rootScope.processing = false;
+        });
+        return deferred.promise;
+    }
     var Mark = function(param) {
         $rootScope.processing = true;
         var deferred = $q.defer();
@@ -131,6 +140,7 @@ controllers.factory('API', function($window,$q,$timeout,$http,$rootScope,toaster
     return {
         Mail:Mail,
         Mark:Mark,
+        Lookingfor:Lookingfor,
         Select:Select,
         Insert:Insert,
         Update:Update,
@@ -139,6 +149,14 @@ controllers.factory('API', function($window,$q,$timeout,$http,$rootScope,toaster
         Remove:Remove
     };
 });
+controllers.controller('SearchController', ['API','$scope', '$location', '$window',
+    function (API, $scope, $location, $window) {
+      $scope.searchItem = function(){
+        console.log($scope.keyword);
+        $('#searchModal').modal('show');
+      }
+    }
+]);
 controllers.controller('MainController', ['API','$scope', '$location', '$window',
     function (API, $scope, $location, $window) {
         $scope.Items = [];

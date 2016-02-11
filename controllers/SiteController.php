@@ -62,14 +62,7 @@ class SiteController extends Controller
         return $this->render('item');
     }
     public function actionSearch(){
-        // $query = Items::find()->query([
-        //     "fuzzy_like_this" => [
-        //         "fields" => ["title", "detail"],
-        //         "like_text" => "CS:GO",
-        //         "max_query_terms" => 12
-        //     ]
-        // ]);
-        // var_dump($query->all());
+        return $this->render('search');
     }
     public function actionFacebook(){
         $social = Yii::$app->getModule('social');

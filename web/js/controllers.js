@@ -182,9 +182,6 @@ controllers.controller('SearchModalController', ['API','$rootScope','$scope', '$
                 $scope.feedSearch($scope.skip,$scope.limit);
             }
         }
-        else{
-            $scope.Items = [];
-        }
     }
 ]);
 controllers.controller('MainController', ['API','$scope', '$location', '$window',

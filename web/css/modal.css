@@ -21,7 +21,7 @@
   right: 0;
   bottom: 0;
   left: 0;
-  border: 2px solid #3c7dcf;
+  border: 2px solid #000;
   border-radius: 0;
   box-shadow: none;
 }
@@ -33,7 +33,7 @@
   left: 0;
   height: 50px;
   padding: 10px;
-  background: #6598d9;
+  background: #000;
   border: 0;
 }
 

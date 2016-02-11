@@ -96,7 +96,8 @@ AppAsset::register($this);
                         </div>
 
                     </div>
-                    <div class="modal-body modal-body-x center-block">
+                    <div class="modal-body modal-body-x center-block ">
+                      <div class="container">
                         <div class="row">
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="input-group">
@@ -135,7 +136,13 @@ AppAsset::register($this);
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-3 col-sm-4 col-xs-12" style="padding-top:25px;" ng-hide="skip >= total">
+                              <div class="add-new-stock center-block">
+                                  <h1><i class="fa" ng-class="(processing)?'fa-spinner fa-spin':'fa-plus';" ng-click="loadMoreSearch()"></i></h1>
+                              </div>
+                            </div>
                         </div>
+                      </div>
                     </div>
                 </div>
             </div>

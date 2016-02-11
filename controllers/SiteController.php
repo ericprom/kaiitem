@@ -64,20 +64,38 @@ class SiteController extends Controller
     public function actionSearch(){
         return $this->render('search');
     }
-    public function actionFacebook(){
-        $social = Yii::$app->getModule('social');
-        $app_id = $social->facebook["appId"];
-        $app_secret = $social->facebook["secret"];
-        $app_access_token = $app_id . '|' . $app_secret;
-        // $response = $curl->get('https://graph.facebook.com/'+$app_id+'/accounts?access_token='+$app_access_token+'');
-        $parameters = array(
-            'app_id' => $social->facebook["appId"],
-            'to' => '10156502635205529',
-            'link' => 'http://kaiitem.com',
-            'redirect_uri' => 'http://my.app.url/callback'
-        );
-        $url = 'http://www.facebook.com/dialog/send?'.http_build_query($parameters);
-        echo '<script type="text/javascript">window.open('.json_encode($url).')</script>';
+    public function actionQuery(){
+        $request = Yii::$app->request;
+        if ($request->isPost) {
+            $param = array("filter"=>FALSE);
+            foreach ($param as $key => $val) {
+                if (isset($_REQUEST[$key])) {
+                    $param[$key] = $_REQUEST[$key];
+                }
+            }
+            $result = array("status" => FALSE, "data" => "");
+            try {
+                $options = array();
+                if (is_array($param["filter"]) ) {
+                    $options = $param["filter"];
+                    (isset(Yii::$app->user->identity->fbid))?$fbid=Yii::$app->user->identity->fbid:$fbid='';
+                    switch($options["section"]){
+                        case "item":
+                            $item = Items::find()->where(['and', ['<>','available', 0], ['<>', 'status', 0]])->with('shops')->asArray()->all();
+                            $total = Items::find()->where(['and', ['<>','available', 0], ['<>', 'status', 0]])->all();
+                            $result["data"]["item"] = $item;
+                            $result["data"]["total"] = count($total);
+                            break;
+                    }
+                    $result["status"] = TRUE;
+                }
+            } catch(Exceptions $ex) {
+                $result["status"] = FALSE;
+                $result["error"] = $ex;
+                $result["message"] =  "เกิดข้อผิดพลาด ไม่สามารถบันทึกข้อมูลได้";
+            }
+            echo json_encode($result);
+        }
     }
     public function actionSelect()
     {

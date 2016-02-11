@@ -98,10 +98,10 @@ controllers.factory('API', function($window,$q,$timeout,$http,$rootScope,toaster
         });
         return deferred.promise;
     }
-    var Lookingfor = function(param) {
+    var Query = function(param) {
         $rootScope.processing = true;
         var deferred = $q.defer();
-        $http.post($window.location.href.split('web')[0]+"web/Lookingfor", param).success(function(results) {
+        $http.post($window.location.href.split('web')[0]+"web/query", param).success(function(results) {
             deferred.resolve(results);
             $rootScope.processing = false;
         });
@@ -140,7 +140,7 @@ controllers.factory('API', function($window,$q,$timeout,$http,$rootScope,toaster
     return {
         Mail:Mail,
         Mark:Mark,
-        Lookingfor:Lookingfor,
+        Query:Query,
         Select:Select,
         Insert:Insert,
         Update:Update,
@@ -160,7 +160,11 @@ controllers.controller('SearchModalController', ['API','$rootScope','$scope', '$
     function (API, $rootScope, $scope, $location, $window) {
         $scope.searchNow = function(keyword){
             if($scope.keyword){
-
+                API.Query({filter: {section:"item"}}).then(function (result) {
+                    if(result.status){
+                        console.log(result);
+                    }
+                });
             }
             else{
                API.Toaster('warning','KaiiteM','กรุณากรอกข้อมูลเพื่อค้นหา');

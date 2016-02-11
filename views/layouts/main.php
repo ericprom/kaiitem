@@ -98,7 +98,6 @@ AppAsset::register($this);
                     </div>
                     <div class="modal-body center-block">
                         <div class="row">
-                            <!-- <div class="col-md-2 col-sm-2 col-xs-12"></div> -->
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="input-group">
                                     <input type="text" class="form-control input-lg" placeholder="Search for..." ng-model="keyword" ng-change="searchNow()">
@@ -107,7 +106,6 @@ AppAsset::register($this);
                                     </span>
                                 </div>
                             </div>
-                            <!-- <div class="col-md-2 col-sm-2 col-xs-12"></div> -->
                         </div>
                     </div>
                 </div>

@@ -604,7 +604,8 @@ class SiteController extends Controller
             }
             $tmt = Tmtopup::find()->where(['fbid' => $shopID])->one();
             return $this->render('checkout', [
-                'model' => $tmt,
+                'tmtopup' => $tmt,
+                'order' => $order
             ]);
         }
         else{

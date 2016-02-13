@@ -170,8 +170,32 @@ AppAsset::register($this);
             </div>
         </div>
         <div class="row" style="margin-top:20px;">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-              <a href="https://mixpanel.com/f/partner" rel="nofollow">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+
+                  <!-- Identify your business so that you can collect the payments. -->
+                  <input type="hidden" name="business"
+                      value="surasak.promrat@gmail.com">
+
+                  <!-- Specify a Donate button. -->
+                  <input type="hidden" name="cmd" value="_donations">
+
+                  <!-- Specify details about the contribution -->
+                  <input type="hidden" name="item_name" value="Maintaining KaiiteM Server">
+                  <input type="hidden" name="item_number" value="KaiiteM">
+                  <input type="hidden" name="currency_code" value="THB">
+
+                  <!-- Display the payment button. -->
+                  <input type="image" name="submit" border="0"
+                  src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif"
+                  alt="PayPal - The safer, easier way to pay online">
+                  <img alt="" border="0" width="1" height="1"
+                  src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" >
+
+              </form>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <a href="https://mixpanel.com/f/partner" rel="nofollow" class="pull-right">
                 <?=Html::img(Yii::getAlias('@web').'/images/mixpanel.png', ['alt'=>'Mobile Analytics'], ['class' => 'img-responsive'])?>
               </a>
             </div>

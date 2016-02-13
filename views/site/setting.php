@@ -228,9 +228,9 @@ Icon::map($this);
                                       </div>
                                   </div>
                               </div>
-                              <span class="pull-right" style="cursor:pointer;color:#e4e4e4;" ng-click="confirmDeactive()">
+                              <!-- <span class="pull-right" style="cursor:pointer;color:#e4e4e4;" ng-click="confirmDeactive()">
                                   Deactivate Account
-                              </span>
+                              </span> -->
                           </div>
                       </div>
                   </div>

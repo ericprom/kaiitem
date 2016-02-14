@@ -171,28 +171,14 @@ AppAsset::register($this);
         </div>
         <div class="row" style="margin-top:20px;">
             <div class="col-md-6 col-sm-6 col-xs-12">
-              <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-
-                  <!-- Identify your business so that you can collect the payments. -->
-                  <input type="hidden" name="business"
-                      value="surasak.promrat@gmail.com">
-
-                  <!-- Specify a Donate button. -->
-                  <input type="hidden" name="cmd" value="_donations">
-
-                  <!-- Specify details about the contribution -->
-                  <input type="hidden" name="item_name" value="Maintaining KaiiteM Server">
-                  <input type="hidden" name="item_number" value="KaiiteM">
-                  <input type="hidden" name="currency_code" value="THB">
-
-                  <!-- Display the payment button. -->
-                  <input type="image" name="submit" border="0"
-                  src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif"
-                  alt="PayPal - The safer, easier way to pay online">
-                  <img alt="" border="0" width="1" height="1"
-                  src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" >
-
+              <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+              <input type="hidden" name="cmd" value="_s-xclick">
+              <input type="hidden" name="hosted_button_id" value="25X7B8D3FMBNW">
+              <input type="image" src="https://www.paypalobjects.com/en_GB/TH/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
+              <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
               </form>
+
+
             </div>
             <div class="col-md-6 col-sm-6 col-xs-12">
               <a href="https://mixpanel.com/f/partner" rel="nofollow" class="pull-right">

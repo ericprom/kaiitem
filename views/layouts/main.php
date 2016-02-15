@@ -170,7 +170,7 @@ AppAsset::register($this);
             </div>
         </div>
         <div class="row" style="margin-top:20px;">
-            <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="col-md-8 col-sm-8 col-xs-12">
                 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
                     <input type="hidden" name="cmd" value="_s-xclick">
                     <input type="hidden" name="hosted_button_id" value="25X7B8D3FMBNW">
@@ -178,17 +178,19 @@ AppAsset::register($this);
                     <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
                 </form>
             </div>
-            <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="row">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <span id="siteseal"><script type="text/javascript" src="https://seal.godaddy.com/getSeal?sealID=utJxpeZRRfeYzTBhtVOIuZau7RJHWJKDtSP3nm1YsEKPHDlPldoN1r7FBg4m"></script></span>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <a href="https://mixpanel.com/f/partner" rel="nofollow" class="pull-right">
-                            <?=Html::img(Yii::getAlias('@web').'/images/mixpanel.png', ['alt'=>'Mobile Analytics'], ['class' => 'img-responsive'])?>
-                        </a>
-                    </div>
-                </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <table class="pull-right">
+                    <tr>
+                        <td width="135">
+                             <span id="siteseal" class="pull-right"><script type="text/javascript" src="https://seal.godaddy.com/getSeal?sealID=utJxpeZRRfeYzTBhtVOIuZau7RJHWJKDtSP3nm1YsEKPHDlPldoN1r7FBg4m"></script></span>
+                        </td>
+                        <td width="120">
+                            <a href="https://mixpanel.com/f/partner" rel="nofollow" class="pull-right">
+                                <?=Html::img(Yii::getAlias('@web').'/images/mixpanel.png', ['alt'=>'Mobile Analytics'], ['class' => 'img-responsive'])?>
+                            </a>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>

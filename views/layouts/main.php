@@ -185,9 +185,7 @@ AppAsset::register($this);
                              <span id="siteseal" class="pull-right"><script type="text/javascript" src="https://seal.godaddy.com/getSeal?sealID=utJxpeZRRfeYzTBhtVOIuZau7RJHWJKDtSP3nm1YsEKPHDlPldoN1r7FBg4m"></script></span>
                         </td>
                         <td width="120">
-                            <a href="https://mixpanel.com/f/partner" rel="nofollow" class="pull-right">
-                                <?=Html::img(Yii::getAlias('@web').'/images/mixpanel.png', ['alt'=>'Mobile Analytics'], ['class' => 'img-responsive'])?>
-                            </a>
+                            <a href="https://mixpanel.com/f/partner" rel="nofollow"><img src="//cdn.mxpnl.com/site_media/images/partner/badge_blue.png" alt="Mobile Analytics" /></a>
                         </td>
                     </tr>
                 </table>

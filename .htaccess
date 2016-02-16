@@ -5,6 +5,11 @@
 
 <IfModule mod_rewrite.c>
     RewriteBase /
+
+    RewriteCond %{HTTP_HOST} ^kaiitem.com$
+    RewriteRule ^(.*)$ http://www.kaiitem.com/$1 [R=301]
+    RewriteRule ^(([^/]+/)*[^./]+)$ /$1.html [R=301,L]
+
     RewriteCond %{REQUEST_URI} ^/.*
     RewriteRule ^(.*)$ web/$1 [L]
 
@@ -14,10 +19,4 @@
     RewriteRule ^.*$ web/index.php
 
 
-    RewriteBase /
-    RewriteCond %{HTTP_HOST} ^kaiitem.com$
-    RewriteRule ^(.*)$ http://www.kaiitem.com/$1 [R=301]
-    RewriteCond %{REQUEST_fileNAME} !-d
-    RewriteCond %{REQUEST_fileNAME} !-f
-    RewriteRule ^(([^/]+/)*[^./]+)$ /$1.html [R=301,L]
 </IfModule>

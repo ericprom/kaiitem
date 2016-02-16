@@ -57,6 +57,16 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        // 'cache' => [
+        //     'class' => 'yii\caching\MemCache',
+        //     'servers' => [
+        //         [
+        //             'host' => 'locahost',
+        //             'port' => 11211,
+        //             'weight' => 60,
+        //         ]
+        //     ],
+        // ],
         'user' => [
             'identityClass' => 'app\models\UserMaster',
             'enableAutoLogin' => true,

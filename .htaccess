@@ -1,22 +1,12 @@
-<IfModule mod_rewrite.c>
-    Options +FollowSymlinks
-    RewriteEngine On
-</IfModule>
+RewriteEngine on
 
-<IfModule mod_rewrite.c>
-    RewriteBase /
+#non-www to www
+RewriteCond %{HTTP_HOST} ^adnasor\.ir
+RewriteRule (.*) http://www.adnasor.ir/$1 [R=301,L]
 
-    RewriteCond %{HTTP_HOST} ^kaiitem.com$
-    RewriteRule ^(.*)$ http://www.kaiitem.com/$1 [R=301]
-    RewriteRule ^(([^/]+/)*[^./]+)$ /$1.html [R=301,L]
+# if a directory or a file exists, use it directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
 
-    RewriteCond %{REQUEST_URI} ^/.*
-    RewriteRule ^(.*)$ web/$1 [L]
-
-    RewriteCond %{REQUEST_URI} !^/web/
-    RewriteCond %{REQUEST_FILENAME} !-f [OR]
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^.*$ web/index.php
-
-
-</IfModule>
+# otherwise forward it to index.php
+RewriteRule . index.php

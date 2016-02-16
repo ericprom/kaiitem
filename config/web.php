@@ -54,19 +54,19 @@ $config = [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'itemojkiyd',
         ],
-        'cache' => [
-            'class' => 'yii\caching\FileCache',
-        ],
         // 'cache' => [
-        //     'class' => 'yii\caching\MemCache',
-        //     'servers' => [
-        //         [
-        //             'host' => 'locahost',
-        //             'port' => 11211,
-        //             'weight' => 60,
-        //         ]
-        //     ],
+        //     'class' => 'yii\caching\FileCache',
         // ],
+        'cache' => [
+            'class' => 'yii\caching\MemCache',
+            'servers' => [
+                [
+                    'host' => '127.0.0.1',
+                    'port' => 11211,
+                    'weight' => 60,
+                ]
+            ],
+        ],
         'user' => [
             'identityClass' => 'app\models\UserMaster',
             'enableAutoLogin' => true,

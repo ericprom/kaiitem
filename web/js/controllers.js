@@ -496,7 +496,6 @@ controllers.controller('SettingController', ['API','$scope', '$http', '$window',
         $scope.setupTMTopup = false;
         $scope.initializingData = function(){
             API.Select({filter: {section:"profile"}}).then(function (result) {
-              console.log(result);
                 if(result.status){
                     $scope.Profile = result.data;
                     $scope.Status.action=parseInt($scope.Profile.online);

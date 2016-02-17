@@ -115,7 +115,7 @@ class SiteController extends Controller
                     (isset(Yii::$app->user->identity->fbid))?$fbid=Yii::$app->user->identity->fbid:$fbid='';
                     switch($options["section"]){
                         case "profile":
-                            $user = UserMaster::find(['fbid'=>$fbid])->where(['<>', 'status', 0])->one();
+                            $user = UserMaster::find()->where(['and', ['=','fbid', $fbid], ['<>', 'status', 0]])->one();
                             $result["data"] = ($user)?$user->attributes:null;
                             break;
                         case "store":

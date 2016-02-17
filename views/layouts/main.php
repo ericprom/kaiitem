@@ -37,7 +37,7 @@ AppAsset::register($this);
     <link rel="icon" type="image/png" sizes="16x16" href="<?=Yii::$app->request->baseUrl; ?>/favicon/favicon-16x16.png">
     <link rel="manifest" href="<?=Yii::$app->request->baseUrl;?>/favicon/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="msapplication-TileImage" content="<?=Yii::$app->request->baseUrl;?>/favicon/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
     <script>paceOptions = {ajax: {trackMethods: ['GET', 'POST']}};</script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.js"></script>

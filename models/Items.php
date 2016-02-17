@@ -74,6 +74,6 @@ class Items extends \yii\db\ActiveRecord
     }
     public function getShops()
     {
-        return $this->hasMany(UserMaster::className(), ['fbid' => 'fbid']);
+        return $this->hasOne(UserMaster::className(), ['fbid' => 'fbid']);
     }
 }

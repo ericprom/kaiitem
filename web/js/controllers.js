@@ -192,6 +192,7 @@ controllers.controller('MainController', ['API','$scope', '$location', '$window'
         $scope.total = 0;
         $scope.feedItem = function(skip,limit){
             API.Select({filter: {section:"item",skip:skip,limit:limit}}).then(function (result) {
+              console.log(result);
                 if(result.status){
                     $scope.total = result.data.total;
                     angular.forEach(result.data.item, function (element, index, array) {

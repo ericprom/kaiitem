@@ -170,7 +170,7 @@ AppAsset::register($this);
             </div>
         </div>
         <div class="row" style="margin-top:20px;">
-            <div class="col-md-8 col-sm-8 col-xs-12">
+            <div class="col-md-4 col-sm-4 col-xs-4">
                 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
                     <input type="hidden" name="cmd" value="_s-xclick">
                     <input type="hidden" name="hosted_button_id" value="25X7B8D3FMBNW">
@@ -178,7 +178,7 @@ AppAsset::register($this);
                     <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
                 </form>
             </div>
-            <div class="col-md-4 col-sm-4 col-xs-12">
+            <div class="col-md-8 col-sm-8 col-xs-8">
                 <table class="pull-right">
                     <tr>
                         <td width="135">

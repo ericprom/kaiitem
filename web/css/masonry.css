@@ -17,7 +17,7 @@
     position: absolute;
 }
 .item-drift:hover{
-    color: #21BA45;
+    color: #2FB22D;
     top: 22px;
     padding-top: -22px;
 }
@@ -72,6 +72,6 @@
 }
 .item-price{
     float: right;
-    color: #21BA45;
+    color: #2FB22D;
     padding: 0;
 }

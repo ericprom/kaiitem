@@ -68,13 +68,13 @@
     -webkit-align-items: center; /* For Safari */
 }
 .add-new-stock:hover{
-    color: #35BD00;
-    border: 1px solid #35BD00;
+    color: #2FB22D;
+    border: 1px solid #2FB22D;
     cursor: pointer;
 }
 .stock-item-thumb {
   text-align: center;;
-  /*border: 1px solid #35BD00;*/
+  /*border: 1px solid #2FB22D;*/
 }
 .image-cropper{
   margin-top: 40px;

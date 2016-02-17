@@ -17,12 +17,29 @@ AppAsset::register($this);
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>" ng-app="app">
 <head>
-  <meta charset="<?= Yii::$app->charset ?>">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <?= Html::csrfMetaTags() ?>
-  <title>KaiiteM | item code market for Thai gammers</title>
-  <?php $this->head() ?>
-  <script>paceOptions = {ajax: {trackMethods: ['GET', 'POST']}};</script>
+    <meta charset="<?= Yii::$app->charset ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <?= Html::csrfMetaTags() ?>
+    <title>KaiiteM | item code market for Thai gammers</title>
+    <?php $this->head() ?>
+    <link rel="apple-touch-icon" sizes="57x57" href="<?=Yii::$app->request->baseUrl; ?>/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="<?=Yii::$app->request->baseUrl; ?>/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="<?=Yii::$app->request->baseUrl; ?>/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="<?=Yii::$app->request->baseUrl; ?>/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="<?=Yii::$app->request->baseUrl; ?>/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="<?=Yii::$app->request->baseUrl; ?>/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="<?=Yii::$app->request->baseUrl; ?>/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="<?=Yii::$app->request->baseUrl; ?>/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?=Yii::$app->request->baseUrl; ?>/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="<?=Yii::$app->request->baseUrl; ?>/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?=Yii::$app->request->baseUrl; ?>/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="<?=Yii::$app->request->baseUrl; ?>/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?=Yii::$app->request->baseUrl; ?>/favicon/favicon-16x16.png">
+    <link rel="manifest" href="<?=Yii::$app->request->baseUrl;?>/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="<?=Yii::$app->request->baseUrl;?>/favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <script>paceOptions = {ajax: {trackMethods: ['GET', 'POST']}};</script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/red/pace-theme-minimal.css" rel="stylesheet" />
   <script src="https://www.youtube.com/iframe_api"></script>
@@ -35,7 +52,7 @@ AppAsset::register($this);
   <!-- start Mixpanel -->
   <script type="text/javascript">(function(e,b){if(!b.__SV){var a,f,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
   for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=e.createElement("script");a.type="text/javascript";a.async=!0;a.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";f=e.getElementsByTagName("script")[0];f.parentNode.insertBefore(a,f)}})(document,window.mixpanel||[]);
-  mixpanel.init("0481ec05a30d78ddb8970de64655f82f");</script>
+  mixpanel.init("e6f7210df6d7d70d86606f2b02f55ffc");</script>
   <!-- end Mixpanel -->
 </head>
 <body>
@@ -56,7 +73,7 @@ AppAsset::register($this);
     }
     else{
         echo '<ul class="nav navbar-nav navbar-right">
-        <li>'.Html::a(' '.Yii::$app->user->identity->name, ['site/profile'],['data' => ['method' => 'post']]).'</li>
+        <li>'.Html::a(Icon::show('user').' '.Yii::$app->user->identity->name, ['site/profile'],['data' => ['method' => 'post']]).'</li>
         <li class="dropdown">
             <a href="#" class="dropdown-toggle hidden-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.Icon::show('cog').'</a>
             <a href="#" class="dropdown-toggle visible-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.Icon::show('cog').' ตั้งค่า</a>
@@ -170,7 +187,7 @@ AppAsset::register($this);
             </div>
         </div>
         <div class="row" style="margin-top:20px;">
-            <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="col-md-4 col-sm-4 col-xs-4">
                 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
                     <input type="hidden" name="cmd" value="_s-xclick">
                     <input type="hidden" name="hosted_button_id" value="25X7B8D3FMBNW">
@@ -178,17 +195,17 @@ AppAsset::register($this);
                     <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
                 </form>
             </div>
-            <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="row">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <span id="siteseal"><script type="text/javascript" src="https://seal.godaddy.com/getSeal?sealID=utJxpeZRRfeYzTBhtVOIuZau7RJHWJKDtSP3nm1YsEKPHDlPldoN1r7FBg4m"></script></span>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <a href="https://mixpanel.com/f/partner" rel="nofollow" class="pull-right">
-                            <?=Html::img(Yii::getAlias('@web').'/images/mixpanel.png', ['alt'=>'Mobile Analytics'], ['class' => 'img-responsive'])?>
-                        </a>
-                    </div>
-                </div>
+            <div class="col-md-8 col-sm-8 col-xs-8">
+                <table class="pull-right">
+                    <tr>
+                        <td width="135">
+                             <span id="siteseal" class="pull-right"><script type="text/javascript" src="https://seal.godaddy.com/getSeal?sealID=utJxpeZRRfeYzTBhtVOIuZau7RJHWJKDtSP3nm1YsEKPHDlPldoN1r7FBg4m"></script></span>
+                        </td>
+                        <td width="125">
+                            <a href="https://mixpanel.com/f/partner" rel="nofollow" class="pull-right"><img src="//cdn.mxpnl.com/site_media/images/partner/badge_blue.png" alt="Mobile Analytics" /></a>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>

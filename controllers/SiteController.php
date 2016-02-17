@@ -81,8 +81,8 @@ class SiteController extends Controller
                     (isset(Yii::$app->user->identity->fbid))?$fbid=Yii::$app->user->identity->fbid:$fbid='';
                     switch($options["section"]){
                         case "item":
-                            $item = Items::find()->where(['or', ['LIKE','title', $options["keyword"]], ['LIKE','detail', $options["keyword"]]])->andWhere(['and', ['<>','available', 0], ['<>', 'status', 0]])->limit($options["limit"])->offset($options["skip"])->with('shops')->asArray()->all();
-                            $total = Items::find()->where(['or', ['LIKE','title', $options["keyword"]], ['LIKE','detail', $options["keyword"]]])->andWhere(['and', ['<>','available', 0], ['<>', 'status', 0]])->all();
+                            $item = Items::find()->where(['or', ['LIKE','title', $options["keyword"]], ['LIKE','detail', $options["keyword"]]])->andWhere(['and', ['<>','available', 0], ['=', 'status', 1]])->limit($options["limit"])->offset($options["skip"])->with('shops')->asArray()->all();
+                            $total = Items::find()->where(['or', ['LIKE','title', $options["keyword"]], ['LIKE','detail', $options["keyword"]]])->andWhere(['and', ['<>','available', 0], ['=', 'status', 1]])->all();
                             $result["data"]["item"] = $item;
                             $result["data"]["total"] = count($total);
                             break;
@@ -115,13 +115,13 @@ class SiteController extends Controller
                     (isset(Yii::$app->user->identity->fbid))?$fbid=Yii::$app->user->identity->fbid:$fbid='';
                     switch($options["section"]){
                         case "profile":
-                            $user = UserMaster::find()->where(['and', ['=','fbid', $fbid], ['<>', 'status', 0]])->one();
+                            $user = UserMaster::find()->where(['and', ['=','fbid', $fbid], ['=', 'status', 1]])->one();
                             $result["data"] = ($user)?$user->attributes:null;
                             break;
                         case "store":
-                            $user = UserMaster::find()->where(['and', ['=','fbid', $options["store"]], ['<>', 'status', 0]])->one();
+                            $user = UserMaster::find()->where(['and', ['=','fbid', $options["store"]], ['=', 'status', 1]])->one();
                             $result["data"]["profile"] = ($user)?$user->attributes:null;
-                            $item = Items::find()->where(['and', ['=','fbid', $user->fbid],['<>','available', 0], ['<>', 'status', 0]])->with('shops')->asArray()->all();
+                            $item = Items::find()->where(['and', ['=','fbid', $user->fbid],['<>','available', 0], ['=', 'status', 1]])->with('shops')->asArray()->all();
                             $result["data"]["items"] = $item;
                             break;
                         case "tmtopup":
@@ -129,42 +129,42 @@ class SiteController extends Controller
                             $result["data"] = ($topup)?$topup->attributes:null;
                             break;
                         case "bank":
-                            $bank = Banks::find(['status' => 1])->where(['<>', 'status', 0])->asArray()->all();
+                            $bank = Banks::find(['status' => 1])->where(['=', 'status', 1])->asArray()->all();
                             $result["data"] = $bank;
                             break;
                         case "account":
-                            $account = Accounts::find(['fbid'=>$fbid,'status' => 1])->where(['<>', 'status', 0])->with('banks')->asArray()->all();
+                            $account = Accounts::find(['fbid'=>$fbid,'status' => 1])->where(['=', 'status', 1])->with('banks')->asArray()->all();
                             $result["data"] = $account;
                             break;
                         case "item":
-                            $item = Items::find()->where(['and', ['<>','available', 0], ['<>', 'status', 0]])->limit($options["limit"])->offset($options["skip"])->with('shops')->asArray()->all();
-                            $total = Items::find()->where(['and', ['<>','available', 0], ['<>', 'status', 0]])->all();
+                            $item = Items::find()->where(['and', ['=','available', 1], ['=', 'status', 1]])->limit($options["limit"])->offset($options["skip"])->with('shops')->asArray()->all();
+                            $total = Items::find()->where(['and', ['=','available', 1], ['=', 'status', 1]])->all();
                             $result["data"]["item"] = $item;
                             $result["data"]["total"] = count($total);
                             break;
                         case "detail":
-                            $item = Items::find()->where(['and', ['=','id', $options["item"]], ['<>', 'status', 0]])->with('shops')->asArray()->all();
+                            $item = Items::find()->where(['and', ['=','id', $options["item"]], ['=', 'status', 1]])->with('shops')->asArray()->all();
                             $result["data"] = $item;
                             break;
                         case "checkout":
-                            $order = Orders::find()->where(['and', ['=','id', $options["order"]], ['<>', 'status', 0]])->with(['items','shops','accounts','tmtopup'])->asArray()->all();
+                            $order = Orders::find()->where(['and', ['=','id', $options["order"]], ['=', 'status', 1]])->with(['items','shops','accounts','tmtopup'])->asArray()->all();
                             $result["data"] = $order;
                             break;
                         case "stock":
-                            $item = Items::find(['fbid'=>$fbid,'status' => 1])->where(['<>', 'status', 0])->with('shops')->asArray()->all();
+                            $item = Items::find(['fbid'=>$fbid,'status' => 1])->where(['=', 'status', 1])->with('shops')->asArray()->all();
                             $result["data"] = $item;
                             break;
                         case "order":
                             switch ($options["action"]) {
                                 case 'purchase':
-                                    $purchase = Orders::find()->where(['and', ['=','buyer_id', $fbid], ['<>', 'status', 0]])->limit($options["limit"])->offset($options["skip"])->with(['items','shops'])->asArray()->all();
-                                    $total_purchase = Orders::find()->where(['and', ['=','buyer_id', $fbid], ['<>', 'status', 0]])->all();
+                                    $purchase = Orders::find()->where(['and', ['=','buyer_id', $fbid], ['=', 'status', 1]])->limit($options["limit"])->offset($options["skip"])->with(['items','shops'])->asArray()->all();
+                                    $total_purchase = Orders::find()->where(['and', ['=','buyer_id', $fbid], ['=', 'status', 1]])->all();
                                     $result["data"]["purchase"] = $purchase;
                                     $result["data"]["total_purchase"] = count($total_purchase);
                                     break;
                                 case 'sale':
-                                    $sale = Orders::find()->where(['and', ['=','shop_id', $fbid], ['<>', 'status', 0]])->limit($options["limit"])->offset($options["skip"])->with(['items'])->asArray()->all();
-                                    $total_sale = Orders::find()->where(['and', ['=','shop_id', $fbid], ['<>', 'status', 0]])->all();
+                                    $sale = Orders::find()->where(['and', ['=','shop_id', $fbid], ['=', 'status', 1]])->limit($options["limit"])->offset($options["skip"])->with(['items'])->asArray()->all();
+                                    $total_sale = Orders::find()->where(['and', ['=','shop_id', $fbid], ['=', 'status', 1]])->all();
                                     $result["data"]["sale"] = $sale;
                                     $result["data"]["total_sale"] = count($total_sale);
                                     break;
@@ -173,14 +173,14 @@ class SiteController extends Controller
                         case "money":
                             switch ($options["action"]) {
                                 case 'transfer':
-                                    $transfer = MoneyTransfers::find()->where(['and', ['=','payer_id', $fbid], ['<>', 'status', 0]])->limit($options["limit"])->offset($options["skip"])->with(['accounts'])->asArray()->all();
-                                    $total_transfer = MoneyTransfers::find()->where(['and', ['=','payer_id', $fbid], ['<>', 'status', 0]])->all();
+                                    $transfer = MoneyTransfers::find()->where(['and', ['=','payer_id', $fbid], ['=', 'status', 1]])->limit($options["limit"])->offset($options["skip"])->with(['accounts'])->asArray()->all();
+                                    $total_transfer = MoneyTransfers::find()->where(['and', ['=','payer_id', $fbid], ['=', 'status', 1]])->all();
                                     $result["data"]["transfer"] = $transfer;
                                     $result["data"]["total_transfer"] = count($total_transfer);
                                     break;
                                 case 'notify':
-                                    $notify = MoneyTransfers::find()->where(['and', ['=','shop_id', $fbid], ['<>', 'status', 0]])->limit($options["limit"])->offset($options["skip"])->with(['accounts'])->asArray()->all();
-                                    $total_notify = MoneyTransfers::find()->where(['and', ['=','shop_id', $fbid], ['<>', 'status', 0]])->all();
+                                    $notify = MoneyTransfers::find()->where(['and', ['=','shop_id', $fbid], ['=', 'status', 1]])->limit($options["limit"])->offset($options["skip"])->with(['accounts'])->asArray()->all();
+                                    $total_notify = MoneyTransfers::find()->where(['and', ['=','shop_id', $fbid], ['=', 'status', 1]])->all();
                                     $result["data"]["notify"] = $notify;
                                     $result["data"]["total_notify"] = count($total_notify);
                                     break;
@@ -189,14 +189,14 @@ class SiteController extends Controller
                         case "true":
                             switch ($options["action"]) {
                                 case 'topup':
-                                    $topup = TrueMoneys::find()->where(['and', ['=','payer_id', $fbid], ['<>', 'status', 0]])->limit($options["limit"])->offset($options["skip"])->asArray()->all();
-                                    $total_topup = TrueMoneys::find()->where(['and', ['=','payer_id', $fbid], ['<>', 'status', 0]])->all();
+                                    $topup = TrueMoneys::find()->where(['and', ['=','payer_id', $fbid], ['=', 'status', 1]])->limit($options["limit"])->offset($options["skip"])->asArray()->all();
+                                    $total_topup = TrueMoneys::find()->where(['and', ['=','payer_id', $fbid], ['=', 'status', 1]])->all();
                                     $result["data"]["topup"] = $topup;
                                     $result["data"]["total_topup"] = count($total_topup);
                                     break;
                                 case 'money':
-                                    $money = TrueMoneys::find()->where(['and', ['=','shop_id', $fbid], ['<>', 'status', 0]])->limit($options["limit"])->offset($options["skip"])->asArray()->all();
-                                    $total_money = TrueMoneys::find()->where(['and', ['=','shop_id', $fbid], ['<>', 'status', 0]])->all();
+                                    $money = TrueMoneys::find()->where(['and', ['=','shop_id', $fbid], ['=', 'status', 1]])->limit($options["limit"])->offset($options["skip"])->asArray()->all();
+                                    $total_money = TrueMoneys::find()->where(['and', ['=','shop_id', $fbid], ['=', 'status', 1]])->all();
                                     $result["data"]["money"] = $money;
                                     $result["data"]["total_money"] = count($total_money);
                                     break;

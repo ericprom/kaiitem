@@ -106,13 +106,13 @@ Image credits: unsplash.com
   background-repeat: no-repeat;
 }
 .fade-carousel .slides .slide-1 {
-  background-image:linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(http://localhost:8888/kaiitem/web/images/promote/csgo.jpg);
+  background-image:linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(https://www.kaiitem.com/web/images/promote/csgo.jpg);
 }
 .fade-carousel .slides .slide-2 {
-  background-image:linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(http://localhost:8888/kaiitem/web/images/promote/fifa.jpg);
+  background-image:linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(https://www.kaiitem.com/web/images/promote/fifa.jpg);
 }
 .fade-carousel .slides .slide-3 {
-  background-image:linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(http://localhost:8888/kaiitem/web/images/promote/pb.jpg);
+  background-image:linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(https://www.kaiitem.com/web/images/promote/pb.jpg);
 }
 
 /********************************/

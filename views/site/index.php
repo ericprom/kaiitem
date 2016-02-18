@@ -30,7 +30,7 @@ $this->title = 'My Yii Application';
                             <h1>ขายฟรี</h1>
                             <h3>ลงขายไอเทม ฟรีแบบไม่มีค่าสมาชิก</h3>
                         </hgroup>
-                        <a class="btn btn-hero btn-lg"><i class="fa fa-shopping-cart"></i> ลงขายไอเทม</a>
+                        <a class="btn btn-hero btn-lg" href="<?=Url::to(['site/stock'])?>"><i class="fa fa-shopping-cart"></i> ลงขายไอเทม</a>
                       </div>
                     </div>
                     <div class="item slides">
@@ -40,7 +40,7 @@ $this->title = 'My Yii Application';
                             <h1>ปลอดภัย</h1>
                             <h3>ด้วยการเข้ารหัสข้อมูล SSL</h3>
                         </hgroup>
-                        <a class="btn btn-hero btn-lg"><i class="fa fa-shopping-cart"></i> ลงขายไอเทม</a>
+                        <a class="btn btn-hero btn-lg" href="<?=Url::to(['site/stock'])?>"><i class="fa fa-shopping-cart"></i> ลงขายไอเทม</a>
                       </div>
                     </div>
                     <div class="item slides">
@@ -50,7 +50,7 @@ $this->title = 'My Yii Application';
                             <h1>เชื่อถือได้</h1>
                             <h3>ยืนยันตัวตนด้วยบัญชี Facebook</h3>
                         </hgroup>
-                        <a class="btn btn-hero btn-lg"><i class="fa fa-shopping-cart"></i> ลงขายไอเทม</a>
+                        <a class="btn btn-hero btn-lg" href="<?=Url::to(['site/stock'])?>"><i class="fa fa-shopping-cart"></i> ลงขายไอเทม</a>
                       </div>
                     </div>
                 </div>

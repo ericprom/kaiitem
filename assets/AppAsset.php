@@ -22,6 +22,7 @@ class AppAsset extends AssetBundle
         'css/site.css',
         'css/ios-switch.css',
         'css/profile.css',
+        'css/carousel.css',
         'css/masonry.css',
         'css/item.css',
         'css/setting.css',

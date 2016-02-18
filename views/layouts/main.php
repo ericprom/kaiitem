@@ -29,8 +29,6 @@ AppAsset::register($this);
     <meta name="revisit-after" content="7 days">
     <!-- ขายไอเทม, เกมออนไลน์, kaiitem -->
 
-    <?php $this->head() ?>
-
     <link rel="apple-touch-icon" sizes="57x57" href="<?=Yii::$app->request->baseUrl; ?>/favicon/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="<?=Yii::$app->request->baseUrl; ?>/favicon/apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="<?=Yii::$app->request->baseUrl; ?>/favicon/apple-icon-72x72.png">
@@ -48,6 +46,9 @@ AppAsset::register($this);
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="<?=Yii::$app->request->baseUrl;?>/favicon/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
+
+    <?php $this->head() ?>
+
     <script>paceOptions = {ajax: {trackMethods: ['GET', 'POST']}};</script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/red/pace-theme-minimal.css" rel="stylesheet" />

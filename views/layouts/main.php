@@ -20,8 +20,16 @@ AppAsset::register($this);
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
-    <title>KaiiteM | item code market for Thai gammers</title>
     <?php $this->head() ?>
+    <!-- made by www.metatags.org -->
+    <title>KaiiteM | ตลาดไอเทมออนไลน์ สำหรับเกมเมอร์ไทย</title>
+    <meta name="keywords" content="ขายไอเทม, เกมออนไลน์, kaiitem" />
+    <meta name="description" content="KaiiteM เป็นศูนย์การในการค้าขายแลกเปลี่ยนไอเทมเกมออนไลน์ สำหรับเกมเมอร์ไทย ที่สำคัญขายฟรีและไม่มีค่าสมาชิก" />
+    <meta name="author" content="metatags generator">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="7 days">
+    <!-- ขายไอเทม, เกมออนไลน์, kaiitem -->
+
     <link rel="apple-touch-icon" sizes="57x57" href="<?=Yii::$app->request->baseUrl; ?>/favicon/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="<?=Yii::$app->request->baseUrl; ?>/favicon/apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="<?=Yii::$app->request->baseUrl; ?>/favicon/apple-icon-72x72.png">

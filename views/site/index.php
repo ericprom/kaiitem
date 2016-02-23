@@ -10,6 +10,9 @@ $this->title = 'My Yii Application';
 <div style="margin-top:51px;">
     <div class="site-index" ng-controller="MainController" ng-cloak>
         <div class="body-content">
+            <?php
+            if(Yii::$app->user->isGuest){
+            ?>
             <div class="carousel fade-carousel slide" data-ride="carousel" data-interval="4000" id="bs-carousel">
                 <!-- Overlay -->
                 <!-- <div class="overlay"></div> -->
@@ -55,6 +58,9 @@ $this->title = 'My Yii Application';
                     </div>
                 </div>
             </div>
+            <?php
+            }
+            ?>
             <div class="container">
             <div class="row">
                 <div class="col-md-3 col-sm-4 col-xs-12" ng-repeat="get in Items" style="padding-top:25px;">

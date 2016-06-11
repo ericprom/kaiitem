@@ -238,7 +238,7 @@ controllers.controller('ItemController', ['API','$scope', '$location', '$window'
                 API.Toaster('warning','KaiiteM','คุณไม่สามารถสั่งต่ำกว่าจำนวนขั้นต่ำได้');
             }
         }
-        $scope.confirmCheckout = function () {
+        $scope.confirmCheckout = function (data) {
             $('#confirm-checkout').modal('show');
         };
         $scope.ordering = false;
